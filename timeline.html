@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大事备忘录</title>
+    <style>
+        :root {
+            --bg-color: #f5f5f5;
+            --text-color: #333;
+            --timeline-bg: #3498db;
+            --card-bg: white;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --title-color: #1e88e5;
+            --date-color: #e74c3c;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #121212;
+                --text-color: #e0e0e0;
+                --timeline-bg: #a1d3ff;
+                --card-bg: #1e1e1e;
+                --card-shadow: rgba(0, 0, 0, 0.3);
+                --title-color: #a1d3ff;
+                --date-color: #ff6e40;
+            }
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--title-color);
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--timeline-bg);
+            top: 16px;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: var(--card-bg);
+            border: 4px solid var(--timeline-bg);
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+        }
+        
+        .left {
+            left: 0;
+        }
+        
+        .right {
+            left: 50%;
+        }
+        
+        .left::after {
+            right: -16px;
+        }
+        
+        .right::after {
+            left: -16px;
+        }
+        
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: var(--card-bg);
+            box-shadow: 0 3px 10px var(--card-shadow);
+            border-radius: 6px;
+            position: relative;
+        }
+        
+        .timeline-content h2 {
+            margin-bottom: 10px;
+            color: var(--timeline-bg);
+        }
+        
+        .timeline-content p {
+            margin-bottom: 0;
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: var(--date-color);
+            margin-bottom: 5px;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item::after {
+                left: 18px;
+            }
+            
+            .left::after, .right::after {
+                left: 18px;
+            }
+            
+            .right {
+                left: 0;
+            }
+        }
+
+        .theme-toggle {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #themeToggle {
+            padding: 8px 16px;
+            background-color: var(--button-bg, #3498db);
+            color: var(--button-text, white);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .dark-theme {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --timeline-bg: #1e88e5;
+            --card-bg: #1e1e1e;
+            --card-shadow: rgba(0, 0, 0, 0.3);
+            --title-color: #1e88e5;
+            --date-color: #ff6e40;
+        }
+        .footer-note {
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            padding: 10px;
+            background-color: transparent;
+        }
+    
+        .footer-note p {
+            margin: 0;
+        }
+    
+        /* 深色模式适配 */
+        @media (prefers-color-scheme: dark) {
+            .footer-note {
+                color: #aaa;
+            }
+        }
+    
+        /* 如果使用了之前的深色模式类 */
+        .dark-theme .footer-note {
+            color: #aaa;
+        }
+
+        .footer-note a {
+            color: #aaa;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>大事备忘录</h1>
+
+        <div class="timeline">
+            <!-- 第1项 -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="timeline-date">2023年10月1日</div>
+                    <h2>相遇👋</h2>
+                    <p>“明明昨天还是天涯沦落人，今日却被包裹在如此盛情之中💗”</p>
+                </div>
+            </div>
+            
+            <!-- 第2项 -->
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024年2月14日</div>
+                    <h2>迷失😭</h2>
+                    <p>“你用这种方式拴住了我，让我自己选择是否离开”💔</p>
+                </div>
+            </div>
+            
+            <!-- 第3项 -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024年4月27日</div>
+                    <h2>再会🍔</h2>
+                    <p>“当我真的再次拥有之后，并没有像我所想的那样带来极度的快乐，反而是平静”🌙</p>
+                </div>
+            </div>
+            
+            <!-- 第4项 -->
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024年5月19日</div>
+                    <h2>左右盲🏥</h2>
+                    <p>《今夜，即便这份恋情从世界消散》</p>
+                </div>
+            </div>
+            
+            <!-- 第5项 -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024年7月14日</div>
+                    <h2>第一次 KTV🎤</h2>
+                    <p>一切顺利</p>
+                </div>
+            </div>
+            
+            <!-- 第6项 -->
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024年8月3日</div>
+                    <h2>第二次 KTV🎤</h2>
+                    <p>中道崩殂 +《抓娃娃》👮‍♂️</p>
+                </div>
+            </div>
+            
+            <!-- 第7项 -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024年9月7日</div>
+                    <h2>第一次图书馆📖</h2>
+                    <p>library 缓解之策</p>
+                </div>
+            </div>
+            
+            <!-- 第8项 -->
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024年9月17日</div>
+                    <h2>第二次图书馆📚</h2>
+                    <p>饭好吃🍣</p>
+                </div>
+            </div>
+            
+            <!-- 第9项 -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024年10月1日</div>
+                    <h2>一周年🎇</h2>
+                    <p>认真与负责的丰收之时💍</p>
+                </div>
+            </div>
+            
+            <!-- 第10项 -->
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024年12月10日</div>
+                    <h2>蜘蛛侠🕷</h2>
+                    <p>纵横宇宙🪐</p>
+                </div>
+            </div>
+            
+            <!-- 第11项 -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="timeline-date">2025年1月23日</div>
+                    <h2>第一次 自习室🏫</h2>
+                    <p>静谧温暖之地</p>
+                </div>
+            </div>
+            
+            <!-- 第12项 -->
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <div class="timeline-date">2025年2月25日</div>
+                    <h2>生日🍰</h2>
+                    <p>最好的一次💿</p>
+                </div>
+            </div>
+            
+            <!-- 第13项 -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="timeline-date">2025年3月20日</div>
+                    <h2>第二次 自习室🏫</h2>
+                    <p>一切顺利</p>
+                </div>
+            </div>
+
+            <!-- 第14项 -->
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <div class="timeline-date">2025年6月21日</div>
+                    <h2>第三次 KTV🎤</h2>
+                    <p>一切顺利</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        <p>致烟波逆旅又琴瑟和鸣的我们</p>
+
+        <p>© 2025 | <a href="https://word.070226.xyz/">性格纠正所</a></p>
+    </div>
+
+    <script>
+    document.getElementById('themeToggle').addEventListener('click', function() {
+        document.body.classList.toggle('dark-theme');
+        localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+    });
+
+    // 检查本地存储中的主题偏好
+    if (localStorage.getItem('theme') === 'dark' || 
+        (localStorage.getItem('theme') !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.body.classList.add('dark-theme');
+    }
+    </script>
+
+</body>
+</html>

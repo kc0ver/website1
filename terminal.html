@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Terminal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+        
+        body {
+            background: #353638;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .terminal-container {
+            width: 800px;
+            max-width: 90%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .terminal-header {
+            background: #e4e4e4;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #d0d0d0;
+        }
+        
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .close { background-color: #ff5f57; }
+        .minimize { background-color: #ffbd2e; }
+        .maximize { background-color: #28ca42; }
+        
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .terminal-body {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            padding: 20px;
+            height: 500px;
+            overflow-y: auto;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+        
+        .prompt {
+            color: #7eda28;
+            margin-right: 5px;
+        }
+        
+        .input-line {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 17px;
+            background-color: #f0f0f0;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .loading-text {
+            margin-bottom: 20px;
+            color: #aaa;
+        }
+        
+        .progress-bar {
+            width: 80%;
+            height: 8px;
+            background-color: #333;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #7eda28;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        
+        .heart-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .heart {
+            color: #ff2e63;
+            font-family: monospace;
+            white-space: pre;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .test-text {
+            color: #ff2e63;
+            font-size: 24px;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .error {
+            color: #ff5f57;
+        }
+        
+        .command-output {
+            margin: 10px 0;
+            white-space: pre-wrap;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .input-container {
+            display: flex;
+            align-items: center;
+        }
+        .motd {
+            font-style: italic;
+            color: gray;
+        }
+        /* 添加在现有的CSS规则之后 */
+        .hidden-input {
+            position: absolute;
+            opacity: 0;
+            height: 0;
+            width: 0;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: transparent;
+            caret-color: transparent;
+        }
+
+        /* 确保终端区域可以点击唤出键盘 */
+        .terminal-body {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: text;
+            user-select: text;
+        }
+
+        /* 移动设备优化 */
+        @media (max-width: 768px) {
+            .terminal-body {
+                padding: 15px;
+                font-size: 16px; /* 稍微增大字体便于触摸 */
+            }
+    
+            .input-line {
+                min-height: 44px; /* 确保触摸区域足够大 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <div class="window-controls">
+                <div class="control close"></div>
+                <div class="control minimize"></div>
+                <div class="control maximize"></div>
+            </div>
+            <div class="terminal-title">zsh — ver2</div>
+        </div>
+        <div class="terminal-body" id="terminal">
+            <div class="loading-container" id="loading">
+                <div class="loading-text"> </div>
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+            </div>
+            <div id="terminal-content" class="hidden">
+                <div class="command-output">上次登录：<span id="login-time">2023/10/1 17:58:11</span> 在 ttys011</div>
+                <div class="motd"> type 'gift' or 'g'</div> 
+              
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const terminal = document.getElementById('terminal');
+            const loading = document.getElementById('loading');
+            const terminalContent = document.getElementById('terminal-content');
+            const progress = document.getElementById('progress');
+            const loginTime = document.getElementById('login-time');
+            
+             // 添加隐藏输入框的引用
+    let hiddenInput = document.getElementById('hidden-input');
+    
+    // 如果没有隐藏输入框，创建一个
+    if (!hiddenInput) {
+        hiddenInput = document.createElement('input');
+        hiddenInput.type = 'text';
+        hiddenInput.className = 'hidden-input';
+        hiddenInput.id = 'hidden-input';
+        hiddenInput.autocapitalize = 'none';
+        hiddenInput.autocomplete = 'off';
+        hiddenInput.autocorrect = 'off';
+        document.body.appendChild(hiddenInput);
+    }
+    
+    // 点击终端时聚焦到隐藏输入框
+    terminal.addEventListener('click', function() {
+        if (!isProcessing && loading.classList.contains('hidden')) {
+            hiddenInput.focus();
+        }
+    });
+    
+    // 处理隐藏输入框的输入事件
+    hiddenInput.addEventListener('input', function(e) {
+        if (isProcessing) return;
+        
+        currentInput = hiddenInput.value;
+        updateInputDisplay();
+    });
+    
+    // 处理隐藏输入框的按键事件
+    hiddenInput.addEventListener('keydown', function(e) {
+        if (isProcessing) return;
+        
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            executeCommand();
+            // 清空隐藏输入框
+            hiddenInput.value = '';
+        } else if (e.key === 'Backspace') {
+            // 让Backspace正常处理，input事件会更新显示
+        }
+        // 其他按键由input事件处理
+    });
+    
+    // 修改现有的updateInputDisplay函数
+    function updateInputDisplay() {
+        const currentInputElement = document.querySelector('#terminal-content .input-line:last-child .user-input');
+        if (currentInputElement) {
+            currentInputElement.textContent = currentInput;
+        }
+        terminal.scrollTop = terminal.scrollHeight;
+    }
+    
+    // 修改addNewInputLine函数，确保新的输入行也有隐藏输入框
+    function addNewInputLine() {
+        const newInputLine = document.createElement('div');
+        newInputLine.className = 'input-line';
+        newInputLine.innerHTML = `
+            <span class="prompt">user@macbook ~ %</span>
+            <span class="input-container">
+                <span class="user-input"></span>
+                <span class="cursor"></span>
+            </span>
+        `;
+        terminalContent.appendChild(newInputLine);
+        
+        // 点击新行时聚焦到隐藏输入框
+        newInputLine.addEventListener('click', function() {
+            if (!isProcessing) {
+                hiddenInput.focus();
+            }
+        });
+        
+        isProcessing = false;
+        const currentCursor = document.querySelector('#terminal-content .input-line:last-child .cursor');
+        if (currentCursor) {
+            currentCursor.classList.remove('hidden');
+        }
+        
+        // 自动聚焦到隐藏输入框
+        setTimeout(() => {
+            if (!isProcessing) {
+                hiddenInput.focus();
+            }
+        }, 100);
+        
+        terminal.scrollTop = terminal.scrollHeight;
+    }
+            // 设置登录时间
+            // const now = new Date();
+            // loginTime.textContent = now.toLocaleString('zh-CN');
+            
+            // 模拟3秒加载
+            let width = 0;
+            const interval = setInterval(() => {
+                width += 1;
+                progress.style.width = width + '%';
+                
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        loading.classList.add('hidden');
+                        terminalContent.classList.remove('hidden');
+                        addNewInputLine();
+                        terminal.scrollTop = terminal.scrollHeight;
+                    }, 300);
+                }
+            }, 30);
+            
+            // 处理用户输入
+            let currentInput = '';
+            let isProcessing = false;
+            
+            document.addEventListener('keydown', function(e) {
+                if (isProcessing || loading.classList.contains('hidden') === false) return;
+                
+                // 只处理可打印字符和回车
+                if (e.key === 'Enter') {
+                    executeCommand();
+                } else if (e.key === 'Backspace') {
+                    if (currentInput.length > 0) {
+                        currentInput = currentInput.slice(0, -1);
+                        updateInputDisplay();
+                    }
+                } else if (e.key.length === 1) {
+                    currentInput += e.key;
+                    updateInputDisplay();
+                }
+            });
+            
+            function updateInputDisplay() {
+                const currentInputElement = document.querySelector('#terminal-content .input-line:last-child .user-input');
+                if (currentInputElement) {
+                    currentInputElement.textContent = currentInput;
+                }
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+            
+            function executeCommand() {
+                isProcessing = true;
+                const currentCursor = document.querySelector('#terminal-content .input-line:last-child .cursor');
+                if (currentCursor) {
+                    currentCursor.classList.add('hidden');
+                }
+                
+                // 处理命令
+                if (currentInput.trim() === 'gift' || currentInput.trim() === 'g') {
+                    // 模拟执行脚本
+                    simulateHeartScript();
+                } else if (currentInput.trim() !== '') {
+                    // 显示错误
+                    const errorOutput = document.createElement('div');
+                    errorOutput.className = 'command-output error';
+                    errorOutput.textContent = `zsh: command not found: ${currentInput}`;
+                    terminalContent.appendChild(errorOutput);
+                    
+                    // 添加新的输入行
+                    addNewInputLine();
+                } else {
+                    // 空命令，直接添加新的输入行
+                    addNewInputLine();
+                }
+                
+                currentInput = '';
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+            
+            function addNewInputLine() {
+                const newInputLine = document.createElement('div');
+                newInputLine.className = 'input-line';
+                newInputLine.innerHTML = `
+                    <span class="prompt">hmy111@padUSER ~ %</span>
+                    <span class="input-container">
+                        <input type="text" class="hidden-input" id="hidden-input" autocapitalize="none" autocomplete="off" autocorrect="off">
+                        <span class="user-input"></span>
+                        <span class="cursor"></span>
+                    </span>
+                `;
+                terminalContent.appendChild(newInputLine);
+                
+                isProcessing = false;
+                const currentCursor = document.querySelector('#terminal-content .input-line:last-child .cursor');
+                if (currentCursor) {
+                    currentCursor.classList.remove('hidden');
+                }
+                
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+            
+            function simulateHeartScript() {
+                const heartLines = [
+                    "开始执行 heart.sh...",
+                    "",
+                    "                                   ",
+                    "      ******       ******          ",
+                    "    **********   **********        ",
+                    "  ************* *************      ",
+                    " *****************************     ",
+                    " *****************************     ",
+                    " *****************************     ",
+                    "  ***************************      ",
+                    "    ***********************        ",
+                    "      *******************          ",
+                    "        ***************            ",
+                    "          ***********              ",
+                    "            *******                ",
+                    "              ***                  ",
+                    "               *                   ",
+                    "                                   ",
+                    "",
+                    " to hmy "
+                ];
+                
+                let i = 0;
+                const output = document.createElement('div');
+                output.className = 'command-output';
+                terminalContent.appendChild(output);
+                
+                const interval = setInterval(() => {
+                    if (i < heartLines.length) {
+                        // 对心形部分应用红色
+                        if (i >= 2 && i <= 18) {
+                            output.innerHTML += `<div class="heart">${heartLines[i]}</div>`;
+                        } else {
+                            output.innerHTML += heartLines[i] + '\n';
+                        }
+                        
+                        i++;
+                        terminal.scrollTop = terminal.scrollHeight;
+                    } else {
+                        clearInterval(interval);
+                        
+                        // 添加TEST文本
+                        const testText = document.createElement('div');
+                        testText.className = 'test-text';
+                        testText.textContent = 'You are the love of my life.';
+                        terminalContent.appendChild(testText);
+                        
+                        // 添加新的输入行
+                        addNewInputLine();
+                    }
+                }, 300);
+            }
+        });
+    </script>
+</body>
+</html>
