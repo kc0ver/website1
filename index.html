@@ -1,1 +1,191 @@
-123
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>性格纠正所·锚点</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        :root {
+            --bg-color: #f5f7fa;
+            --card-bg: white;
+            --text-color: #333;
+            --name-color: #2c3e50;
+            --title-color: #3498db;
+            --description-color: #555;
+            --border-color: #eee;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1a1a1a;
+                --card-bg: #2d2d2d;
+                --text-color: #e0e0e0;
+                --name-color: #ffffff;
+                --title-color: #5dade2;
+                --description-color: #b0b0b0;
+                --border-color: #444;
+                --shadow-color: rgba(0, 0, 0, 0.3);
+            }
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .name {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: var(--name-color);
+            transition: color 0.3s ease;
+        }
+        
+        .title {
+            font-size: 1.5rem;
+            color: var(--title-color);
+            margin-bottom: 25px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .description {
+            font-size: 1.1rem;
+            color: var(--description-color);
+            margin-bottom: 30px;
+            transition: color 0.3s ease;
+        }
+        
+        .contact {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid var(--border-color);
+            transition: border-color 0.3s ease;
+        }
+        
+        .contact a {
+            color: var(--title-color);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        
+        .contact a:hover {
+            text-decoration: underline;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px var(--shadow-color);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-color);
+            transition: fill 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+        <svg viewBox="0 0 24 24">
+            <path d="M12,18C8.69,18 6,15.31 6,12C6,8.69 8.69,6 12,6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M12,4C7.58,4 4,7.58 4,12C4,16.42 7.58,20 12,20C16.42,20 20,16.42 20,12C20,7.58 16.42,4 12,4M20,12H22C22,6.48 17.52,2 12,2V4C16.42,4 20,7.58 20,12M12,22V20C16.42,20 20,16.42 20,12H22C22,17.52 17.52,22 12,22Z"/>
+        </svg>
+    </button>
+    
+    <div class="card">
+        <h1 class="name">kC0VER</h1>
+        <h2 class="title">性格纠正所·锚点</h2>
+        <p class="description">
+            承受无止境的黑夜，重铸再创世的辉煌
+        </p>
+        <div class="contact">
+            <a href="terminal.html">终端作品</a>
+            <a href="timeline.html">时间轴作品</a>
+        </div>
+    </div>
+
+    <script>
+        // 检测系统主题偏好
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        // 切换主题的函数
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            
+            // 保存用户选择到本地存储
+            localStorage.setItem('theme', newTheme);
+        }
+        
+        // 初始化主题
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            
+            if (savedTheme) {
+                // 使用用户之前保存的主题
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else if (prefersDarkScheme.matches) {
+                // 使用系统偏好
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                // 默认使用浅色主题
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        }
+        
+        // 添加事件监听器
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+        
+        // 监听系统主题变化
+        prefersDarkScheme.addEventListener('change', (e) => {
+            // 只有当用户没有手动选择主题时才跟随系统变化
+            if (!localStorage.getItem('theme')) {
+                document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+            }
+        });
+        
+        // 初始化
+        initTheme();
+    </script>
+</body>
+</html>
