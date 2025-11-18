@@ -749,7 +749,7 @@
                 releasesContainer.innerHTML = '';
                 releasesContainer.appendChild(loadingIndicator);
 
-                // 获取仓库信息
+                // 获取仓库的信息
                 fetch(`https://api.github.com/repos/${repo}`)
                     .then(response => {
                         if (!response.ok) {
