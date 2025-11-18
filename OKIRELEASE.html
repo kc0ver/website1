@@ -30,48 +30,64 @@
             background-color: #fafbfc;
             color: var(--text-color);
             line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
         }
 
         header {
             background-color: var(--primary-color);
             color: white;
-            padding: 20px 0;
-            margin-bottom: 30px;
+            padding: 15px 0;
+            margin-bottom: 20px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 20px;
+            gap: 8px;
+            font-size: 16px;
             font-weight: 600;
+            flex: 1;
+            min-width: 0;
         }
 
         .logo i {
-            font-size: 24px;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .logo span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .sync-status {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 16px;
+            gap: 8px;
+            padding: 6px 12px;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 500;
+            flex-shrink: 0;
         }
 
         .sync-status.up-to-date {
@@ -99,60 +115,67 @@
         }
 
         .sync-details {
-            margin-top: 5px;
-            font-size: 12px;
+            margin-top: 2px;
+            font-size: 10px;
             opacity: 0.8;
         }
 
         .repo-info {
             background: white;
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .repo-details h2 {
-            margin-bottom: 5px;
-            font-size: 20px;
+            margin-bottom: 4px;
+            font-size: 18px;
+            line-height: 1.3;
+            word-break: break-word;
         }
 
         .repo-details p {
             color: var(--light-text);
-            font-size: 14px;
+            font-size: 13px;
+            line-height: 1.4;
         }
 
         .repo-stats {
-            display: flex;
-            gap: 15px;
+            display: none!important;
+            gap: 12px;
+            justify-content: space-around;
         }
 
         .stat {
             text-align: center;
+            flex: 1;
         }
 
         .stat-value {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
+            line-height: 1.2;
         }
 
         .stat-label {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--light-text);
+            margin-top: 2px;
         }
 
         .releases-list {
             background: white;
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 8px;
             overflow: hidden;
         }
 
         .release-item {
-            padding: 20px;
+            padding: 15px;
             border-bottom: 1px solid var(--border-color);
             transition: background-color 0.2s;
         }
@@ -167,15 +190,16 @@
 
         .release-header {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .release-title {
             display: flex;
-            align-items: center;
-            gap: 10px;
+            align-items: flex-start;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .release-tag {
@@ -183,32 +207,41 @@
             color: white;
             padding: 3px 8px;
             border-radius: 12px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
+            flex-shrink: 0;
+            display: none;
         }
 
         .release-name {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
+            line-height: 1.3;
+            word-break: break-word;
+            flex: 1;
+            min-width: 0;
         }
 
         .release-date {
             color: var(--light-text);
-            font-size: 14px;
+            font-size: 12px;
+            align-self: flex-start;
         }
 
         .release-body {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: var(--text-color);
-            line-height: 1.6;
+            line-height: 1.5;
+            font-size: 14px;
         }
 
-        /* Markdown 样式 */
+        /* Markdown 样式 - 移动端优化 */
         .markdown-body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
             font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.5;
             word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .markdown-body h1,
@@ -217,14 +250,14 @@
         .markdown-body h4,
         .markdown-body h5,
         .markdown-body h6 {
-            margin-top: 20px;
-            margin-bottom: 10px;
+            margin-top: 16px;
+            margin-bottom: 8px;
             font-weight: 600;
             line-height: 1.25;
         }
 
         .markdown-body h1 {
-            font-size: 1.5em;
+            font-size: 1.4em;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 0.3em;
         }
@@ -245,23 +278,26 @@
 
         .markdown-body p {
             margin-bottom: 10px;
+            word-break: break-word;
         }
 
         .markdown-body ul,
         .markdown-body ol {
-            padding-left: 2em;
+            padding-left: 1.5em;
             margin-bottom: 10px;
         }
 
         .markdown-body li {
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+            word-break: break-word;
         }
 
         .markdown-body blockquote {
-            margin: 0;
-            padding: 0 1em;
+            margin: 12px 0;
+            padding: 0 12px;
             color: var(--light-text);
             border-left: 0.25em solid var(--border-color);
+            font-size: 13px;
         }
 
         .markdown-body code {
@@ -271,14 +307,17 @@
             background-color: var(--bg-color);
             border-radius: 3px;
             font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            word-break: break-word;
         }
 
         .markdown-body pre {
             background-color: var(--bg-color);
             border-radius: 6px;
-            padding: 16px;
+            padding: 12px;
             overflow: auto;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            -webkit-overflow-scrolling: touch;
         }
 
         .markdown-body pre code {
@@ -287,18 +326,24 @@
             margin: 0;
             font-size: 13px;
             line-height: 1.45;
+            white-space: pre;
         }
 
         .markdown-body table {
             border-collapse: collapse;
             width: 100%;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .markdown-body table th,
         .markdown-body table td {
-            padding: 6px 13px;
+            padding: 6px 10px;
             border: 1px solid var(--border-color);
+            min-width: 80px;
         }
 
         .markdown-body table th {
@@ -308,12 +353,14 @@
 
         .markdown-body img {
             max-width: 100%;
+            height: auto;
             box-sizing: border-box;
         }
 
         .markdown-body a {
             color: var(--secondary-color);
             text-decoration: none;
+            word-break: break-all;
         }
 
         .markdown-body a:hover {
@@ -321,20 +368,20 @@
         }
 
         .release-assets {
-            margin-top: 15px;
+            margin-top: 12px;
         }
 
         .assets-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--light-text);
         }
 
         .assets-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .asset-item {
@@ -344,8 +391,9 @@
             background: var(--bg-color);
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding: 12px 15px;
+            padding: 10px 12px;
             transition: all 0.2s;
+            gap: 8px;
         }
 
         .asset-item:hover {
@@ -355,22 +403,25 @@
         .asset-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex: 1;
+            min-width: 0;
         }
 
         .asset-icon {
             color: var(--light-text);
+            flex-shrink: 0;
         }
 
         .asset-name {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             word-break: break-all;
+            line-height: 1.3;
         }
 
         .asset-size {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--light-text);
             margin-top: 2px;
         }
@@ -380,12 +431,14 @@
             color: white;
             border: none;
             border-radius: 4px;
-            padding: 6px 12px;
-            font-size: 12px;
+            padding: 6px 10px;
+            font-size: 11px;
             font-weight: 500;
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.2s;
+            flex-shrink: 0;
+            white-space: nowrap;
         }
 
         .asset-download:hover {
@@ -395,7 +448,7 @@
 
         .loading {
             text-align: center;
-            padding: 40px;
+            padding: 30px 20px;
             color: var(--light-text);
         }
 
@@ -403,48 +456,154 @@
             background-color: #ffebe9;
             border: 1px solid #ff8182;
             border-radius: 6px;
-            padding: 16px;
-            margin-bottom: 20px;
+            padding: 12px;
+            margin-bottom: 15px;
             color: #cf222e;
+            font-size: 14px;
         }
 
         .empty-state {
             text-align: center;
-            padding: 40px;
+            padding: 30px 20px;
             color: var(--light-text);
         }
 
         .empty-state i {
-            font-size: 48px;
-            margin-bottom: 15px;
+            font-size: 40px;
+            margin-bottom: 12px;
             color: var(--border-color);
         }
 
-        @media (max-width: 768px) {
+        .empty-state h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        /* 触摸设备优化 */
+        @media (hover: none) {
+            .release-item:hover {
+                background-color: transparent;
+            }
+            
+            .asset-item:hover {
+                background-color: var(--bg-color);
+            }
+            
+            .asset-item:active {
+                background-color: #e1e4e8;
+            }
+        }
+
+        /* 平板和桌面布局 */
+        @media (min-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            header {
+                padding: 20px 0;
+                margin-bottom: 30px;
+            }
+
             .header-content {
-                flex-direction: column;
+                flex-wrap: nowrap;
                 gap: 15px;
-                align-items: flex-start;
+            }
+
+            .logo {
+                font-size: 20px;
+                flex: none;
+            }
+
+            .logo i {
+                font-size: 24px;
+            }
+
+            .sync-status {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+
+            .sync-details {
+                font-size: 12px;
             }
 
             .repo-info {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+                margin-bottom: 20px;
+                gap: 20px;
+            }
+
+            .repo-details h2 {
+                font-size: 20px;
+            }
+
+            .repo-details p {
+                font-size: 14px;
             }
 
             .repo-stats {
-                width: 100%;
-                justify-content: space-between;
+                justify-content: flex-end;
+                gap: 15px;
+            }
+
+            .stat-value {
+                font-size: 20px;
+            }
+
+            .stat-label {
+                font-size: 12px;
+            }
+
+            .release-item {
+                padding: 20px;
             }
 
             .release-header {
-                flex-direction: column;
-                gap: 10px;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            .release-title {
+                flex-wrap: nowrap;
+            }
+
+            .release-name {
+                font-size: 18px;
+            }
+
+            .release-date {
+                font-size: 14px;
             }
 
             .assets-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                display: grid;
+                flex-direction: row;
+            }
+
+            .asset-name {
+                font-size: 14px;
+            }
+
+            .asset-download {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+
+        /* 大屏幕布局 */
+        @media (min-width: 1024px) {
+            .assets-grid {
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             }
         }
     </style>
