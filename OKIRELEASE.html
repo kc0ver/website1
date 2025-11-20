@@ -120,6 +120,33 @@
             opacity: 0.8;
         }
 
+        .commit-info {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 8px;
+            font-size: 11px;
+        }
+
+        .commit-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .commit-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .commit-hash {
+            font-family: 'SFMono-Regular', Consolas, monospace;
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+        }
+
         .repo-info {
             background: white;
             border: 1px solid var(--border-color);
@@ -235,136 +262,13 @@
             font-size: 14px;
         }
 
-        /* Markdown 样式 - 移动端优化 */
+        /* Markdown 样式 */
         .markdown-body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
             font-size: 14px;
             line-height: 1.5;
             word-wrap: break-word;
             overflow-wrap: break-word;
-        }
-
-        .markdown-body h1,
-        .markdown-body h2,
-        .markdown-body h3,
-        .markdown-body h4,
-        .markdown-body h5,
-        .markdown-body h6 {
-            margin-top: 16px;
-            margin-bottom: 8px;
-            font-weight: 600;
-            line-height: 1.25;
-        }
-
-        .markdown-body h1 {
-            font-size: 1.4em;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.3em;
-        }
-
-        .markdown-body h2 {
-            font-size: 1.3em;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.3em;
-        }
-
-        .markdown-body h3 {
-            font-size: 1.2em;
-        }
-
-        .markdown-body h4 {
-            font-size: 1.1em;
-        }
-
-        .markdown-body p {
-            margin-bottom: 10px;
-            word-break: break-word;
-        }
-
-        .markdown-body ul,
-        .markdown-body ol {
-            padding-left: 1.5em;
-            margin-bottom: 10px;
-        }
-
-        .markdown-body li {
-            margin-bottom: 4px;
-            word-break: break-word;
-        }
-
-        .markdown-body blockquote {
-            margin: 12px 0;
-            padding: 0 12px;
-            color: var(--light-text);
-            border-left: 0.25em solid var(--border-color);
-            font-size: 13px;
-        }
-
-        .markdown-body code {
-            padding: 0.2em 0.4em;
-            margin: 0;
-            font-size: 85%;
-            background-color: var(--bg-color);
-            border-radius: 3px;
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-            word-break: break-word;
-        }
-
-        .markdown-body pre {
-            background-color: var(--bg-color);
-            border-radius: 6px;
-            padding: 12px;
-            overflow: auto;
-            margin-bottom: 12px;
-            font-size: 13px;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .markdown-body pre code {
-            background: none;
-            padding: 0;
-            margin: 0;
-            font-size: 13px;
-            line-height: 1.45;
-            white-space: pre;
-        }
-
-        .markdown-body table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-bottom: 12px;
-            font-size: 13px;
-            display: block;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .markdown-body table th,
-        .markdown-body table td {
-            padding: 6px 10px;
-            border: 1px solid var(--border-color);
-            min-width: 80px;
-        }
-
-        .markdown-body table th {
-            background-color: var(--bg-color);
-            font-weight: 600;
-        }
-
-        .markdown-body img {
-            max-width: 100%;
-            height: auto;
-            box-sizing: border-box;
-        }
-
-        .markdown-body a {
-            color: var(--secondary-color);
-            text-decoration: none;
-            word-break: break-all;
-        }
-
-        .markdown-body a:hover {
-            text-decoration: underline;
         }
 
         .release-assets {
@@ -394,10 +298,6 @@
             padding: 10px 12px;
             transition: all 0.2s;
             gap: 8px;
-        }
-
-        .asset-item:hover {
-            background-color: #e1e4e8;
         }
 
         .asset-info {
@@ -441,11 +341,6 @@
             white-space: nowrap;
         }
 
-        .asset-download:hover {
-            background-color: #22863a;
-            text-decoration: none;
-        }
-
         .loading {
             text-align: center;
             padding: 30px 20px;
@@ -466,36 +361,6 @@
             text-align: center;
             padding: 30px 20px;
             color: var(--light-text);
-        }
-
-        .empty-state i {
-            font-size: 40px;
-            margin-bottom: 12px;
-            color: var(--border-color);
-        }
-
-        .empty-state h3 {
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-
-        .empty-state p {
-            font-size: 14px;
-        }
-
-        /* 触摸设备优化 */
-        @media (hover: none) {
-            .release-item:hover {
-                background-color: transparent;
-            }
-            
-            .asset-item:hover {
-                background-color: var(--bg-color);
-            }
-            
-            .asset-item:active {
-                background-color: #e1e4e8;
-            }
         }
 
         /* 平板和桌面布局 */
@@ -599,13 +464,6 @@
                 padding: 6px 12px;
             }
         }
-
-        /* 大屏幕布局 */
-        @media (min-width: 1024px) {
-            .assets-grid {
-                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            }
-        }
     </style>
 </head>
 <body>
@@ -618,7 +476,7 @@
                 </div>
                 <div id="sync-status" class="sync-status loading">
                     <i class="fas fa-sync-alt fa-spin"></i>
-                    <span>检查同步状态...</span>
+                    <span>检查提交同步状态...</span>
                 </div>
             </div>
         </div>
@@ -686,50 +544,76 @@
             const myRepo = 'kc0ver/oppo_oplus_realme_sm8750';
             const upstreamRepo = 'cctv18/oppo_oplus_realme_sm8750';
             
-            // 检查同步状态
-            checkSyncStatus(myRepo, upstreamRepo);
+            // 检查提交同步状态
+            checkCommitSyncStatus(myRepo, upstreamRepo);
             
             // 加载仓库的releases
             loadReleases(myRepo);
 
-            function checkSyncStatus(forkRepo, upstreamRepo) {
-                Promise.all([
-                    fetch(`https://api.github.com/repos/${forkRepo}`).then(r => r.json()),
-                    fetch(`https://api.github.com/repos/${upstreamRepo}`).then(r => r.json())
-                ])
-                .then(([forkData, upstreamData]) => {
+            async function checkCommitSyncStatus(forkRepo, upstreamRepo) {
+                try {
+                    // 获取fork仓库的默认分支最新提交
+                    const [forkData, upstreamData] = await Promise.all([
+                        fetch(`https://api.github.com/repos/${forkRepo}`).then(r => r.json()),
+                        fetch(`https://api.github.com/repos/${upstreamRepo}`).then(r => r.json())
+                    ]);
+
                     if (forkData.message || upstreamData.message) {
                         throw new Error('无法获取仓库信息');
                     }
 
-                    const forkUpdated = new Date(forkData.updated_at);
-                    const upstreamUpdated = new Date(upstreamData.updated_at);
-                    const timeDiff = upstreamUpdated - forkUpdated;
-                    const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                    const forkDefaultBranch = forkData.default_branch;
+                    const upstreamDefaultBranch = upstreamData.default_branch;
 
-                    if (timeDiff > 0) {
-                        // Fork 落后于上游
-                        syncStatus.className = 'sync-status behind';
-                        syncStatus.innerHTML = `
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <div>
-                                <div>落后于上游 ${daysDiff} 天</div>
-                                <div class="sync-details">建议同步更新</div>
-                            </div>
-                        `;
-                    } else {
-                        // Fork 是最新的
+                    // 获取两个仓库的最新提交
+                    const [forkCommits, upstreamCommits] = await Promise.all([
+                        fetch(`https://api.github.com/repos/${forkRepo}/commits?sha=${forkDefaultBranch}&per_page=5`).then(r => r.json()),
+                        fetch(`https://api.github.com/repos/${upstreamRepo}/commits?sha=${upstreamDefaultBranch}&per_page=5`).then(r => r.json())
+                    ]);
+
+                    if (forkCommits.message || upstreamCommits.message) {
+                        throw new Error('无法获取提交信息');
+                    }
+
+                    const forkLatestCommit = forkCommits[0];
+                    const upstreamLatestCommit = upstreamCommits[0];
+
+                    // 检查fork是否包含上游的最新提交
+                    const hasLatestUpstreamCommit = forkCommits.some(commit => 
+                        commit.sha === upstreamLatestCommit.sha
+                    );
+
+                    if (hasLatestUpstreamCommit) {
+                        // Fork 包含上游最新提交，是同步的
                         syncStatus.className = 'sync-status up-to-date';
                         syncStatus.innerHTML = `
                             <i class="fas fa-check-circle"></i>
                             <div>
                                 <div>与上游同步</div>
-                                <div class="sync-details">已是最新版本</div>
+                                <div class="sync-details">包含最新提交</div>
+                            </div>
+                        `;
+                    } else {
+                        // Fork 不包含上游最新提交，是落后的
+                        const behindCommits = await getCommitDifference(forkRepo, forkLatestCommit.sha, upstreamLatestCommit.sha);
+                        
+                        syncStatus.className = 'sync-status behind';
+                        syncStatus.innerHTML = `
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <div>落后于上游 ${behindCommits} 个提交</div>
+                                <div class="sync-details">需要同步更新</div>
+                                <div class="commit-info">
+                                    <div class="commit-item">
+                                        <span class="commit-hash">${upstreamLatestCommit.sha.substring(0, 7)}</span>
+                                        <span>${upstreamLatestCommit.commit.message.split('\n')[0]}</span>
+                                    </div>
+                                </div>
                             </div>
                         `;
                     }
-                })
-                .catch(error => {
+
+                } catch (error) {
                     syncStatus.className = 'sync-status error';
                     syncStatus.innerHTML = `
                         <i class="fas fa-exclamation-circle"></i>
@@ -738,7 +622,22 @@
                             <div class="sync-details">${error.message}</div>
                         </div>
                     `;
-                });
+                }
+            }
+
+            async function getCommitDifference(repo, baseCommit, headCommit) {
+                try {
+                    // 使用GitHub API比较两个提交
+                    const compareResponse = await fetch(`https://api.github.com/repos/${repo}/compare/${baseCommit}...${headCommit}`);
+                    const compareData = await compareResponse.json();
+                    
+                    if (compareData.ahead_by !== undefined) {
+                        return compareData.ahead_by;
+                    }
+                    return '未知';
+                } catch (error) {
+                    return '未知';
+                }
             }
 
             function loadReleases(repo) {
@@ -749,7 +648,7 @@
                 releasesContainer.innerHTML = '';
                 releasesContainer.appendChild(loadingIndicator);
 
-                // 获取仓库的信息
+                // 获取仓库信息
                 fetch(`https://api.github.com/repos/${repo}`)
                     .then(response => {
                         if (!response.ok) {
