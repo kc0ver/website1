@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>受保护的内容</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .password-form {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 48px;
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .security-info {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 14px;
+            color: #495057;
+            border-left: 4px solid #28a745;
+        }
+        
+        .security-info i {
+            color: #28a745;
+            margin-right: 8px;
+        }
+        
+        .password-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: 2px solid #e1e5eb;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+            outline: none;
+        }
+        
+        .password-input:focus {
+            border-color: #1e3c72;
+            box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.1);
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 60, 114, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+            background: #fdf2f2;
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .content {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+        
+        .success-icon {
+            font-size: 64px;
+            color: #2ecc71;
+            margin-bottom: 20px;
+        }
+        
+        .content h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+        
+        .content p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .lock-icon {
+            font-size: 24px;
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        
+        .hash-display {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            color: #495057;
+            border: 1px dashed #dee2e6;
+        }
+        
+        .hash-label {
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 480px) {
+            .password-form, .content {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .logo {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="password-form" id="passwordForm">
+            <div class="logo">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h1>安全保护的内容</h1>
+            <p class="subtitle">性格纠正所</p>
+            
+            <div class="password-container">
+                <i class="fas fa-key lock-icon"></i>
+                <input type="password" id="passwordInput" class="password-input" placeholder="输入密码">
+                <button type="button" class="toggle-password" id="togglePassword">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+            
+            <button class="submit-btn" id="submitBtn">验证密码</button>
+            
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-circle"></i> 密码错误，请重试
+            </div>
+            
+            <!-- 哈希值显示区域 -->
+            <div class="hash-display" id="hashDisplay" style="display: none;">
+                <div class="hash-label">输入密码的哈希值：</div>
+                <div id="enteredHash"></div>
+                <div class="hash-label" style="margin-top: 10px;">存储的哈希值：</div>
+                <div id="storedHash"></div>
+            </div>
+        </div>
+        
+        <div class="content" id="content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>验证成功！</h2>
+            <p>您已成功通过密码验证，现在可以查看此受保护的内容。</p>
+            
+            <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                <h3 style="color: #1e3c72; margin-bottom: 15px;">受保护的内容区域</h3>
+                <ul style="text-align: left; margin: 15px 0; padding-left: 20px; color: #555;">
+                    <li><a href="terminal.html">终端作品</a></li>
+                    <li><a href="timeline.html">时间轴作品</a></li>
+                </ul>
+            </div>
+            
+            <button class="submit-btn" onclick="location.reload()" style="margin-top: 20px; background: #6c757d;">
+                <i class="fas fa-redo"></i> 重新验证
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('passwordInput');
+            const togglePassword = document.getElementById('togglePassword');
+            const submitBtn = document.getElementById('submitBtn');
+            const errorMessage = document.getElementById('errorMessage');
+            const passwordForm = document.getElementById('passwordForm');
+            const content = document.getElementById('content');
+            const hashDisplay = document.getElementById('hashDisplay');
+            const enteredHash = document.getElementById('enteredHash');
+            const storedHash = document.getElementById('storedHash');
+            
+            // 存储密码的SHA-256哈希值（而不是明文密码）
+            const storedPasswordHash = 'e745922fb2742eb354cacbd201dccd58b499d50a8a530a8c0f978cd4fdf653d3';
+            
+            // 计算字符串的SHA-256哈希值
+            function calculateSHA256(str) {
+                return CryptoJS.SHA256(str).toString();
+            }
+            
+            // 切换密码可见性
+            togglePassword.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    togglePassword.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                } else {
+                    passwordInput.type = 'password';
+                    togglePassword.innerHTML = '<i class="fas fa-eye"></i>';
+                }
+            });
+            
+            // 提交密码
+            submitBtn.addEventListener('click', function() {
+                const enteredPassword = passwordInput.value;
+                
+                if (enteredPassword.trim() === '') {
+                    showError('请输入密码');
+                    return;
+                }
+                
+                // 计算输入密码的哈希值
+                const enteredPasswordHash = calculateSHA256(enteredPassword);
+                
+                // 显示哈希值（用于演示）
+                hashDisplay.style.display = 'block';
+                enteredHash.textContent = enteredPasswordHash;
+                storedHash.textContent = storedPasswordHash;
+                
+                // 比较哈希值（而不是比较明文密码）
+                if (enteredPasswordHash === storedPasswordHash) {
+                    // 密码正确，显示内容
+                    passwordForm.style.display = 'none';
+                    content.style.display = 'block';
+                } else {
+                    // 密码错误，显示错误信息
+                    showError('密码错误，请重试');
+                }
+            });
+            
+            function showError(message) {
+                errorMessage.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+                errorMessage.style.display = 'block';
+                passwordInput.style.borderColor = '#e74c3c';
+                
+                // 3秒后隐藏错误信息
+                setTimeout(function() {
+                    errorMessage.style.display = 'none';
+                    passwordInput.style.borderColor = '#e1e5eb';
+                }, 3000);
+            }
+            
+            // 按回车键提交
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    submitBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

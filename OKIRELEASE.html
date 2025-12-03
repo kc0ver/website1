@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kc0ver/oppo_oplus_realme_sm8750 - Releases</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+    <style>
+        .release-body ul {
+            padding-left: 1.5em;
+        }
+        
+        :root {
+            --primary-color: #24292e;
+            --secondary-color: #0366d6;
+            --border-color: #e1e4e8;
+            --bg-color: #f6f8fa;
+            --text-color: #24292e;
+            --light-text: #586069;
+            --success-color: #28a745;
+            --warning-color: #dbab09;
+            --danger-color: #d73a49;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fafbfc;
+            color: var(--text-color);
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .logo i {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .logo span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .sync-status.up-to-date {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+
+        .sync-status.behind {
+            background-color: rgba(219, 171, 9, 0.1);
+            color: var(--warning-color);
+            border: 1px solid rgba(219, 171, 9, 0.3);
+        }
+
+        .sync-status.error {
+            background-color: rgba(215, 58, 73, 0.1);
+            color: var(--danger-color);
+            border: 1px solid rgba(215, 58, 73, 0.3);
+        }
+
+        .sync-status.loading {
+            background-color: rgba(3, 102, 214, 0.1);
+            color: var(--secondary-color);
+            border: 1px solid rgba(3, 102, 214, 0.3);
+        }
+
+        .sync-details {
+            margin-top: 2px;
+            font-size: 10px;
+            opacity: 0.8;
+        }
+
+        .commit-info {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 8px;
+            font-size: 11px;
+        }
+
+        .commit-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .commit-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .commit-hash {
+            font-family: 'SFMono-Regular', Consolas, monospace;
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+        }
+
+        .repo-info {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .repo-details h2 {
+            margin-bottom: 4px;
+            font-size: 18px;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+
+        .repo-details p {
+            color: var(--light-text);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .repo-stats {
+            display: none!important;
+            gap: 12px;
+            justify-content: space-around;
+        }
+
+        .stat {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--light-text);
+            margin-top: 2px;
+        }
+
+        .releases-list {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .release-item {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s;
+        }
+
+        .release-item:last-child {
+            border-bottom: none;
+        }
+
+        .release-item:hover {
+            background-color: var(--bg-color);
+        }
+
+        .release-header {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .release-title {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .release-tag {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            flex-shrink: 0;
+            display: none;
+        }
+
+        .release-name {
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.3;
+            word-break: break-word;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .release-date {
+            color: var(--light-text);
+            font-size: 12px;
+            align-self: flex-start;
+        }
+
+        .release-body {
+            margin-bottom: 12px;
+            color: var(--text-color);
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        /* Markdown 样式 */
+        .markdown-body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .release-assets {
+            margin-top: 12px;
+        }
+
+        .assets-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--light-text);
+        }
+
+        .assets-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .asset-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 12px;
+            transition: all 0.2s;
+            gap: 8px;
+        }
+
+        .asset-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .asset-icon {
+            color: var(--light-text);
+            flex-shrink: 0;
+        }
+
+        .asset-name {
+            font-size: 13px;
+            font-weight: 500;
+            word-break: break-all;
+            line-height: 1.3;
+        }
+
+        .asset-size {
+            font-size: 11px;
+            color: var(--light-text);
+            margin-top: 2px;
+        }
+
+        .asset-download {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--light-text);
+        }
+
+        .error {
+            background-color: #ffebe9;
+            border: 1px solid #ff8182;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 15px;
+            color: #cf222e;
+            font-size: 14px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--light-text);
+        }
+
+        /* 平板和桌面布局 */
+        @media (min-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            header {
+                padding: 20px 0;
+                margin-bottom: 30px;
+            }
+
+            .header-content {
+                flex-wrap: nowrap;
+                gap: 15px;
+            }
+
+            .logo {
+                font-size: 20px;
+                flex: none;
+            }
+
+            .logo i {
+                font-size: 24px;
+            }
+
+            .sync-status {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+
+            .sync-details {
+                font-size: 12px;
+            }
+
+            .repo-info {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+                margin-bottom: 20px;
+                gap: 20px;
+            }
+
+            .repo-details h2 {
+                font-size: 20px;
+            }
+
+            .repo-details p {
+                font-size: 14px;
+            }
+
+            .repo-stats {
+                justify-content: flex-end;
+                gap: 15px;
+            }
+
+            .stat-value {
+                font-size: 20px;
+            }
+
+            .stat-label {
+                font-size: 12px;
+            }
+
+            .release-item {
+                padding: 20px;
+            }
+
+            .release-header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            .release-title {
+                flex-wrap: nowrap;
+            }
+
+            .release-name {
+                font-size: 18px;
+            }
+
+            .release-date {
+                font-size: 14px;
+            }
+
+            .assets-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                display: grid;
+                flex-direction: row;
+            }
+
+            .asset-name {
+                font-size: 14px;
+            }
+
+            .asset-download {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fab fa-github"></i>
+                    <span>kc0ver/oppo_oplus_realme_sm8750 - Releases</span>
+                </div>
+                <div id="sync-status" class="sync-status loading">
+                    <i class="fas fa-sync-alt fa-spin"></i>
+                    <span>检查提交同步状态...</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="repo-info" class="repo-info" style="display: none;">
+            <div class="repo-details">
+                <h2 id="repo-name">kc0ver/oppo_oplus_realme_sm8750</h2>
+                <p id="repo-description">Repository description goes here</p>
+            </div>
+            <div class="repo-stats">
+                <div class="stat">
+                    <div class="stat-value" id="release-count">0</div>
+                    <div class="stat-label">Releases</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="latest-release">-</div>
+                    <div class="stat-label">Latest</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="error-message" class="error" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="error-text">发生错误，请检查仓库地址是否正确。</span>
+        </div>
+
+        <div id="releases-container" class="releases-list">
+            <div class="loading" id="loading-indicator">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>正在加载releases...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const repoInfo = document.getElementById('repo-info');
+            const repoName = document.getElementById('repo-name');
+            const repoDescription = document.getElementById('repo-description');
+            const releaseCount = document.getElementById('release-count');
+            const latestRelease = document.getElementById('latest-release');
+            const releasesContainer = document.getElementById('releases-container');
+            const errorMessage = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const syncStatus = document.getElementById('sync-status');
+
+            // 配置 marked 选项
+            marked.setOptions({
+                highlight: function(code, lang) {
+                    if (lang && hljs.getLanguage(lang)) {
+                        return hljs.highlight(code, { language: lang }).value;
+                    }
+                    return hljs.highlightAuto(code).value;
+                },
+                breaks: true,
+                gfm: true
+            });
+
+            // 仓库配置
+            const myRepo = 'kc0ver/oppo_oplus_realme_sm8750';
+            const upstreamRepo = 'cctv18/oppo_oplus_realme_sm8750';
+            
+            // 检查提交同步状态
+            checkCommitSyncStatus(myRepo, upstreamRepo);
+            
+            // 加载仓库的releases
+            loadReleases(myRepo);
+
+            async function checkCommitSyncStatus(forkRepo, upstreamRepo) {
+                try {
+                    // 获取fork仓库的默认分支最新提交
+                    const [forkData, upstreamData] = await Promise.all([
+                        fetch(`https://api.github.com/repos/${forkRepo}`).then(r => r.json()),
+                        fetch(`https://api.github.com/repos/${upstreamRepo}`).then(r => r.json())
+                    ]);
+
+                    if (forkData.message || upstreamData.message) {
+                        throw new Error('无法获取仓库信息');
+                    }
+
+                    const forkDefaultBranch = forkData.default_branch;
+                    const upstreamDefaultBranch = upstreamData.default_branch;
+
+                    // 获取两个仓库的最新提交
+                    const [forkCommits, upstreamCommits] = await Promise.all([
+                        fetch(`https://api.github.com/repos/${forkRepo}/commits?sha=${forkDefaultBranch}&per_page=5`).then(r => r.json()),
+                        fetch(`https://api.github.com/repos/${upstreamRepo}/commits?sha=${upstreamDefaultBranch}&per_page=5`).then(r => r.json())
+                    ]);
+
+                    if (forkCommits.message || upstreamCommits.message) {
+                        throw new Error('无法获取提交信息');
+                    }
+
+                    const forkLatestCommit = forkCommits[0];
+                    const upstreamLatestCommit = upstreamCommits[0];
+
+                    // 检查fork是否包含上游的最新提交
+                    const hasLatestUpstreamCommit = forkCommits.some(commit => 
+                        commit.sha === upstreamLatestCommit.sha
+                    );
+
+                    if (hasLatestUpstreamCommit) {
+                        // Fork 包含上游最新提交，是同步的
+                        syncStatus.className = 'sync-status up-to-date';
+                        syncStatus.innerHTML = `
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <div>与上游同步</div>
+                                <div class="sync-details">包含最新提交</div>
+                            </div>
+                        `;
+                    } else {
+                        // Fork 不包含上游最新提交，是落后的
+                        const behindCommits = await getCommitDifference(forkRepo, forkLatestCommit.sha, upstreamLatestCommit.sha);
+                        
+                        syncStatus.className = 'sync-status behind';
+                        syncStatus.innerHTML = `
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <div>落后于上游 ${behindCommits} 个提交</div>
+                                <div class="sync-details">需要同步更新</div>
+                                <div class="commit-info">
+                                    <div class="commit-item">
+                                        <span class="commit-hash">${upstreamLatestCommit.sha.substring(0, 7)}</span>
+                                        <span>${upstreamLatestCommit.commit.message.split('\n')[0]}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                } catch (error) {
+                    syncStatus.className = 'sync-status error';
+                    syncStatus.innerHTML = `
+                        <i class="fas fa-exclamation-circle"></i>
+                        <div>
+                            <div>同步检查失败</div>
+                            <div class="sync-details">${error.message}</div>
+                        </div>
+                    `;
+                }
+            }
+
+            async function getCommitDifference(repo, baseCommit, headCommit) {
+                try {
+                    // 使用GitHub API比较两个提交
+                    const compareResponse = await fetch(`https://api.github.com/repos/${repo}/compare/${baseCommit}...${headCommit}`);
+                    const compareData = await compareResponse.json();
+                    
+                    if (compareData.ahead_by !== undefined) {
+                        return compareData.ahead_by;
+                    }
+                    return '未知';
+                } catch (error) {
+                    return '未知';
+                }
+            }
+
+            function loadReleases(repo) {
+                // 显示加载指示器
+                loadingIndicator.style.display = 'block';
+                errorMessage.style.display = 'none';
+                repoInfo.style.display = 'none';
+                releasesContainer.innerHTML = '';
+                releasesContainer.appendChild(loadingIndicator);
+
+                // 获取仓库信息
+                fetch(`https://api.github.com/repos/${repo}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('仓库不存在或无法访问');
+                        }
+                        return response.json();
+                    })
+                    .then(repoData => {
+                        // 更新仓库信息
+                        repoName.textContent = repoData.full_name;
+                        repoDescription.textContent = repoData.description || '暂无描述';
+                        repoInfo.style.display = 'flex';
+
+                        // 获取releases
+                        return fetch(`https://api.github.com/repos/${repo}/releases`);
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('无法获取releases信息');
+                        }
+                        return response.json();
+                    })
+                    .then(releases => {
+                        // 隐藏加载指示器
+                        loadingIndicator.style.display = 'none';
+
+                        // 更新统计信息
+                        releaseCount.textContent = releases.length;
+                        if (releases.length > 0) {
+                            latestRelease.textContent = releases[0].tag_name;
+                        }
+
+                        // 显示releases
+                        if (releases.length === 0) {
+                            releasesContainer.innerHTML = `
+                                <div class="empty-state">
+                                    <i class="fas fa-box-open"></i>
+                                    <h3>暂无Releases</h3>
+                                    <p>此仓库尚未发布任何版本</p>
+                                </div>
+                            `;
+                        } else {
+                            releasesContainer.innerHTML = '';
+                            releases.forEach(release => {
+                                const releaseDate = new Date(release.published_at).toLocaleDateString('zh-CN');
+                                const releaseItem = document.createElement('div');
+                                releaseItem.className = 'release-item';
+                                
+                                // 解析Markdown内容
+                                let bodyHTML = '';
+                                if (release.body) {
+                                    try {
+                                        bodyHTML = marked.parse(release.body);
+                                    } catch (e) {
+                                        console.error('Markdown解析错误:', e);
+                                        bodyHTML = `<pre>${release.body}</pre>`;
+                                    }
+                                } else {
+                                    bodyHTML = '<p>暂无更新说明</p>';
+                                }
+                                
+                                let assetsHTML = '';
+                                if (release.assets && release.assets.length > 0) {
+                                    assetsHTML = `
+                                        <div class="release-assets">
+                                            <div class="assets-title">下载文件 (${release.assets.length})</div>
+                                            <div class="assets-grid">
+                                                ${release.assets.map(asset => {
+                                                    const sizeInMB = (asset.size / (1024 * 1024)).toFixed(2);
+                                                    return `
+                                                        <div class="asset-item">
+                                                            <div class="asset-info">
+                                                                <i class="fas fa-file-archive asset-icon"></i>
+                                                                <div>
+                                                                    <div class="asset-name">${asset.name}</div>
+                                                                    <div class="asset-size">${sizeInMB} MB</div>
+                                                                </div>
+                                                            </div>
+                                                            <a href="${asset.browser_download_url}" class="asset-download" download>
+                                                                <i class="fas fa-download"></i> 下载
+                                                            </a>
+                                                        </div>
+                                                    `;
+                                                }).join('')}
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+
+                                releaseItem.innerHTML = `
+                                    <div class="release-header">
+                                        <div class="release-title">
+                                            <span class="release-tag">${release.tag_name}</span>
+                                            <h3 class="release-name">${release.name || release.tag_name}</h3>
+                                        </div>
+                                        <div class="release-date">${releaseDate}</div>
+                                    </div>
+                                    <div class="release-body markdown-body">
+                                        ${bodyHTML}
+                                    </div>
+                                    ${assetsHTML}
+                                `;
+                                
+                                releasesContainer.appendChild(releaseItem);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        loadingIndicator.style.display = 'none';
+                        errorText.textContent = error.message;
+                        errorMessage.style.display = 'block';
+                        releasesContainer.innerHTML = '';
+                    });
+            }
+        });
+    </script>
+</body>
+</html>
