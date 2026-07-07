@@ -1,1069 +1,1077 @@
 <!DOCTYPE html>
-<!-- saved from url=(0067)file:///C:/Users/23314/Downloads/deepseek_html_20251203_c97846.html -->
-<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>性格纠正所·锚点</title>
-    <style>
-    /* ==================== */
-/* 蒸汽波复古字体样式 */
-/* ==================== */
-
-/* 导入推荐字体 */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
-
-/* 主字体栈 - 终端复古感 */
-body, .description, .contact a {
-    font-family: 
-        'SimSun',                   /* 经典宋体 - 印刷复古感 */
-        'STSong',                   /* 华文宋体 */
-        'Microsoft YaHei UI',       /* Windows现代黑体 */
-        'PingFang SC',              /* macOS苹方 */
-        'VT323',                    /* VCR终端英文 */
-        'MS Gothic',                /* Windows终端 */
-        monospace;
-    letter-spacing: 1px;            /* 增加字符间距 */
-    line-height: 1.6;               /* 适中行高 */
-}
-
-/* 主标题 - 像素游戏感 */
-.name {
-    font-family: 
-        'SimHei',                   /* 黑体粗体 */
-        'Microsoft YaHei UI', 
-        'Press Start 2P',           /* 像素游戏英文 */
-        'Arial Black',
-        sans-serif;
-    font-weight: 900;               /* 最大字重 */
-    letter-spacing: 3px;            /* 增加间距 */
-    text-transform: uppercase;      /* 英文全大写 */
-    text-shadow: 
-        3px 3px 0 #ff00ff,          /* 霓虹阴影 */
-        -1px -1px 0 #00ffff;
-}
-
-/* 副标题 - 手写复古感 */
-.title {
-    font-family: 
-        'STKaiti',                  /* 楷体 - 手写感 */
-        'KaiTi',                    /* 系统楷体 */
-        'Times New Roman',          /* 经典衬线英文 */
-        'Georgia',
-        serif;
-    font-style: italic;             /* 斜体增强复古 */
-    font-weight: bold;
-    letter-spacing: 2px;
-    position: relative;
-    padding: 10px 0;
-}
-
-/* 描述文字 - VCR屏幕感 */
-.description {
-    font-family: 
-        'SimSun',
-        'STSong',
-        'VT323',                    /* VCR字体 */
-        'Courier New',
-        monospace;
-    font-size: 1.3rem;              /* 稍大字号 */
-    letter-spacing: 1.5px;
-    text-align: center;
-    position: relative;
-    padding: 25px;
-    margin: 30px 0;
-    border: 2px dashed rgba(255, 0, 255, 0.5);
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(5px);
-}
-
-/* 打字机光标效果 */
-.description::after {
-    content: '█';
-    animation: blink 1s infinite;
-    position: absolute;
-    right: 15px;
-    bottom: 15px;
-    color: #00ff41;                 /* 矩阵绿 */
-    font-size: 1.2rem;
-}
-
-/* 链接按钮 - 终端按钮感 */
-.contact a {
-    font-family: 
-        'MS Gothic',
-        'SimSun',
-        'VT323',
-        monospace;
-    font-size: 1.1rem;
-    letter-spacing: 2px;
-    text-decoration: none;
-    padding: 15px 30px;
-    margin: 0 15px;
-    border: 2px solid #ff00ff;
-    background: rgba(0, 0, 0, 0.5);
-    color: #00ffff;
-    display: inline-block;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.contact a::before {
-    content: '▶';
-    margin-right: 8px;
-    display: inline-block;
-    animation: playPulse 1.5s infinite;
-    color: #ffff00;
-}
-
-/* 小型文字 - 系统提示感 */
-.small-text {
-    font-family: 
-        'Microsoft YaHei UI',
-        'PingFang SC',
-        'MS Gothic',
-        monospace;
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
-    opacity: 0.8;
-}
-
-/* 数字/代码 - 终端显示感 */
-.code-text {
-    font-family: 
-        'VT323',
-        'MS Gothic',
-        'Courier New',
-        monospace;
-    color: #00ff41;                 /* 矩阵绿 */
-    background: rgba(0, 0, 0, 0.7);
-    padding: 2px 6px;
-    border: 1px solid #00ff41;
-    border-radius: 3px;
-}
-
-/* 霓虹效果文字 */
-.neon-text {
-    font-family: 
-        'SimHei',
-        'Microsoft YaHei UI',
-        'Arial Black',
-        sans-serif;
-    color: #fff;
-    text-shadow: 
-        0 0 5px #fff,
-        0 0 10px #fff,
-        0 0 20px #ff00ff,
-        0 0 30px #ff00ff,
-        0 0 40px #ff00ff;
-    animation: neonPulse 2s infinite alternate;
-}
-
-/* ==================== */
-/* 动画定义 */
-/* ==================== */
-@keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
-}
-
-@keyframes playPulse {
-    0%, 100% { 
-        opacity: 0.7; 
-        transform: scale(1); 
-    }
-    50% { 
-        opacity: 1; 
-        transform: scale(1.2); 
-    }
-}
-
-@keyframes neonPulse {
-    from {
-        text-shadow: 
-            0 0 5px #fff,
-            0 0 10px #fff,
-            0 0 20px #ff00ff,
-            0 0 30px #ff00ff,
-            0 0 40px #ff00ff;
-    }
-    to {
-        text-shadow: 
-            0 0 2px #fff,
-            0 0 5px #fff,
-            0 0 10px #ff00ff,
-            0 0 15px #ff00ff,
-            0 0 20px #ff00ff;
-    }
-}
-
-/* ==================== */
-/* 响应式调整 */
-/* ==================== */
-@media (max-width: 768px) {
-    .name {
-        font-size: 2.5rem;          /* 移动端缩小标题 */
-        letter-spacing: 2px;
-    }
-    
-    .title {
-        font-size: 1.4rem;
-        letter-spacing: 1px;
-    }
-    
-    .description {
-        font-size: 1.1rem;
-        padding: 15px;
-        letter-spacing: 1px;
-    }
-    
-    .contact a {
-        font-size: 1rem;
-        padding: 12px 20px;
-        margin: 5px;
-        display: block;             /* 移动端堆叠显示 */
-        width: 80%;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
-
-/* ==================== */
-/* 特殊效果类 */
-/* ==================== */
-/* 故障艺术效果 */
-.glitch-text {
-    position: relative;
-    animation: glitch 3s infinite;
-}
-
-@keyframes glitch {
-    0% { transform: translate(0); }
-    20% { transform: translate(-2px, 2px); }
-    40% { transform: translate(-2px, -2px); }
-    60% { transform: translate(2px, 2px); }
-    80% { transform: translate(2px, -2px); }
-    100% { transform: translate(0); }
-}
-
-/* 打字机效果 */
-.typewriter {
-    overflow: hidden;
-    border-right: .15em solid #ff00ff;
-    white-space: nowrap;
-    animation: 
-        typing 3.5s steps(40, end),
-        blink-caret .75s step-end infinite;
-}
-
-@keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
-}
-
-@keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: #ff00ff; }
-}
-
-/* 扫描线效果 */
-.scanline {
-    position: relative;
-    overflow: hidden;
-}
-
-.scanline::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        transparent 50%,
-        rgba(0, 0, 0, 0.1) 50%
-    );
-    background-size: 100% 4px;
-    pointer-events: none;
-    animation: scan 10s linear infinite;
-}
-
-@keyframes scan {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(100%); }
-}
-        /* 重置样式 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        /* 紫色蒸汽波主色调 */
-        :root {
-            --neon-purple: #ff00ff;
-            --cyber-purple: #9d00ff;
-            --deep-purple: #6a00ff;
-            --vapor-pink: #ff6bff;
-            --electric-blue: #00eeff;
-            --retro-yellow: #ffff00;
-            --matrix-green: #00ff41;
-            --void-black: #000011;
-        }
-        
-        body {
-            background: 
-                radial-gradient(circle at 20% 30%, var(--deep-purple) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, var(--cyber-purple) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, var(--neon-purple) 0%, transparent 50%),
-                linear-gradient(135deg, var(--void-black) 0%, #0a0011 50%, var(--void-black) 100%);
-            background-size: 400% 400%;
-            animation: vaporwaveBG 20s ease infinite;
-            color: white;
-            font-family: 'MS Gothic', 'Courier New', monospace;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            overflow: hidden;
-            position: relative;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="none" stroke="%23ff00ff" stroke-width="2"/><circle cx="16" cy="16" r="4" fill="%23ff00ff"/></svg>') 16 16, auto;
-        }
-        
-        /* CRT扫描线效果 */
-        .crt-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(0, 0, 0, 0.15) 0px,
-                    rgba(0, 0, 0, 0.15) 1px,
-                    transparent 1px,
-                    transparent 2px
-                );
-            pointer-events: none;
-            z-index: 1000;
-            animation: scanlines 10s linear infinite;
-            mix-blend-mode: multiply;
-        }
-        
-        /* 复古噪点纹理 */
-        .noise {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 200%;
-            height: 200%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.08;
-            animation: noise 0.2s infinite;
-            z-index: 999;
-            pointer-events: none;
-        }
-        
-        /* 主卡片 - 磁带播放器风格 */
-        .card {
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(15px) saturate(200%);
-            border: 4px solid;
-            border-image: linear-gradient(
-                45deg,
-                var(--neon-purple),
-                var(--cyber-purple),
-                var(--electric-blue),
-                var(--neon-purple)
-            ) 1;
-            border-radius: 2px;
-            padding: 60px 50px;
-            max-width: 800px;
-            width: 100%;
-            position: relative;
-            z-index: 100;
-            box-shadow: 
-                0 0 80px rgba(255, 0, 255, 0.7),
-                0 0 150px rgba(155, 0, 255, 0.5),
-                inset 0 0 50px rgba(0, 238, 255, 0.2);
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            animation: 
-                glitch 8s infinite,
-                float 15s ease-in-out infinite;
-        }
-        
-        /* VHS磁带装饰 */
-        .card::before {
-            content: 'V H S';
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--void-black);
-            color: var(--retro-yellow);
-            padding: 5px 30px;
-            font-size: 1.2rem;
-            letter-spacing: 5px;
-            border: 2px solid var(--retro-yellow);
-            z-index: 2;
-            text-shadow: 0 0 10px var(--retro-yellow);
-            animation: tapeBlink 2s infinite;
-        }
-        
-        /* 卡带孔效果 */
-        .card::after {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
-            bottom: 20px;
-            border: 2px dashed rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            pointer-events: none;
-        }
-        
-        .name {
-            font-size: 4.5rem;
-            margin-bottom: 20px;
-            background: linear-gradient(
-                45deg,
-                var(--neon-purple),
-                var(--vapor-pink),
-                var(--electric-blue),
-                var(--neon-purple)
-            );
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            background-size: 300% 300%;
-            animation: gradientShift 3s ease infinite;
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            font-weight: 900;
-            text-shadow: 
-                0 0 30px rgba(255, 0, 255, 0.7),
-                0 0 60px rgba(255, 0, 255, 0.5),
-                0 0 100px rgba(255, 0, 255, 0.3);
-            position: relative;
-            display: inline-block;
-        }
-        
-        /* 名字的数字裂纹效果 */
-        .name::before {
-            content: '0010110101101010';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            color: var(--matrix-green);
-            opacity: 0.3;
-            z-index: -1;
-            animation: binaryScroll 10s linear infinite;
-        }
-        
-        .title {
-            font-size: 2.2rem;
-            color: var(--electric-blue);
-            margin-bottom: 40px;
-            letter-spacing: 4px;
-            position: relative;
-            padding: 20px 0;
-        }
-        
-        .title::before,
-        .title::after {
-            content: '◼◼◼◼◼◼◼◼◼◼◼◼';
-            position: absolute;
-            left: 0;
-            right: 0;
-            height: 2px;
-            color: var(--neon-purple);
-            letter-spacing: 2px;
-            opacity: 0.5;
-        }
-        
-        .title::before { top: 0; }
-        .title::after { bottom: 0; }
-        
-        .description {
-            font-size: 1.4rem;
-            margin: 40px 0;
-            padding: 40px;
-            background: rgba(0, 0, 0, 0.6);
-            border-left: 5px solid var(--neon-purple);
-            border-right: 5px solid var(--electric-blue);
-            position: relative;
-            overflow: hidden;
-            text-align: center;
-            line-height: 1.8;
-            font-style: italic;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-        
-        /* 打字机光标效果 */
-        .description::after {
-            content: '█';
-            animation: blink 1s infinite;
-            position: absolute;
-            right: 20px;
-            bottom: 20px;
-            color: var(--matrix-green);
-        }
-        
-        .contact {
-            margin-top: 50px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            position: relative;
-        }
-        
-        .contact::before {
-            content: '>';
-            position: absolute;
-            top: 50%;
-            left: -30px;
-            transform: translateY(-50%);
-            color: var(--neon-purple);
-            font-size: 2rem;
-            animation: arrowPulse 2s infinite;
-        }
-        
-        .contact a {
-            color: white;
-            text-decoration: none;
-            padding: 20px 30px;
-            background: linear-gradient(
-                135deg,
-                rgba(255, 0, 255, 0.2),
-                rgba(0, 238, 255, 0.1)
-            );
-            border: 2px solid;
-            border-image: linear-gradient(
-                45deg,
-                var(--neon-purple),
-                transparent,
-                var(--electric-blue)
-            ) 1;
-            position: relative;
-            overflow: hidden;
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-        
-        .contact a:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 
-                0 10px 30px rgba(255, 0, 255, 0.6),
-                0 0 50px rgba(0, 238, 255, 0.3);
-            background: linear-gradient(
-                135deg,
-                rgba(255, 0, 255, 0.4),
-                rgba(0, 238, 255, 0.2)
-            );
-        }
-        
-        .contact a::before {
-            content: '▶';
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--retro-yellow);
-            animation: playPulse 1.5s infinite;
-        }
-        
-        .contact a::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.2),
-                transparent
-            );
-            transition: 0.5s;
-        }
-        
-        .contact a:hover::after {
-            left: 100%;
-        }
-        
-        /* 浮动几何装饰 */
-        .geometric {
-            position: fixed;
-            opacity: 0.1;
-            pointer-events: none;
-            z-index: 1;
-            animation: drift 30s linear infinite;
-        }
-        
-        .geo-1 {
-            top: 10%;
-            left: 5%;
-            font-size: 8rem;
-            color: var(--neon-purple);
-            animation-duration: 25s;
-            animation-delay: 0s;
-        }
-        
-        .geo-2 {
-            bottom: 15%;
-            right: 10%;
-            font-size: 12rem;
-            color: var(--cyber-purple);
-            animation-duration: 40s;
-            animation-delay: 5s;
-            transform: rotate(45deg);
-        }
-        
-        .geo-3 {
-            top: 60%;
-            left: 80%;
-            font-size: 6rem;
-            color: var(--electric-blue);
-            animation-duration: 35s;
-            animation-delay: 10s;
-            transform: rotate(120deg);
-        }
-        
-        /* 进度条装饰 */
-        .progress-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 10px;
-            background: linear-gradient(
-                90deg,
-                var(--neon-purple),
-                var(--cyber-purple),
-                var(--electric-blue)
-            );
-            z-index: 1000;
-            animation: progress 10s linear infinite;
-        }
-        
-        /* 动画定义 */
-        @keyframes vaporwaveBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes glitch {
-            0% { transform: translate(0) skew(0); }
-            96% { transform: translate(0) skew(0); }
-            97% { transform: translate(2px, -1px) skew(1deg); clip-path: polygon(0 0, 100% 0, 100% 90%, 0 90%); }
-            98% { transform: translate(-1px, 2px) skew(-1deg); clip-path: polygon(0 10%, 100% 10%, 100% 100%, 0 100%); }
-            99% { transform: translate(1px, -2px) skew(2deg); clip-path: polygon(0 0, 90% 0, 90% 100%, 0 100%); }
-            100% { transform: translate(0) skew(0); }
-        }
-        
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotateX(0deg); }
-            50% { transform: translateY(-20px) rotateX(5deg); }
-        }
-        
-        @keyframes scanlines {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 100px; }
-        }
-        
-        @keyframes noise {
-            0% { transform: translate(0,0); }
-            10% { transform: translate(-5%,-5%); }
-            20% { transform: translate(-10%,5%); }
-            30% { transform: translate(5%,-10%); }
-            40% { transform: translate(-5%,15%); }
-            50% { transform: translate(-10%,5%); }
-            60% { transform: translate(15%,0); }
-            70% { transform: translate(0,10%); }
-            80% { transform: translate(-15%,0); }
-            90% { transform: translate(10%,5%); }
-            100% { transform: translate(5%,0); }
-        }
-        
-        @keyframes binaryScroll {
-            0% { transform: translateY(100%); }
-            100% { transform: translateY(-100%); }
-        }
-        
-        @keyframes drift {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(100vw, 100vh) rotate(360deg); }
-        }
-        
-        @keyframes progress {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 200% 0%; }
-        }
-        
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-        
-        @keyframes arrowPulse {
-            0%, 100% { transform: translateY(-50%) scale(1); }
-            50% { transform: translateY(-50%) scale(1.3); }
-        }
-        
-        @keyframes playPulse {
-            0%, 100% { opacity: 0.7; transform: translateY(-50%) scale(1); }
-            50% { opacity: 1; transform: translateY(-50%) scale(1.2); }
-        }
-        
-        @keyframes tapeBlink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0.5; }
-        }
-        
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .card {
-                padding: 40px 20px;
-                margin: 10px;
-            }
-            
-            .name {
-                font-size: 2.8rem;
-                letter-spacing: 4px;
-            }
-            
-            .title {
-                font-size: 1.6rem;
-            }
-            
-            .description {
-                font-size: 1.1rem;
-                padding: 20px;
-            }
-            
-            .contact {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .contact a {
-                padding: 15px 20px;
-                font-size: 1rem;
-            }
-            
-            .geometric {
-                display: none;
-            }
-        }
-    </style>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kC0VER - 性格纠正所·锚点</title>
 <style>
-            @keyframes trailFade {
-                0% {
-                    opacity: 0.7;
-                    transform: translate(-50%, -50%) scale(1);
-                }
-                100% {
-                    opacity: 0;
-                    transform: translate(-50%, -50%) scale(2);
-                }
-            }
-        </style><style>
-            @keyframes flash {
-                0% { opacity: 0; }
-                50% { opacity: 1; }
-                100% { opacity: 0; }
-            }
-        </style><style>
-            @keyframes particleExplode {
-                0% {
-                    transform: translate(-50%, -50%) scale(1);
-                    opacity: 1;
-                }
-                100% {
-                    transform: 
-                        translate(
-                            calc(-50% + cos(var(--angle)) * var(--distance)),
-                            calc(-50% + sin(var(--angle)) * var(--distance))
-                        )
-                        scale(0);
-                    opacity: 0;
-                }
-            }
-        </style><style>
-                @keyframes rain {
-                    0% {
-                        transform: translateY(-100px);
-                        opacity: 0;
-                    }
-                    10% {
-                        opacity: 0.1;
-                    }
-                    90% {
-                        opacity: 0.1;
-                    }
-                    100% {
-                        transform: translateY(100vh);
-                        opacity: 0;
-                    }
-                }
-            </style></head>
+/* ============ CSS Variables ============ */
+:root {
+  --btn-face: #C0C0C0;
+  --btn-highlight: #FFFFFF;
+  --btn-shadow: #808080;
+  --btn-dark: #404040;
+  --window-bg: #C0C0C0;
+  --title-active-from: #000080;
+  --title-active-to: #1084D0;
+  --title-text: #FFFFFF;
+  --desktop: #008080;
+  --text: #000000;
+  --selected-bg: #000080;
+  --selected-text: #FFFFFF;
+  --disabled-text: #808080;
+
+  --neon-purple: #ff00ff;
+  --cyber-purple: #9d00ff;
+  --electric-blue: #00eeff;
+  --vapor-pink: #ff6bff;
+  --retro-yellow: #ffff00;
+  --matrix-green: #00ff41;
+
+  font-family: "MS Sans Serif", Tahoma, SimSun, sans-serif;
+  font-size: 11px;
+}
+
+/* ============ Reset & Base ============ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%; overflow: hidden;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+}
+
+body {
+  background: var(--desktop);
+  color: var(--text);
+  font-size: 11px;
+  user-select: none;
+  position: relative;
+}
+
+/* ============ Desktop ============ */
+.desktop {
+  position: fixed; inset: 0; bottom: 28px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(157,0,255,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 70%, rgba(255,0,255,0.12) 0%, transparent 60%),
+    var(--desktop);
+}
+
+/* ============ CRT Scanline Overlay ============ */
+.crt {
+  position: fixed; inset: 0; pointer-events: none; z-index: 900;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.12) 0px, rgba(0,0,0,0.12) 1px, transparent 1px, transparent 3px);
+  animation: scanMove 8s linear infinite;
+}
+
+.noise-overlay {
+  position: fixed; inset: 0; pointer-events: none; z-index: 899;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05; animation: noiseAnim 0.3s infinite;
+}
+
+/* ============ Desktop Icons ============ */
+.desktop-icons {
+  position: absolute; top: 12px; left: 12px;
+  display: flex; flex-direction: column; gap: 18px;
+  z-index: 10;
+}
+
+.desk-icon {
+  display: flex; flex-direction: column; align-items: center;
+  width: 68px; cursor: pointer; padding: 4px;
+  border: 1px solid transparent;
+}
+
+.desk-icon:active { border: 1px dotted var(--text); }
+
+.desk-icon .icon-img {
+  width: 36px; height: 36px; margin-bottom: 4px;
+  display: grid; place-items: center;
+  font-size: 22px; color: #FFFFFF;
+  border: 1px solid var(--btn-highlight);
+  background: var(--selected-bg);
+  box-shadow: 1px 1px 0 var(--btn-dark);
+}
+
+.desk-icon span {
+  color: #FFFFFF; font-size: 11px; text-align: center;
+  line-height: 1.3; word-break: break-all;
+  text-shadow: 1px 1px 1px #000;
+}
+
+/* ============ Window Frame ============ */
+.window {
+  position: absolute; width: 580px;
+  background: var(--window-bg);
+  border: 2px solid;
+  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
+  display: flex; flex-direction: column;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.4);
+  z-index: 100; min-height: 200px;
+  animation: windowGlitch 8s linear infinite;
+}
+
+.window.focused { z-index: 110; }
+
+.window.maximized {
+  top: 0 !important; left: 0 !important;
+  width: 100% !important; height: calc(100% - 28px) !important;
+}
+
+.window-titlebar {
+  height: 22px;
+  background: linear-gradient(90deg, var(--title-active-from), var(--title-active-to));
+  color: var(--title-text);
+  display: flex; align-items: center;
+  padding: 0 2px 0 4px;
+  font-size: 11px; font-weight: bold;
+  cursor: default; flex-shrink: 0;
+}
+
+.window-icon {
+  margin-right: 4px; font-size: 12px;
+  color: var(--retro-yellow);
+  text-shadow: 0 0 6px var(--retro-yellow);
+}
+
+.window-title-text {
+  flex: 1; overflow: hidden; white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.window-btns { display: flex; gap: 2px; }
+
+.window-btns button {
+  width: 19px; height: 17px;
+  background: var(--btn-face);
+  border: 1px solid;
+  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
+  font-size: 10px; cursor: pointer; padding: 0;
+  color: #000; font-family: "MS Sans Serif", Tahoma, sans-serif;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1;
+}
+
+.window-btns button:active {
+  border-color: var(--btn-dark) var(--btn-highlight) var(--btn-highlight) var(--btn-dark);
+}
+
+.mobile-back-btn {
+  display: none; width: 19px; height: 17px; margin-right: 2px;
+  background: var(--btn-face);
+  border: 1px solid;
+  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
+  font-size: 10px; cursor: pointer; padding: 0;
+  color: #000; font-family: "MS Sans Serif", Tahoma, sans-serif;
+  align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.window-menubar {
+  height: 20px; background: var(--btn-face);
+  border-bottom: 1px solid var(--btn-shadow);
+  display: flex; align-items: center;
+  padding: 0 4px; flex-shrink: 0;
+}
+
+.menu-item {
+  padding: 1px 6px; cursor: pointer; color: var(--text);
+  font-size: 11px;
+}
+
+.menu-item:hover {
+  background: var(--selected-bg); color: var(--selected-text);
+}
+
+.window-body {
+  flex: 1; min-height: 0; overflow: auto;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(157,0,255,0.25) 0%, transparent 50%),
+    radial-gradient(circle at 80% 60%, rgba(255,0,255,0.2) 0%, transparent 50%),
+    #0a0011;
+  padding: 8px;
+  position: relative;
+}
+
+.window-body.arena-body {
+  background: #FFFFFF;
+  padding: 0;
+  overflow: hidden;
+}
+
+.window-body.arena-body iframe {
+  width: 100%; height: 100%; border: none; display: block;
+}
+
+.window-statusbar {
+  height: 20px; background: var(--btn-face);
+  border-top: 1px solid var(--btn-shadow);
+  display: flex; align-items: center;
+  padding: 0 6px; font-size: 11px; flex-shrink: 0;
+  color: var(--text);
+}
+
+.status-grip {
+  margin-left: auto;
+  border: 1px solid;
+  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
+  width: 14px; height: 14px;
+  background: repeating-conic-gradient(var(--btn-face) 0% 25%, var(--btn-shadow) 0% 50%) 50% / 6px 6px;
+}
+
+/* ============ Scrollbar ============ */
+::-webkit-scrollbar { width: 17px; height: 17px; background: var(--btn-face); }
+::-webkit-scrollbar-track { background: var(--btn-face); border: 1px solid var(--btn-dark); }
+::-webkit-scrollbar-thumb {
+  background: var(--btn-face);
+  border: 2px solid;
+  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
+}
+::-webkit-scrollbar-button {
+  display: block; width: 17px; height: 17px;
+  background: var(--btn-face);
+  border: 1px solid;
+  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
+}
+
+/* ============ Vaporwave Content ============ */
+.vapor-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 30px 20px; text-align: center;
+  position: relative;
+}
+
+.vhs-tag {
+  color: var(--retro-yellow); font-size: 10px;
+  letter-spacing: 4px; margin-bottom: 20px;
+  font-family: "MS Sans Serif", Tahoma, sans-serif;
+  text-shadow: 0 0 8px var(--retro-yellow);
+  animation: vhsBlink 2s infinite;
+}
+
+.vapor-name {
+  font-size: 3.8rem; font-weight: 900;
+  background: linear-gradient(45deg, var(--neon-purple), var(--vapor-pink), var(--electric-blue), var(--neon-purple));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 300% 300%;
+  animation: gradientShift 3s ease infinite;
+  letter-spacing: 6px; margin-bottom: 12px;
+  text-shadow: 0 0 30px rgba(255,0,255,0.5), 0 0 60px rgba(255,0,255,0.3);
+  position: relative;
+}
+
+.vapor-name::before {
+  content: '0100101101000011';
+  position: absolute; inset: 0;
+  color: var(--matrix-green); opacity: 0.15;
+  font-size: 0.9rem; letter-spacing: 1px;
+  font-family: "Courier New", monospace;
+  animation: binaryDrift 12s linear infinite;
+  pointer-events: none;
+}
+
+.vapor-title {
+  font-size: 1.5rem; color: var(--electric-blue);
+  margin-bottom: 28px; letter-spacing: 3px;
+  position: relative; padding: 12px 0;
+  font-weight: bold;
+}
+
+.vapor-title::before,
+.vapor-title::after {
+  content: '\25A0\25A0\25A0\25A0\25A0\25A0\25A0\25A0';
+  position: absolute; left: 0; right: 0; height: 2px;
+  color: var(--neon-purple); letter-spacing: 1px;
+  font-size: 8px; opacity: 0.5;
+}
+.vapor-title::before { top: 0; }
+.vapor-title::after { bottom: 0; }
+
+.vapor-desc {
+  font-size: 13px; margin: 24px 0; padding: 28px 20px;
+  background: rgba(0,0,0,0.55);
+  border-left: 4px solid var(--neon-purple);
+  border-right: 4px solid var(--electric-blue);
+  position: relative; overflow: hidden;
+  line-height: 2; font-style: italic;
+  text-shadow: 0 0 8px rgba(255,255,255,0.25);
+  color: #d0d0d0;
+  max-width: 420px; width: 100%;
+}
+
+.vapor-desc::after {
+  content: '\2588'; position: absolute; right: 14px; bottom: 14px;
+  color: var(--matrix-green); font-size: 13px;
+  animation: blink 1s infinite;
+}
+
+.vapor-desc .system-tag {
+  display: block; margin-top: 12px;
+  color: var(--matrix-green); font-size: 11px;
+  font-style: normal; letter-spacing: 1px;
+}
+
+.vapor-btns {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  justify-content: center; margin-top: 12px;
+}
+
+.vapor-btn {
+  cursor: pointer; padding: 6px 18px;
+  font-size: 12px; color: #000;
+  border: 2px solid;
+  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
+  background: var(--btn-face);
+  font-family: "MS Sans Serif", Tahoma, sans-serif;
+  letter-spacing: 1px;
+}
+
+.vapor-btn:hover {
+  background: linear-gradient(135deg, rgba(255,0,255,0.15), rgba(0,238,255,0.1)), var(--btn-face);
+  box-shadow: 0 0 14px rgba(255,0,255,0.35);
+}
+
+.vapor-btn:active {
+  border-color: var(--btn-dark) var(--btn-highlight) var(--btn-highlight) var(--btn-dark);
+}
+
+.vapor-btn::before { content: '\25B6 '; color: var(--retro-yellow); }
+
+/* ============ Taskbar ============ */
+.taskbar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 28px; background: var(--btn-face);
+  border-top: 2px solid var(--btn-highlight);
+  display: flex; align-items: center;
+  padding: 0 2px; z-index: 800;
+  box-shadow: 0 -1px 0 var(--btn-shadow);
+}
+
+.start-btn {
+  display: flex; align-items: center; gap: 3px;
+  height: 22px; padding: 0 6px;
+  background: var(--btn-face);
+  border: 2px solid;
+  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
+  font-size: 11px; font-weight: bold; cursor: pointer;
+  font-family: "MS Sans Serif", Tahoma, sans-serif;
+  color: #000;
+}
+
+.start-btn:active, .start-btn.active {
+  border-color: var(--btn-dark) var(--btn-highlight) var(--btn-highlight) var(--btn-dark);
+}
+
+.start-btn .win-flag {
+  display: inline-block; width: 14px; height: 14px;
+  background: linear-gradient(180deg, var(--title-active-from) 0%, var(--title-active-to) 50%, var(--title-active-from) 100%);
+  border: 1px solid var(--btn-dark);
+}
+
+.start-btn:hover .win-flag { box-shadow: 0 0 8px var(--electric-blue); }
+
+.taskbar-sep {
+  width: 3px; height: 22px;
+  border-left: 1px solid var(--btn-shadow);
+  border-right: 1px solid var(--btn-highlight);
+  margin: 0 3px;
+}
+
+.taskbar-tabs {
+  flex: 1; display: flex; align-items: center; gap: 2px;
+  height: 22px; padding: 0 4px; min-width: 0;
+}
+
+.taskbar-tab {
+  height: 22px; padding: 0 8px;
+  background: var(--btn-face);
+  border: 2px solid;
+  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
+  font-size: 11px; cursor: pointer; max-width: 180px;
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font-family: "MS Sans Serif", Tahoma, sans-serif;
+  display: flex; align-items: center; gap: 4px;
+  color: #000;
+}
+
+.taskbar-tab.active {
+  border-color: var(--btn-dark) var(--btn-highlight) var(--btn-highlight) var(--btn-dark);
+  background: linear-gradient(0deg, rgba(0,0,128,0.08), transparent);
+  font-weight: bold;
+}
+
+.taskbar-tab .tab-dot {
+  width: 6px; height: 6px;
+  background: var(--matrix-green);
+  box-shadow: 0 0 4px var(--matrix-green);
+}
+
+.taskbar-tray {
+  display: flex; align-items: center; gap: 4px;
+  padding: 0 4px; height: 22px;
+  border: 2px solid;
+  border-color: var(--btn-dark) var(--btn-highlight) var(--btn-highlight) var(--btn-dark);
+  font-size: 11px;
+}
+
+.taskbar-tray .tray-icon { font-size: 12px; color: var(--text); }
+#taskbarClock { font-size: 11px; min-width: 50px; text-align: right; }
+
+/* ============ Start Menu ============ */
+.start-menu {
+  position: fixed; bottom: 28px; left: 0;
+  width: 220px; background: var(--btn-face);
+  border: 2px solid;
+  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
+  z-index: 999; display: none;
+  box-shadow: 2px -2px 8px rgba(0,0,0,0.3);
+}
+
+.start-menu.open { display: block; }
+
+.start-banner {
+  width: 28px; background: linear-gradient(180deg, var(--title-active-from), var(--title-active-to));
+  position: absolute; left: 0; top: 0; bottom: 0;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 8px;
+}
+
+.start-banner span {
+  transform: rotate(-90deg); white-space: nowrap;
+  color: var(--title-text); font-size: 14px; font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px var(--neon-purple);
+}
+
+.start-items { margin-left: 28px; padding: 2px 0; }
+
+.start-items .si {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 8px; cursor: pointer; color: var(--text);
+  font-size: 11px;
+}
+
+.start-items .si:hover {
+  background: var(--selected-bg); color: var(--selected-text);
+}
+
+.start-items .si .si-icon {
+  width: 18px; height: 18px; display: grid; place-items: center;
+  font-size: 12px;
+}
+
+.start-sep {
+  height: 2px; margin: 2px 4px;
+  border-top: 1px solid var(--btn-shadow);
+  border-bottom: 1px solid var(--btn-highlight);
+}
+
+/* ============ Desktop Geometric Decorations ============ */
+.geo {
+  position: fixed; pointer-events: none; z-index: 5;
+  opacity: 0.08; font-size: 6rem;
+  animation: drift 35s linear infinite;
+}
+
+.geo-1 { top: 8%; left: 55%; color: var(--neon-purple); animation-duration: 28s; }
+.geo-2 { top: 60%; left: 75%; color: var(--cyber-purple); animation-duration: 42s; animation-delay: 8s; }
+.geo-3 { top: 45%; left: 10%; color: var(--electric-blue); animation-duration: 38s; animation-delay: 15s; }
+
+.rain-layer {
+  position: fixed; inset: 0; pointer-events: none;
+  z-index: 4; opacity: 0.12;
+}
+
+/* ============ WinCE / Pocket PC Home Screen ============ */
+.ce-home {
+  display: none;
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(157,0,255,0.15) 0%, transparent 50%),
+    #0a0020;
+  flex-direction: column;
+  z-index: 500; overflow: hidden;
+}
+
+.ce-navbar {
+  height: 26px; flex-shrink: 0;
+  background: linear-gradient(180deg, #000080, #1084D0);
+  color: var(--title-text);
+  display: flex; align-items: center;
+  padding: 0 4px;
+  font-size: 11px; font-weight: bold;
+  font-family: "MS Sans Serif", Tahoma, sans-serif;
+}
+
+.ce-navbar .ce-start {
+  padding: 1px 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.ce-navbar .ce-title {
+  flex: 1; text-align: center;
+  font-size: 12px;
+  text-shadow: 0 0 6px var(--neon-purple);
+}
+
+.ce-navbar .ce-time {
+  padding: 1px 4px; font-size: 11px;
+  text-align: right; min-width: 44px;
+}
+
+.ce-desktop {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: flex-start; padding: 16px;
+  gap: 14px; overflow-y: auto;
+}
+
+.ce-icon {
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer; padding: 4px;
+  border: 1px solid transparent;
+}
+
+.ce-icon:active { border: 1px dotted #FFFFFF; }
+
+.ce-icon .ce-icon-img {
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  font-size: 16px; color: #FFFFFF;
+  border: 2px solid;
+  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
+  background: var(--selected-bg);
+  flex-shrink: 0;
+}
+
+.ce-icon span {
+  color: #d0d0d0; font-size: 12px;
+  font-family: "MS Sans Serif", Tahoma, sans-serif;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.ce-cmdbar {
+  height: 24px; flex-shrink: 0;
+  background: var(--btn-face);
+  border-top: 1px solid var(--btn-highlight);
+  display: flex; align-items: center;
+  padding: 0 4px;
+  font-size: 11px; font-weight: bold;
+  font-family: "MS Sans Serif", Tahoma, sans-serif;
+  color: var(--text);
+}
+
+.ce-cmdbar .ce-softkey {
+  padding: 2px 8px; cursor: pointer;
+  border: 1px solid transparent;
+}
+.ce-cmdbar .ce-softkey:active {
+  border-color: var(--btn-dark) var(--btn-highlight) var(--btn-highlight) var(--btn-dark);
+}
+.ce-cmdbar .ce-cmd-spacer { flex: 1; }
+
+/* ============ Animations ============ */
+@keyframes scanMove { 0% { background-position: 0 0; } 100% { background-position: 0 100px; } }
+@keyframes noiseAnim {
+  0%, 100% { transform: translate(0,0); }
+  10% { transform: translate(-3%,-2%); } 30% { transform: translate(2%,-4%); }
+  50% { transform: translate(-2%,3%); } 70% { transform: translate(4%,-1%); }
+  90% { transform: translate(-1%,2%); }
+}
+@keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@keyframes vhsBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+@keyframes binaryDrift { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+@keyframes drift { 0% { transform: translate(0,0) rotate(0deg); } 100% { transform: translate(80vw, 70vh) rotate(360deg); } }
+@keyframes windowGlitch {
+  0%, 95% { transform: translate(0,0); }
+  96% { transform: translate(1px, -1px); }
+  98% { transform: translate(-1px, 1px); }
+  100% { transform: translate(0,0); }
+}
+@keyframes rainFall { 0% { transform: translateY(-100px); opacity: 0; } 10% { opacity: 0.12; } 90% { opacity: 0.12; } 100% { transform: translateY(105vh); opacity: 0; } }
+@keyframes flashAnim { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
+
+/* ============ Utility ============ */
+.hidden { display: none !important; }
+
+/* ============ Mobile Layout ============ */
+@media (max-width: 768px) {
+  .desktop, .crt, .noise-overlay, .taskbar, .start-menu, .geo, .rain-layer {
+    display: none !important;
+  }
+
+  body {
+    background: #0a0011;
+    overflow: hidden;
+  }
+
+  .ce-home {
+    display: flex;
+  }
+
+  .window {
+    display: none;
+    position: fixed !important; top: 0 !important; left: 0 !important;
+    width: 100% !important; height: 100vh !important;
+    min-height: 100vh !important;
+    border: none; box-shadow: none; animation: none;
+    z-index: 600 !important;
+  }
+
+  .window.mobile-open {
+    display: flex !important;
+  }
+
+  .window-body {
+    flex: 1;
+  }
+
+  .window-menubar { display: none; }
+
+  .mobile-back-btn { display: flex; }
+}
+
+/* Hide CE home on desktop */
+@media (min-width: 769px) {
+  .ce-home { display: none !important; }
+  .mobile-back-btn { display: none !important; }
+}
+</style>
+</head>
 <body>
-    <!-- CRT效果 -->
-    <div class="crt-overlay"></div>
-    
-    <!-- 噪点纹理 -->
-    <div class="noise"></div>
-    
-    <!-- 浮动几何装饰 -->
-    <div class="geometric geo-1">◇◆◇◆</div>
-    <div class="geometric geo-2">▧▨▦▩</div>
-    <div class="geometric geo-3">◈◉◎◊</div>
-    
-    <!-- 进度条 -->
-    <div class="progress-bar"></div>
-    
-    <!-- 主卡片 -->
-    <div class="card">
-        <h1 class="name">kC0VER</h1>
-        <h2 class="title">性格纠正所·锚点</h2>
-        <p class="description">
-            ᴘʀᴏᴄᴇssɪɴɢ...<br>
-            黃 昏 與 金 線<br>
-            ===燈 球+++<br>
 
-            <span style="color: var(--matrix-green); font-size: 0.8em;">█▓▒░ SYSTEM ACTIVE ░▒▓█</span>
-        </p>
-        <div class="contact">
-            <a href="works/index.html">&gt;&gt; 記憶體</a>
-            <a href="OKIRELEASE.html">&gt;&gt; O-K-I</a>
-        </div>
+<!-- ===== WinCE HOME SCREEN ===== -->
+<div class="ce-home" id="ceHome">
+  <div class="ce-navbar">
+    <span class="ce-start">开始</span>
+    <span class="ce-title">kC0VER</span>
+    <span class="ce-time" id="ceTime">12:00</span>
+  </div>
+  <div class="ce-desktop">
+    <div class="ce-icon" onclick="mobileOpenApp('vapor')">
+      <div class="ce-icon-img">&#9678;</div>
+      <span>性格纠正所</span>
     </div>
+    <div class="ce-icon" onclick="mobileOpenApp('arena')">
+      <div class="ce-icon-img">A</div>
+      <span>AI 辩论场</span>
+    </div>
+  </div>
+  <div class="ce-cmdbar">
+    <span class="ce-softkey">菜单</span>
+    <span class="ce-cmd-spacer"></span>
+    <span class="ce-softkey">关于</span>
+  </div>
+</div>
 
-    <script>
-        // 初始化 - 数字雨效果
-        function createDigitalRain() {
-            const container = document.createElement('div');
-            container.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                pointer-events: none;
-                z-index: 2;
-                opacity: 0.1;
-            `;
-            document.body.appendChild(container);
-            
-            for (let i = 0; i < 30; i++) {
-                const stream = document.createElement('div');
-                stream.style.cssText = `
-                    position: absolute;
-                    top: -100px;
-                    left: ${Math.random() * 100}%;
-                    color: ${Math.random() > 0.5 ? '#00ff41' : '#00eeff'};
-                    font-size: ${14 + Math.random() * 8}px;
-                    opacity: 0.1;
-                    animation: rain ${3 + Math.random() * 7}s linear infinite;
-                    animation-delay: ${Math.random() * 5}s;
-                `;
-                
-                let content = '';
-                for (let j = 0; j < 30; j++) {
-                    content += Math.random() > 0.5 ? '1' : '0';
-                    if (j % 5 === 4) content += ' ';
-                }
-                stream.textContent = content;
-                
-                container.appendChild(stream);
-            }
-            
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes rain {
-                    0% {
-                        transform: translateY(-100px);
-                        opacity: 0;
-                    }
-                    10% {
-                        opacity: 0.1;
-                    }
-                    90% {
-                        opacity: 0.1;
-                    }
-                    100% {
-                        transform: translateY(100vh);
-                        opacity: 0;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
+<!-- Desktop Background -->
+<div class="desktop" id="desktop">
+  <div class="desktop-icons">
+    <div class="desk-icon" ondblclick="winMgr.open('vapor')">
+      <div class="icon-img">&#9678;</div>
+      <span>性格纠正所</span>
+    </div>
+    <div class="desk-icon" ondblclick="winMgr.open('arena')">
+      <div class="icon-img" style="background:#1084D0;">A</div>
+      <span>AI 辩论场</span>
+    </div>
+  </div>
+
+  <div class="geo geo-1">&#9671;&#9670;&#9671;&#9670;</div>
+  <div class="geo geo-2">&#9633;&#9634;&#9635;&#9636;</div>
+  <div class="geo geo-3">&#9711;&#9712;&#9713;&#9714;</div>
+</div>
+
+<div class="rain-layer" id="rainLayer"></div>
+<div class="crt"></div>
+<div class="noise-overlay"></div>
+
+<!-- ===== VAPORWAVE WINDOW ===== -->
+<div class="window focused" id="winVapor" style="top:50px;left:160px;">
+  <div class="window-titlebar" data-win="vapor">
+    <button class="mobile-back-btn" onclick="mobileGoHome()" title="返回">&#9664;</button>
+    <span class="window-icon">&#9678;</span>
+    <span class="window-title-text">kC0VER - 性格纠正所·锚点</span>
+    <div class="window-btns">
+      <button data-action="min" title="最小化">_</button>
+      <button data-action="max" title="最大化">&#9633;</button>
+      <button data-action="close" title="关闭">&#10005;</button>
+    </div>
+  </div>
+
+  <div class="window-menubar">
+    <span class="menu-item">文件(F)</span>
+    <span class="menu-item">编辑(E)</span>
+    <span class="menu-item">查看(V)</span>
+    <span class="menu-item">收藏(A)</span>
+    <span class="menu-item">工具(T)</span>
+    <span class="menu-item">帮助(H)</span>
+  </div>
+
+  <div class="window-body">
+    <div class="vapor-wrap">
+      <div class="vhs-tag">V H S</div>
+      <h1 class="vapor-name">kC0VER</h1>
+      <h2 class="vapor-title">性格纠正所·锚点</h2>
+      <div class="vapor-desc">
+        &#x1D18;&#x1D1B;&#x1D0A;&#x1D12;...<br>
+        黃 昏 與 金 線<br>
+        ===燈 球+++<br>
+        <span class="system-tag">&#x2588;&#x2593;&#x2591;&#x2592; SYSTEM ACTIVE &#x2592;&#x2591;&#x2593;&#x2588;</span>
+      </div>
+      <div class="vapor-btns">
+        <button class="vapor-btn" data-href="works/index.html">記憶體</button>
+        <button class="vapor-btn" data-href="OKIRELEASE.html">O-K-I</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="window-statusbar">
+    <span id="statusText">就緒</span>
+    <span class="status-grip"></span>
+  </div>
+</div>
+
+<!-- ===== AI DEBATE ARENA WINDOW ===== -->
+<div class="window" id="winArena" style="top:30px;left:240px;width:960px;height:600px;">
+  <div class="window-titlebar" data-win="arena">
+    <button class="mobile-back-btn" onclick="mobileGoHome()" title="返回">&#9664;</button>
+    <span class="window-icon" style="color:#FFFFFF;">A</span>
+    <span class="window-title-text">AI Debate Arena</span>
+    <div class="window-btns">
+      <button data-action="min" title="最小化">_</button>
+      <button data-action="max" title="最大化">&#9633;</button>
+      <button data-action="close" title="关闭">&#10005;</button>
+    </div>
+  </div>
+  <div class="window-body arena-body">
+    <iframe src="ada.html" id="arenaIframe" title="AI Debate Arena"></iframe>
+  </div>
+</div>
+
+<!-- ===== TASKBAR ===== -->
+<div class="taskbar">
+  <button class="start-btn" id="startBtn">
+    <span class="win-flag"></span> 开始
+  </button>
+  <div class="taskbar-sep"></div>
+  <div class="taskbar-tabs">
+    <div class="taskbar-tab active" data-win="vapor" onclick="winMgr.focus('vapor')">
+      <span class="tab-dot"></span>
+      kC0VER - 性格纠正所
+    </div>
+    <div class="taskbar-tab" data-win="arena" onclick="winMgr.focus('arena')">
+      <span class="tab-dot"></span>
+      AI Debate Arena
+    </div>
+  </div>
+  <div class="taskbar-tray">
+    <span class="tray-icon">&#9830;</span>
+    <span class="tray-icon">&#9660;</span>
+    <span id="taskbarClock">00:00</span>
+  </div>
+</div>
+
+<!-- ===== START MENU ===== -->
+<div class="start-menu" id="startMenu">
+  <div class="start-banner">
+    <span>kC0VER</span>
+  </div>
+  <div class="start-items">
+    <div class="si" onclick="winMgr.open('vapor');toggleStart();"><span class="si-icon">&#9678;</span>性格纠正所</div>
+    <div class="si" onclick="winMgr.open('arena');toggleStart();"><span class="si-icon" style="font-weight:bold;">A</span>AI 辩论场</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ===== Window Manager ===== */
+  var wins = {};
+  var activeWinId = 'vapor';
+  var maximized = {};
+  var prevRects = {};
+  var isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+  function initWindow(id) {
+    var el = document.getElementById('win' + id.charAt(0).toUpperCase() + id.slice(1));
+    var titlebar = el.querySelector('.window-titlebar');
+    var tab = document.querySelector('.taskbar-tab[data-win="' + id + '"]');
+
+    var state = {
+      el: el, titlebar: titlebar, tab: tab,
+      dragging: false, offsetX: 0, offsetY: 0
+    };
+
+    prevRects[id] = { top: el.offsetTop, left: el.offsetLeft, width: el.offsetWidth };
+    maximized[id] = false;
+
+    // Drag
+    titlebar.addEventListener('mousedown', function(e) {
+      if (e.target.tagName === 'BUTTON') return;
+      if (isMobile || maximized[id]) return;
+      state.dragging = true;
+      state.offsetX = e.clientX - el.offsetLeft;
+      state.offsetY = e.clientY - el.offsetTop;
+      el.style.cursor = 'move';
+      focusWindow(id);
+    });
+
+    titlebar.addEventListener('dblclick', function(e) {
+      if (e.target.tagName === 'BUTTON') return;
+      if (isMobile) return;
+      toggleMaximize(id);
+    });
+
+    // Minimize / Maximize / Close buttons
+    titlebar.querySelectorAll('[data-action]').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var action = btn.getAttribute('data-action');
+        if (action === 'min') minimizeWindow(id);
+        else if (action === 'max') toggleMaximize(id);
+        else if (action === 'close') closeWindow(id);
+      });
+    });
+
+    // Focus on click
+    el.addEventListener('mousedown', function() { focusWindow(id); });
+
+    wins[id] = state;
+  }
+
+  function focusWindow(id) {
+    if (isMobile) return;
+    activeWinId = id;
+    Object.keys(wins).forEach(function(k) {
+      wins[k].el.classList.toggle('focused', k === id);
+    });
+    document.querySelectorAll('.taskbar-tab').forEach(function(t) {
+      t.classList.toggle('active', t.getAttribute('data-win') === id && !wins[t.getAttribute('data-win')].el.classList.contains('hidden'));
+    });
+  }
+
+  function minimizeWindow(id) {
+    var s = wins[id];
+    s.el.classList.add('hidden');
+    if (s.tab) s.tab.classList.remove('active');
+    if (activeWinId === id) {
+      var other = Object.keys(wins).find(function(k) { return k !== id && !wins[k].el.classList.contains('hidden'); });
+      if (other) focusWindow(other);
+    }
+  }
+
+  function toggleMaximize(id) {
+    var el = wins[id].el;
+    var btnMax = el.querySelector('[data-action="max"]');
+    if (maximized[id]) {
+      el.classList.remove('maximized');
+      el.style.top = prevRects[id].top + 'px';
+      el.style.left = prevRects[id].left + 'px';
+      el.style.width = prevRects[id].width + 'px';
+      maximized[id] = false;
+      btnMax.innerHTML = '&#9633;';
+    } else {
+      prevRects[id].top = el.offsetTop;
+      prevRects[id].left = el.offsetLeft;
+      prevRects[id].width = el.offsetWidth;
+      el.classList.add('maximized');
+      maximized[id] = true;
+      btnMax.innerHTML = '&#9634;';
+    }
+  }
+
+  function closeWindow(id) {
+    var s = wins[id];
+    s.el.classList.add('hidden');
+    if (s.tab) s.tab.classList.remove('active');
+    s.el.classList.remove('focused');
+    if (activeWinId === id) {
+      var other = Object.keys(wins).find(function(k) { return k !== id && !wins[k].el.classList.contains('hidden'); });
+      if (other) focusWindow(other);
+    }
+  }
+
+  function openWindow(id) {
+    var s = wins[id];
+    s.el.classList.remove('hidden');
+    s.el.classList.remove('mobile-open');
+    if (!isMobile) {
+      focusWindow(id);
+    }
+  }
+
+  // Expose public API
+  window.winMgr = {
+    open: function(id) { openWindow(id); },
+    focus: function(id) { focusWindow(id); },
+    close: function(id) { closeWindow(id); }
+  };
+
+  initWindow('vapor');
+  initWindow('arena');
+
+  // Start with vapor focused on desktop
+  if (!isMobile) focusWindow('vapor');
+
+  // Global mousemove/mouseup for dragging
+  document.addEventListener('mousemove', function(e) {
+    Object.keys(wins).forEach(function(id) {
+      var s = wins[id];
+      if (!s.dragging) return;
+      var x = e.clientX - s.offsetX;
+      var y = e.clientY - s.offsetY;
+      s.el.style.left = Math.max(-200, Math.min(x, window.innerWidth - 100)) + 'px';
+      s.el.style.top = Math.max(0, Math.min(y, window.innerHeight - 80)) + 'px';
+    });
+  });
+
+  document.addEventListener('mouseup', function() {
+    Object.keys(wins).forEach(function(id) {
+      var s = wins[id];
+      if (s.dragging) {
+        s.dragging = false;
+        s.el.style.cursor = '';
+        if (!maximized[id]) {
+          prevRects[id].top = s.el.offsetTop;
+          prevRects[id].left = s.el.offsetLeft;
+          prevRects[id].width = s.el.offsetWidth;
         }
-        
-        // 交互效果 - 鼠标轨迹
-        document.addEventListener('mousemove', function(e) {
-            const trail = document.createElement('div');
-            trail.style.cssText = `
-                position: fixed;
-                top: ${e.clientY}px;
-                left: ${e.clientX}px;
-                width: 20px;
-                height: 20px;
-                background: radial-gradient(circle, 
-                    var(--neon-purple) 0%, 
-                    transparent 70%);
-                border-radius: 50%;
-                pointer-events: none;
-                z-index: 999;
-                opacity: 0.7;
-                transform: translate(-50%, -50%);
-                animation: trailFade 0.5s linear forwards;
-            `;
-            document.body.appendChild(trail);
-            
-            setTimeout(() => trail.remove(), 500);
-        });
-        
-        // 添加鼠标轨迹消失动画
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes trailFade {
-                0% {
-                    opacity: 0.7;
-                    transform: translate(-50%, -50%) scale(1);
-                }
-                100% {
-                    opacity: 0;
-                    transform: translate(-50%, -50%) scale(2);
-                }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // 添加键盘交互
-        document.addEventListener('keydown', function(e) {
-            if (e.key === ' ') {
-                // 空格键触发效果
-                const flash = document.createElement('div');
-                flash.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: linear-gradient(45deg, 
-                        rgba(255, 0, 255, 0.5), 
-                        rgba(0, 238, 255, 0.5));
-                    pointer-events: none;
-                    z-index: 999;
-                    opacity: 0;
-                    animation: flash 0.3s linear;
-                `;
-                document.body.appendChild(flash);
-                
-                setTimeout(() => flash.remove(), 300);
-            }
-        });
-        
-        // 添加闪光动画
-        const flashStyle = document.createElement('style');
-        flashStyle.textContent = `
-            @keyframes flash {
-                0% { opacity: 0; }
-                50% { opacity: 1; }
-                100% { opacity: 0; }
-            }
-        `;
-        document.head.appendChild(flashStyle);
-        
-        // 链接点击效果
-        document.querySelectorAll('.contact a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // 创建粒子爆炸效果
-                for (let i = 0; i < 30; i++) {
-                    const particle = document.createElement('div');
-                    const angle = Math.random() * Math.PI * 2;
-                    const distance = 50 + Math.random() * 100;
-                    particle.style.cssText = `
-                        position: absolute;
-                        top: ${e.clientY}px;
-                        left: ${e.clientX}px;
-                        width: ${3 + Math.random() * 5}px;
-                        height: ${3 + Math.random() * 5}px;
-                        background: ${Math.random() > 0.5 ? 'var(--neon-purple)' : 'var(--electric-blue)'};
-                        border-radius: 50%;
-                        pointer-events: none;
-                        z-index: 999;
-                        transform: translate(-50%, -50%);
-                        animation: particleExplode 1s ease-out forwards;
-                        --angle: ${angle}rad;
-                        --distance: ${distance}px;
-                    `;
-                    document.body.appendChild(particle);
-                    
-                    setTimeout(() => particle.remove(), 1000);
-                }
-                
-                // 延迟跳转
-                setTimeout(() => {
-                    window.location.href = this.href;
-                }, 800);
-            });
-        });
-        
-        // 粒子爆炸动画
-        const particleStyle = document.createElement('style');
-        particleStyle.textContent = `
-            @keyframes particleExplode {
-                0% {
-                    transform: translate(-50%, -50%) scale(1);
-                    opacity: 1;
-                }
-                100% {
-                    transform: 
-                        translate(
-                            calc(-50% + cos(var(--angle)) * var(--distance)),
-                            calc(-50% + sin(var(--angle)) * var(--distance))
-                        )
-                        scale(0);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(particleStyle);
-        
-        // 初始化效果
-        window.addEventListener('load', function() {
-            createDigitalRain();
-            
-            // 播放启动音效（通过音频API）
-            if (window.AudioContext) {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                oscillator.connect(audioContext.destination);
-                oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
-                oscillator.start();
-                oscillator.stop(audioContext.currentTime + 0.1);
-            }
-        });
-    </script>
+      }
+    });
+  });
 
-<div style="position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; pointer-events: none; z-index: 2; opacity: 0.1;"><div style="position: absolute; top: -100px; left: 68.7732%; color: rgb(0, 238, 255); font-size: 18.5606px; opacity: 0.1; animation: 8.96838s linear 2.11039s infinite normal none running rain;">00110 00110 00110 01010 00001 00110 </div><div style="position: absolute; top: -100px; left: 59.8048%; color: rgb(0, 255, 65); font-size: 14.9639px; opacity: 0.1; animation: 4.53026s linear 3.5471s infinite normal none running rain;">01110 01111 00001 10011 01101 11001 </div><div style="position: absolute; top: -100px; left: 71.428%; color: rgb(0, 255, 65); font-size: 17.3481px; opacity: 0.1; animation: 3.47824s linear 4.79492s infinite normal none running rain;">10010 00001 00001 10001 11000 10111 </div><div style="position: absolute; top: -100px; left: 53.8283%; color: rgb(0, 255, 65); font-size: 19.8189px; opacity: 0.1; animation: 7.01851s linear 3.91271s infinite normal none running rain;">11100 01001 11101 10111 10011 01101 </div><div style="position: absolute; top: -100px; left: 66.6063%; color: rgb(0, 255, 65); font-size: 14.3648px; opacity: 0.1; animation: 5.62348s linear 4.7184s infinite normal none running rain;">01000 00001 10101 10100 11110 01111 </div><div style="position: absolute; top: -100px; left: 81.1935%; color: rgb(0, 238, 255); font-size: 16.4513px; opacity: 0.1; animation: 4.38731s linear 3.22787s infinite normal none running rain;">11010 11011 00000 10100 11000 10011 </div><div style="position: absolute; top: -100px; left: 85.7516%; color: rgb(0, 255, 65); font-size: 21.9718px; opacity: 0.1; animation: 7.79192s linear 3.03441s infinite normal none running rain;">10111 01101 10100 10010 00000 01011 </div><div style="position: absolute; top: -100px; left: 20.8151%; color: rgb(0, 255, 65); font-size: 14.7246px; opacity: 0.1; animation: 7.01191s linear 2.20789s infinite normal none running rain;">11000 00001 01001 01000 10001 11111 </div><div style="position: absolute; top: -100px; left: 68.1419%; color: rgb(0, 255, 65); font-size: 17.2281px; opacity: 0.1; animation: 5.6942s linear 0.224872s infinite normal none running rain;">00000 11101 10101 00111 10110 00111 </div><div style="position: absolute; top: -100px; left: 29.3547%; color: rgb(0, 255, 65); font-size: 20.101px; opacity: 0.1; animation: 5.03514s linear 2.44326s infinite normal none running rain;">01001 00011 10101 11111 01101 00111 </div><div style="position: absolute; top: -100px; left: 11.9907%; color: rgb(0, 255, 65); font-size: 17.1529px; opacity: 0.1; animation: 7.74665s linear 1.46501s infinite normal none running rain;">01011 11110 10010 01111 01000 00001 </div><div style="position: absolute; top: -100px; left: 80.3106%; color: rgb(0, 255, 65); font-size: 14.0627px; opacity: 0.1; animation: 5.31331s linear 1.42133s infinite normal none running rain;">11010 11011 01010 11111 01100 01010 </div><div style="position: absolute; top: -100px; left: 77.604%; color: rgb(0, 238, 255); font-size: 20.8416px; opacity: 0.1; animation: 5.36289s linear 0.772333s infinite normal none running rain;">10110 00001 00111 01011 10111 11110 </div><div style="position: absolute; top: -100px; left: 70.0497%; color: rgb(0, 238, 255); font-size: 18.909px; opacity: 0.1; animation: 9.93407s linear 4.33465s infinite normal none running rain;">01001 10111 01001 11110 00010 10111 </div><div style="position: absolute; top: -100px; left: 92.8017%; color: rgb(0, 255, 65); font-size: 21.6092px; opacity: 0.1; animation: 5.50747s linear 3.02169s infinite normal none running rain;">10010 11101 11001 10010 00110 10101 </div><div style="position: absolute; top: -100px; left: 17.3203%; color: rgb(0, 255, 65); font-size: 21.7322px; opacity: 0.1; animation: 4.41018s linear 0.578057s infinite normal none running rain;">00110 01111 01011 01000 10000 10001 </div><div style="position: absolute; top: -100px; left: 73.1496%; color: rgb(0, 238, 255); font-size: 15.0644px; opacity: 0.1; animation: 4.67062s linear 2.75911s infinite normal none running rain;">00011 10000 01111 10000 11101 10000 </div><div style="position: absolute; top: -100px; left: 25.5066%; color: rgb(0, 255, 65); font-size: 15.7007px; opacity: 0.1; animation: 4.27323s linear 1.25777s infinite normal none running rain;">01001 01000 10001 01011 11100 11111 </div><div style="position: absolute; top: -100px; left: 54.3449%; color: rgb(0, 238, 255); font-size: 14.5055px; opacity: 0.1; animation: 6.62878s linear 1.31405s infinite normal none running rain;">10001 10011 10100 00111 11001 10100 </div><div style="position: absolute; top: -100px; left: 3.39725%; color: rgb(0, 238, 255); font-size: 18.9194px; opacity: 0.1; animation: 7.84789s linear 0.710353s infinite normal none running rain;">01101 00010 01100 11001 00101 01110 </div><div style="position: absolute; top: -100px; left: 36.9454%; color: rgb(0, 238, 255); font-size: 19.1462px; opacity: 0.1; animation: 7.59182s linear 2.26105s infinite normal none running rain;">10000 01100 00000 11111 00010 10111 </div><div style="position: absolute; top: -100px; left: 51.5794%; color: rgb(0, 255, 65); font-size: 19.4159px; opacity: 0.1; animation: 6.4066s linear 1.20347s infinite normal none running rain;">11000 00110 10011 10101 01010 01010 </div><div style="position: absolute; top: -100px; left: 88.1237%; color: rgb(0, 255, 65); font-size: 15.0206px; opacity: 0.1; animation: 8.02065s linear 4.07646s infinite normal none running rain;">11111 01000 10110 00001 10100 00001 </div><div style="position: absolute; top: -100px; left: 47.2113%; color: rgb(0, 255, 65); font-size: 20.1522px; opacity: 0.1; animation: 6.28075s linear 1.76215s infinite normal none running rain;">01011 11110 10100 11111 01001 10101 </div><div style="position: absolute; top: -100px; left: 6.87474%; color: rgb(0, 238, 255); font-size: 15.8366px; opacity: 0.1; animation: 7.19596s linear 1.1781s infinite normal none running rain;">00100 01100 10111 11010 00010 10110 </div><div style="position: absolute; top: -100px; left: 42.2969%; color: rgb(0, 255, 65); font-size: 16.4659px; opacity: 0.1; animation: 9.70795s linear 2.46807s infinite normal none running rain;">00001 00110 10000 11111 01110 00110 </div><div style="position: absolute; top: -100px; left: 61.1761%; color: rgb(0, 238, 255); font-size: 19.4196px; opacity: 0.1; animation: 6.1387s linear 2.60826s infinite normal none running rain;">01010 11001 10001 11110 11110 01010 </div><div style="position: absolute; top: -100px; left: 82.8122%; color: rgb(0, 255, 65); font-size: 14.7558px; opacity: 0.1; animation: 3.77963s linear 3.6814s infinite normal none running rain;">00000 10100 10001 10001 10100 10001 </div><div style="position: absolute; top: -100px; left: 39.944%; color: rgb(0, 255, 65); font-size: 21.1629px; opacity: 0.1; animation: 3.46011s linear 4.6708s infinite normal none running rain;">10101 01010 00010 01001 01011 10000 </div><div style="position: absolute; top: -100px; left: 93.9348%; color: rgb(0, 255, 65); font-size: 18.2101px; opacity: 0.1; animation: 5.86874s linear 2.70501s infinite normal none running rain;">01101 01101 01110 11010 10000 10101 </div></div></body></html>
+  /* ===== Mobile Navigation ===== */
+  window.mobileOpenApp = function(appId) {
+    document.getElementById('ceHome').style.display = 'none';
+    var winEl = document.getElementById(appId === 'vapor' ? 'winVapor' : 'winArena');
+    winEl.classList.add('mobile-open');
+    winEl.style.display = 'flex';
+  };
+
+  window.mobileGoHome = function() {
+    document.querySelectorAll('.window').forEach(function(w) {
+      w.classList.remove('mobile-open');
+      w.style.display = '';
+    });
+    document.getElementById('ceHome').style.display = 'flex';
+  };
+
+  /* ===== Start Menu ===== */
+  var startMenu = document.getElementById('startMenu');
+  var startBtnEl = document.getElementById('startBtn');
+  var startOpen = false;
+
+  window.toggleStart = function() {
+    startOpen = !startOpen;
+    startMenu.classList.toggle('open', startOpen);
+    startBtnEl.classList.toggle('active', startOpen);
+  };
+
+  startBtnEl.addEventListener('click', function(e) {
+    e.stopPropagation();
+    toggleStart();
+  });
+
+  document.addEventListener('click', function(e) {
+    if (startOpen && !startMenu.contains(e.target) && e.target !== startBtnEl) {
+      startOpen = false;
+      startMenu.classList.remove('open');
+      startBtnEl.classList.remove('active');
+    }
+  });
+
+  /* ===== Clock ===== */
+  function updateClock() {
+    var now = new Date();
+    document.getElementById('taskbarClock').textContent =
+      String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    document.getElementById('ceTime').textContent =
+      String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+  }
+  updateClock();
+  setInterval(updateClock, 10000);
+
+  /* ===== Status Bar ===== */
+  var statusText = document.getElementById('statusText');
+  document.querySelectorAll('.menu-item').forEach(function(el) {
+    el.addEventListener('mouseenter', function() { statusText.textContent = el.textContent; });
+    el.addEventListener('mouseleave', function() { statusText.textContent = '就緒'; });
+  });
+
+  /* ===== Digital Rain ===== */
+  (function() {
+    var layer = document.getElementById('rainLayer');
+    var chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ01011010';
+    for (var i = 0; i < 25; i++) {
+      var stream = document.createElement('div');
+      stream.style.cssText = [
+        'position:absolute', 'top:-120px',
+        'left:' + Math.random() * 100 + '%',
+        'color:' + (Math.random() > 0.5 ? '#00ff41' : '#00eeff'),
+        'font-size:' + (13 + Math.random() * 8) + 'px',
+        'font-family:"Courier New",monospace',
+        'animation:rainFall ' + (3 + Math.random() * 6) + 's linear infinite',
+        'animation-delay:' + (Math.random() * 5) + 's',
+      ].join(';');
+      var content = '';
+      for (var j = 0; j < 28; j++) {
+        content += chars[Math.floor(Math.random() * chars.length)];
+      }
+      stream.textContent = content;
+      layer.appendChild(stream);
+    }
+  })();
+
+  /* ===== Keyboard Flash ===== */
+  document.addEventListener('keydown', function(e) {
+    if (e.code !== 'Space') return;
+    var flash = document.createElement('div');
+    flash.style.cssText = [
+      'position:fixed;inset:0',
+      'background:linear-gradient(45deg,rgba(255,0,255,0.4),rgba(0,238,255,0.4))',
+      'pointer-events:none;z-index:960',
+      'animation:flashAnim 0.3s linear forwards',
+    ].join(';');
+    document.body.appendChild(flash);
+    setTimeout(function() { flash.remove(); }, 400);
+  });
+
+  /* ===== Button Navigation ===== */
+  document.querySelectorAll('.vapor-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var href = this.dataset.href;
+      if (href) window.location.href = href;
+    });
+  });
+
+  /* ===== Audio on load ===== */
+  window.addEventListener('load', function() {
+    try {
+      var ctx = new (window.AudioContext || window.webkitAudioContext)();
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.setValueAtTime(520, ctx.currentTime);
+      gain.gain.setValueAtTime(0.06, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+      osc.start(); osc.stop(ctx.currentTime + 0.15);
+    } catch(_) {}
+  });
+
+  /* ===== Mobile init ===== */
+  if (isMobile) {
+    document.querySelectorAll('.window').forEach(function(w) { w.style.display = 'none'; });
+    document.getElementById('ceHome').style.display = 'flex';
+  }
+})();
+</script>
+
+</body>
+</html>

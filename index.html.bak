@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Debate Arena Browser</title>
+  <meta name="theme-color" content="#111827">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <button id="openPanel" class="icon-btn mobile-only" type="button">☰</button>
+      <div>
+        <p class="eyebrow">Local Browser App</p>
+        <h1>AI Debate Arena</h1>
+      </div>
+      <div class="top-actions">
+        <span id="status" class="status">空闲</span>
+        <button id="exportMd" class="ghost-btn" type="button">导出 MD</button>
+        <button id="exportJson" class="ghost-btn" type="button">导出 JSON</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside id="panel" class="panel">
+        <div class="panel-head mobile-only">
+          <strong>设置</strong>
+          <button id="closePanel" class="icon-btn" type="button">×</button>
+        </div>
+
+        <section class="card">
+          <div class="mode-tabs">
+            <button class="mode-tab active" data-mode="debate" type="button">辩论</button>
+            <button class="mode-tab" data-mode="discussion" type="button">讨论</button>
+            <button class="mode-tab" data-mode="cooperation" type="button">合作</button>
+          </div>
+          <p class="notice">API Key 与 Provider 配置会默认保存在本机浏览器。请只在可信设备上使用。</p>
+        </section>
+
+        <section class="card">
+          <div class="section-title">
+            <h2 id="topicTitle">辩论设置</h2>
+          </div>
+          <label class="field">
+            <span id="topicLabel">辩论主题</span>
+            <textarea id="topic" rows="3">人工智能是否会取代人类的大部分工作？</textarea>
+          </label>
+          <div class="grid two">
+            <label class="field rounds-enabled">
+              <span>轮数</span>
+              <input id="rounds" type="number" min="1" max="10" value="3">
+            </label>
+            <label class="field">
+              <span>详细程度</span>
+              <select id="verbosity">
+                <option value="short">简短</option>
+                <option value="medium">适中</option>
+                <option value="long" selected>详细</option>
+                <option value="verylong">非常详细</option>
+              </select>
+            </label>
+          </div>
+          <label class="field">
+            <span>全局指令</span>
+            <textarea id="globalInstructions" rows="2" placeholder="例如：请用中文回答，多引用事实和例子"></textarea>
+          </label>
+        </section>
+
+        <section class="card">
+          <div class="section-title">
+            <h2 id="participantsTitle">参与者</h2>
+            <div class="row compact">
+              <button id="bulkConfig" class="small-btn" type="button">批量配置</button>
+              <button id="addParticipant" class="small-btn" type="button">添加</button>
+            </div>
+          </div>
+          <div id="participants" class="participants"></div>
+        </section>
+
+        <section class="card debate-only">
+          <div class="section-title">
+            <h2>辩论裁判</h2>
+            <button id="editJudge" class="small-btn" type="button">编辑</button>
+          </div>
+          <label class="check judge-toggle"><input id="judgeEnabled" type="checkbox"> 辩论结束后由裁判总结结果</label>
+          <div id="judgeSummary" class="participants"></div>
+        </section>
+
+        <section class="card">
+          <div class="section-title">
+            <h2>模型发现</h2>
+          </div>
+          <label class="field">
+            <span>测试 Provider</span>
+            <select id="discoverParticipant"></select>
+          </label>
+          <div class="row">
+            <button id="discoverModels" class="ghost-btn" type="button">获取模型</button>
+            <button id="testConnection" class="ghost-btn" type="button">测试连接</button>
+          </div>
+          <div id="modelResults" class="model-results"></div>
+        </section>
+
+        <section class="card actions">
+          <button id="startBtn" class="primary-btn" type="button">开始辩论</button>
+          <button id="stopBtn" class="danger-btn" type="button" disabled>停止</button>
+          <button id="clearBtn" class="ghost-btn" type="button">清空会话</button>
+        </section>
+      </aside>
+
+      <main class="chat">
+        <div id="messages" class="messages">
+          <div class="welcome">
+            <div class="logo-mark">A</div>
+            <h2>纯浏览器版 AI Debate Arena</h2>
+            <p>配置 Provider 和角色后即可开始。浏览器直连 API 可能受 CORS 限制，推荐优先使用 OpenRouter 或支持 CORS 的 OpenAI 兼容网关。</p>
+          </div>
+        </div>
+
+        <div id="filePreview" class="file-preview hidden"></div>
+
+        <form id="composer" class="composer">
+          <input id="fileInput" type="file" multiple accept="image/*,.txt,.md,.csv,.json,.js,.ts,.py,.html,.css,.log" hidden>
+          <button id="pickFiles" class="icon-btn" type="button">📎</button>
+          <input id="userInput" type="text" placeholder="输入消息，或只上传附件后发送...">
+          <button id="sendBtn" class="primary-btn" type="submit">发送</button>
+        </form>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="participantDialog" class="dialog">
+    <form method="dialog" class="dialog-body">
+      <div class="dialog-head">
+        <h2 id="dialogTitle">编辑参与者</h2>
+        <button class="icon-btn" value="cancel" type="submit">×</button>
+      </div>
+      <input id="editIndex" type="hidden">
+      <div class="grid two">
+        <label class="field"><span>名称</span><input id="pName" type="text"></label>
+        <label class="field"><span>颜色</span><input id="pColor" type="color" value="#38bdf8"></label>
+      </div>
+      <div class="grid two">
+        <label class="field">
+          <span>Provider</span>
+          <select id="pProvider">
+            <option value="openrouter">OpenRouter</option>
+            <option value="openai-compatible">OpenAI Compatible</option>
+            <option value="google">Google Gemini</option>
+            <option value="anthropic">Anthropic</option>
+            <option value="manual">Manual/Custom</option>
+          </select>
+        </label>
+        <label class="field"><span>模型</span><input id="pModel" type="text" placeholder="openai/gpt-4o"></label>
+      </div>
+      <label class="field"><span>Base URL</span><input id="pBaseURL" type="text" placeholder="https://openrouter.ai/api/v1"></label>
+      <label class="field"><span>API Key</span><input id="pApiKey" type="password" autocomplete="off"></label>
+      <div class="grid two">
+        <label class="field"><span>上下文长度</span><input id="pContext" type="number" min="0" placeholder="未知可留空"></label>
+        <label class="field"><span>最大输出 Tokens</span><input id="pMaxTokens" type="number" min="128" value="2048"></label>
+      </div>
+      <div class="grid two">
+        <label class="field"><span>Temperature</span><input id="pTemperature" type="number" min="0" max="2" step="0.1" value="0.8"></label>
+        <label class="check"><input id="pVision" type="checkbox"> 支持图片</label>
+      </div>
+      <label id="stanceWrap" class="field"><span>立场</span><input id="pStance" type="text" placeholder="正方 / 反方 / 中立"></label>
+      <label class="field"><span>系统提示词</span><textarea id="pPrompt" rows="3"></textarea></label>
+      <div class="dialog-actions">
+        <button id="deleteParticipant" class="danger-btn" value="delete" type="button">删除</button>
+        <span class="spacer"></span>
+        <button class="ghost-btn" value="cancel" type="submit">取消</button>
+        <button id="saveParticipant" class="primary-btn" value="default" type="button">保存</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="bulkDialog" class="dialog">
+    <form method="dialog" class="dialog-body">
+      <div class="dialog-head">
+        <h2>批量配置参与者</h2>
+        <button class="icon-btn" value="cancel" type="submit">×</button>
+      </div>
+      <p class="notice">会批量更新所有参与者的 Provider、Base URL 和 API Key。模型、上下文、输出长度、Temperature 只有填写后才会覆盖。</p>
+      <div class="grid two">
+        <label class="field">
+          <span>Provider</span>
+          <select id="bProvider">
+            <option value="openrouter">OpenRouter</option>
+            <option value="openai-compatible">OpenAI Compatible</option>
+            <option value="google">Google Gemini</option>
+            <option value="anthropic">Anthropic</option>
+            <option value="manual">Manual/Custom</option>
+          </select>
+        </label>
+        <label class="field"><span>模型（可选）</span><input id="bModel" type="text" placeholder="留空则保留每个角色原模型"></label>
+      </div>
+      <label class="field"><span>Base URL</span><input id="bBaseURL" type="text" placeholder="https://openrouter.ai/api/v1"></label>
+      <label class="field"><span>API Key</span><input id="bApiKey" type="password" autocomplete="off"></label>
+      <div class="grid two">
+        <label class="field"><span>上下文长度（可选）</span><input id="bContext" type="number" min="0" placeholder="留空不覆盖"></label>
+        <label class="field"><span>最大输出 Tokens（可选）</span><input id="bMaxTokens" type="number" min="128" placeholder="留空不覆盖"></label>
+      </div>
+      <div class="grid two">
+        <label class="field"><span>Temperature（可选）</span><input id="bTemperature" type="number" min="0" max="2" step="0.1" placeholder="留空不覆盖"></label>
+        <label class="check"><input id="bVision" type="checkbox"> 所有参与者支持图片</label>
+      </div>
+      <div class="dialog-actions">
+        <span class="spacer"></span>
+        <button class="ghost-btn" value="cancel" type="submit">取消</button>
+        <button id="applyBulkConfig" class="primary-btn" value="default" type="button">应用到全部</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
