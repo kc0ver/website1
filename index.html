@@ -486,93 +486,168 @@ body {
   z-index: 4; opacity: 0.12;
 }
 
-/* ============ WinCE / Pocket PC Home Screen ============ */
+/* ============ Windows Mobile Home Screen ============ */
 .ce-home {
   display: none;
   position: fixed; inset: 0;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(157,0,255,0.15) 0%, transparent 50%),
-    #0a0020;
+  background: linear-gradient(180deg, #F0F4FA 0%, #D8E2F0 25%, #A8B8D0 100%);
   flex-direction: column;
   z-index: 500; overflow: hidden;
 }
 
 .ce-navbar {
   height: 26px; flex-shrink: 0;
-  background: linear-gradient(180deg, #000080, #1084D0);
-  color: var(--title-text);
+  background: linear-gradient(180deg, #000060 0%, #000080 40%, #1048A0 100%);
+  color: #FFFFFF;
   display: flex; align-items: center;
-  padding: 0 4px;
+  padding: 0 2px;
   font-size: 11px; font-weight: bold;
-  font-family: "Fixedsys", "Terminal", "Courier New", "MS Sans Serif", "SimSun", sans-serif;
+  font-family: "Tahoma", "MS Sans Serif", sans-serif;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
 .ce-navbar .ce-start {
-  padding: 1px 6px;
-  border: 1px solid transparent;
-  cursor: pointer;
+  width: 24px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; margin: 0 2px;
+  font-size: 14px; line-height: 1;
 }
 
 .ce-navbar .ce-title {
   flex: 1; text-align: center;
-  font-size: 12px;
-  text-shadow: 0 0 6px var(--neon-purple);
+  font-size: 11px; letter-spacing: 0.5px;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.5);
 }
 
-.ce-navbar .ce-time {
-  padding: 1px 4px; font-size: 11px;
-  text-align: right; min-width: 44px;
+.ce-navbar .ce-bars {
+  padding: 0 4px; font-size: 10px;
+  display: flex; align-items: center; gap: 3px;
+  opacity: 0.85;
 }
 
-.ce-desktop {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: flex-start; padding: 16px;
-  gap: 14px; overflow-y: auto;
+/* Today screen plugins */
+.ce-today {
+  flex: 1; overflow-y: auto; padding: 4px;
+  display: flex; flex-direction: column; gap: 4px;
 }
 
-.ce-icon {
-  display: flex; align-items: center; gap: 8px;
-  cursor: pointer; padding: 4px;
+.ce-plugin {
+  background: #FFFFFF;
+  border: 1px solid;
+  border-color: #A0B0C0 #708090 #708090 #A0B0C0;
+}
+
+.ce-plugin-head {
+  background: linear-gradient(180deg, #E8F0F8, #C8D8E8);
+  padding: 3px 6px;
+  font-size: 11px; font-weight: bold;
+  color: #000080;
+  border-bottom: 1px solid #98A8B8;
+  display: flex; align-items: center; gap: 4px;
+  font-family: "Tahoma", "MS Sans Serif", sans-serif;
+}
+
+.ce-plugin-head .ce-plugin-dot {
+  width: 6px; height: 6px;
+  border: 1px solid #000080;
+  background: #000080;
+}
+
+.ce-plugin-body {
+  padding: 5px 6px;
+  font-size: 11px;
+  color: #202020;
+  font-family: "Tahoma", "MS Sans Serif", sans-serif;
+}
+
+.ce-plugin-body p {
+  margin: 0; line-height: 1.6;
+}
+
+.ce-date-big {
+  font-size: 18px; font-weight: bold;
+  color: #000080; margin-bottom: 1px;
+}
+
+.ce-date-sub {
+  font-size: 11px; color: #506080;
+}
+
+.ce-app-grid {
+  display: flex; gap: 10px;
+}
+
+.ce-app-grid .ce-app-cell {
+  display: flex; flex-direction: column;
+  align-items: center; cursor: pointer;
+  padding: 6px 8px;
   border: 1px solid transparent;
+  width: 64px; background: none;
+  font-family: "Tahoma", "MS Sans Serif", sans-serif;
 }
 
-.ce-icon:active { border: 1px dotted #FFFFFF; }
+.ce-app-grid .ce-app-cell:active {
+  border-color: #000080;
+  background: #E0E8FF;
+}
 
-.ce-icon .ce-icon-img {
-  width: 32px; height: 32px;
+.ce-app-cell .ce-app-icon {
+  width: 36px; height: 36px;
   display: grid; place-items: center;
   font-size: 16px; color: #FFFFFF;
-  border: 2px solid;
-  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
-  background: var(--selected-bg);
-  flex-shrink: 0;
+  background: linear-gradient(180deg, #1084D0, #000080);
+  border: 1px solid #000060;
+  margin-bottom: 3px;
 }
 
-.ce-icon span {
-  color: #d0d0d0; font-size: 12px;
-  font-family: "Fixedsys", "Terminal", "Courier New", "MS Sans Serif", "SimSun", sans-serif;
-  text-shadow: 1px 1px 1px #000;
+.ce-app-cell .ce-app-label {
+  font-size: 10px; color: #000080;
+  text-align: center; line-height: 1.25;
+  font-weight: bold;
 }
 
+/* Bottom command bar */
 .ce-cmdbar {
-  height: 24px; flex-shrink: 0;
-  background: var(--btn-face);
-  border-top: 1px solid var(--btn-highlight);
+  height: 26px; flex-shrink: 0;
+  background: linear-gradient(180deg, #DCE4F0, #B0C0D8);
+  border-top: 1px solid #90A0B8;
   display: flex; align-items: center;
-  padding: 0 4px;
+  justify-content: space-between;
+  padding: 0;
   font-size: 11px; font-weight: bold;
-  font-family: "Fixedsys", "Terminal", "Courier New", "MS Sans Serif", "SimSun", sans-serif;
-  color: var(--text);
+  font-family: "Tahoma", "MS Sans Serif", sans-serif;
+  color: #000080;
 }
 
-.ce-cmdbar .ce-softkey {
-  padding: 2px 8px; cursor: pointer;
-  border: 1px solid transparent;
+.ce-softkey {
+  padding: 0 14px; height: 100%;
+  display: flex; align-items: center;
+  cursor: pointer; letter-spacing: 0.3px;
+  position: relative;
 }
-.ce-cmdbar .ce-softkey:active {
-  border-color: var(--btn-dark) var(--btn-highlight) var(--btn-highlight) var(--btn-dark);
+
+.ce-softkey:active {
+  background: rgba(0,0,0,0.08);
 }
-.ce-cmdbar .ce-cmd-spacer { flex: 1; }
+
+.ce-cmdbar .ce-dpad {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 6px;
+}
+
+.ce-cmdbar .ce-dpad-btn {
+  width: 18px; height: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; cursor: pointer;
+  background: #C0C8D8;
+  border: 1px solid;
+  border-color: #E8E8F0 #788898 #788898 #E8E8F0;
+  color: #404040;
+}
+
+.ce-cmdbar .ce-dpad-btn:active {
+  border-color: #788898 #E8E8F0 #E8E8F0 #788898;
+}
 
 /* ============ Animations ============ */
 @keyframes scanMove { 0% { background-position: 0 0; } 100% { background-position: 0 100px; } }
@@ -606,7 +681,7 @@ body {
   }
 
   body {
-    background: #0a0011;
+    background: #A8B8D0;
     overflow: hidden;
   }
 
@@ -645,27 +720,49 @@ body {
 </head>
 <body>
 
-<!-- ===== WinCE HOME SCREEN ===== -->
+<!-- ===== Windows Mobile HOME SCREEN ===== -->
 <div class="ce-home" id="ceHome">
   <div class="ce-navbar">
-    <span class="ce-start">开始</span>
-    <span class="ce-title">kC0VER</span>
-    <span class="ce-time" id="ceTime">12:00</span>
+    <span class="ce-start">&#9733;</span>
+    <span class="ce-title">今日</span>
+    <span class="ce-bars">&#9830; &#9830; <span id="ceTime">12:00</span></span>
   </div>
-  <div class="ce-desktop">
-    <div class="ce-icon" onclick="mobileOpenApp('vapor')">
-      <div class="ce-icon-img">&#9678;</div>
-      <span>性格纠正所</span>
+  <div class="ce-today">
+    <div class="ce-plugin">
+      <div class="ce-plugin-head">
+        <span class="ce-plugin-dot"></span> 主人信息
+      </div>
+      <div class="ce-plugin-body">
+        <div class="ce-date-big" id="ceDateMain">2006年7月8日</div>
+        <div class="ce-date-sub" id="ceDateSub">欢迎回来，kC0VER</div>
+      </div>
     </div>
-    <div class="ce-icon" onclick="mobileOpenApp('arena')">
-      <div class="ce-icon-img">A</div>
-      <span>AI 辩论场</span>
+    <div class="ce-plugin">
+      <div class="ce-plugin-head">
+        <span class="ce-plugin-dot"></span> 启动程序
+      </div>
+      <div class="ce-plugin-body">
+        <div class="ce-app-grid">
+          <button class="ce-app-cell" onclick="mobileOpenApp('vapor')">
+            <div class="ce-app-icon">&#9678;</div>
+            <span class="ce-app-label">性格纠正</span>
+          </button>
+          <button class="ce-app-cell" onclick="mobileOpenApp('arena')">
+            <div class="ce-app-icon">A</div>
+            <span class="ce-app-label">辩论场</span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <div class="ce-cmdbar">
     <span class="ce-softkey">菜单</span>
-    <span class="ce-cmd-spacer"></span>
-    <span class="ce-softkey">关于</span>
+    <div class="ce-dpad">
+      <span class="ce-dpad-btn">&#9668;</span>
+      <span class="ce-dpad-btn">&#9679;</span>
+      <span class="ce-dpad-btn">&#9658;</span>
+    </div>
+    <span class="ce-softkey">联系人</span>
   </div>
 </div>
 
@@ -995,6 +1092,11 @@ body {
       String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
     document.getElementById('ceTime').textContent =
       String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    var days = ['日', '一', '二', '三', '四', '五', '六'];
+    document.getElementById('ceDateMain').textContent =
+      now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日';
+    document.getElementById('ceDateSub').textContent =
+      '星期' + days[now.getDay()] + ' · 欢迎回来，kC0VER';
   }
   updateClock();
   setInterval(updateClock, 10000);
