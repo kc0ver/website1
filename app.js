@@ -5,9 +5,10 @@
   const COLORS = ['#000080', '#008080', '#800000', '#808000', '#800080', '#000000'];
   const DEFAULTS = {
     openrouter: 'https://openrouter.ai/api/v1',
-    'openai-compatible': 'https://api.openai.com/v1',
+    '    openai-compatible': 'https://api.openai.com/v1',
     google: 'https://generativelanguage.googleapis.com/v1beta',
     anthropic: 'https://api.anthropic.com/v1',
+    deepseek: 'https://api.deepseek.com',
     manual: '',
   };
   const PROVIDER_LABELS = {
@@ -15,6 +16,7 @@
     'openai-compatible': 'OpenAI 兼容',
     google: 'Google Gemini',
     anthropic: 'Anthropic',
+    deepseek: 'DeepSeek',
     manual: '自定义',
   };
   const MODEL_PRESETS = {
@@ -27,6 +29,7 @@
     'google/gemini-2.5-pro': { contextWindow: 1048576, maxOutputTokens: 65536, supportsVision: true, supportsThinking: true },
     'gemini-2.5-pro': { contextWindow: 1048576, maxOutputTokens: 65536, supportsVision: true, supportsThinking: true },
     'deepseek/deepseek-chat': { contextWindow: 64000, maxOutputTokens: 8192, supportsVision: false, supportsThinking: false },
+    'deepseek-v4-flash': { contextWindow: 1048576, maxOutputTokens: 384000, supportsVision: false, supportsThinking: false },
   };
 
   const $ = id => document.getElementById(id);
