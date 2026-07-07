@@ -19,6 +19,10 @@
     deepseek: 'DeepSeek',
     manual: '自定义',
   };
+  const PROVIDER_DEFAULTS = {
+    deepseek: { model: 'deepseek-v4-flash', contextWindow: 1048576, maxOutputTokens: 384000 },
+  };
+
   const MODEL_PRESETS = {
     'openai/gpt-4o': { contextWindow: 128000, maxOutputTokens: 16384, supportsVision: true, supportsThinking: false },
     'gpt-4o': { contextWindow: 128000, maxOutputTokens: 16384, supportsVision: true, supportsThinking: false },
@@ -836,8 +840,8 @@
   $('bulkConfig').addEventListener('click', openBulkConfig);
   $('editJudge').addEventListener('click', openJudge);
   $('judgeEnabled').addEventListener('change', e => { state.judgeEnabled = e.target.checked; saveConfig(); });
-  $('pProvider').addEventListener('change', () => { const provider = $('pProvider').value; if (!$('pBaseURL').value || Object.values(DEFAULTS).includes($('pBaseURL').value)) $('pBaseURL').value = DEFAULTS[provider] || ''; });
-  $('bProvider').addEventListener('change', () => { const provider = $('bProvider').value; if (!$('bBaseURL').value || Object.values(DEFAULTS).includes($('bBaseURL').value)) $('bBaseURL').value = DEFAULTS[provider] || ''; });
+  $('pProvider').addEventListener('change', () => { const provider = $('pProvider').value; if (!$('pBaseURL').value || Object.values(DEFAULTS).includes($('pBaseURL').value)) $('pBaseURL').value = DEFAULTS[provider] || ''; const preset = PROVIDER_DEFAULTS[provider]; if (preset) { $('pModel').value = preset.model; $('pContext').value = preset.contextWindow; $('pMaxTokens').value = preset.maxOutputTokens; } });
+  $('bProvider').addEventListener('change', () => { const provider = $('bProvider').value; if (!$('bBaseURL').value || Object.values(DEFAULTS).includes($('bBaseURL').value)) $('bBaseURL').value = DEFAULTS[provider] || ''; const preset = PROVIDER_DEFAULTS[provider]; if (preset) { $('bModel').value = preset.model; $('bContext').value = preset.contextWindow; $('bMaxTokens').value = preset.maxOutputTokens; } });
   $('saveParticipant').addEventListener('click', saveParticipantFromDialog);
   $('applyBulkConfig').addEventListener('click', applyBulkConfig);
   $('deleteParticipant').addEventListener('click', () => { const index = Number($('editIndex').value); if (index >= 0) { state.participants.splice(index, 1); dom.dialog.close(); renderParticipants(); renderDiscoverOptions(); saveConfig(); } });
