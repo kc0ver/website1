@@ -890,7 +890,7 @@ body {
   function closeWindow(id) {
     var s = wins[id];
     s.el.classList.add('hidden');
-    if (s.tab) s.tab.classList.remove('active');
+    if (s.tab) { s.tab.classList.remove('active'); s.tab.classList.add('hidden'); }
     s.el.classList.remove('focused');
     if (activeWinId === id) {
       var other = Object.keys(wins).find(function(k) { return k !== id && !wins[k].el.classList.contains('hidden'); });
@@ -902,6 +902,7 @@ body {
     var s = wins[id];
     s.el.classList.remove('hidden');
     s.el.classList.remove('mobile-open');
+    if (s.tab) s.tab.classList.remove('hidden');
     if (!isMobile) {
       focusWindow(id);
     }
