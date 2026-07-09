@@ -30,6 +30,7 @@
 
   font-family: "Courier New", "SimSun", "FangSong", "KaiTi", serif;
   font-size: 11px;
+  zoom: 1.5;
 }
 
 /* ============ Reset & Base ============ */
@@ -675,7 +676,7 @@ body {
 .hidden { display: none !important; }
 
 /* ============ Mobile Layout ============ */
-@media (max-width: 768px) {
+  @media (max-width: 512px) {
   .desktop, .crt, .noise-overlay, .taskbar, .start-menu, .geo, .rain-layer {
     display: none !important;
   }
@@ -712,7 +713,7 @@ body {
 }
 
 /* Hide CE home on desktop */
-@media (min-width: 769px) {
+  @media (min-width: 513px) {
   .ce-home { display: none !important; }
   .mobile-back-btn { display: none !important; }
 }
@@ -894,7 +895,7 @@ body {
   var activeWinId = 'vapor';
   var maximized = {};
   var prevRects = {};
-  var isMobile = window.matchMedia('(max-width: 768px)').matches;
+  var isMobile = window.matchMedia('(max-width: 512px)').matches;
 
   function initWindow(id) {
     var el = document.getElementById('win' + id.charAt(0).toUpperCase() + id.slice(1));

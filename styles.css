@@ -26,6 +26,7 @@
   font-size: 13px;
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: unset;
+  zoom: 1.5;
 }
 
 * {
@@ -952,7 +953,7 @@ button:disabled:active {
   display: none;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 573px) {
   .layout {
     display: block;
     grid-template-columns: none;
