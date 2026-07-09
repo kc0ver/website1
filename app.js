@@ -331,7 +331,7 @@
       id: index >= 0 ? state.participants[index].id : uid(), name: $('pName').value.trim() || `AI ${state.participants.length + 1}`,
       provider, model, apiKey: $('pApiKey').value.trim(), baseURL: $('pBaseURL').value.trim() || DEFAULTS[provider] || '',
       color: $('pColor').value, contextWindow: $('pContext').value ? Number($('pContext').value) : '',
-      maxTokens: clampNumber($('pMaxTokens').value, 2048, 128, 200000), temperature: clampNumber($('pTemperature').value, 0.8, 0, 2),
+      maxTokens: clampNumber($('pMaxTokens').value, 2048, 128, 1000000), temperature: clampNumber($('pTemperature').value, 0.8, 0, 2),
       supportsVision: $('pVision').checked, stance: $('pStance').value.trim(), systemPrompt: $('pPrompt').value.trim(),
     });
     if (editingJudge) {
@@ -377,7 +377,7 @@
         next.supportsVision = supportsVision || preset.supportsVision || false;
       }
       if (contextWindow) next.contextWindow = Number(contextWindow);
-      if (maxTokens) next.maxTokens = clampNumber(maxTokens, next.maxTokens || 2048, 128, 200000);
+      if (maxTokens) next.maxTokens = clampNumber(maxTokens, next.maxTokens || 2048, 128, 1000000);
       if (temperature) next.temperature = clampNumber(temperature, next.temperature ?? 0.8, 0, 2);
       return next;
     });
