@@ -1,4 +1,4 @@
-const CACHE = 'ai-debate-arena-browser-v2';
+const CACHE = 'ai-debate-arena-browser-v3';
 const ASSETS = ['./', './index.html', './ada.html', './styles.css', './app.js', './manifest.json', './icons/icon.svg'];
 
 self.addEventListener('install', event => {

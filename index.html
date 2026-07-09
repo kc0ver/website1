@@ -30,7 +30,6 @@
 
   font-family: "Courier New", "SimSun", "FangSong", "KaiTi", serif;
   font-size: 11px;
-  zoom: 1.25;
 }
 
 /* ============ Reset & Base ============ */
@@ -471,6 +470,12 @@ body {
   border-bottom: 1px solid var(--btn-highlight);
 }
 
+.si-sep {
+  height: 2px; margin: 2px 4px;
+  border-top: 1px solid var(--btn-shadow);
+  border-bottom: 1px solid var(--btn-highlight);
+}
+
 /* ============ Desktop Geometric Decorations ============ */
 .geo {
   position: fixed; pointer-events: none; z-index: 5;
@@ -650,6 +655,193 @@ body {
   border-color: #788898 #E8E8F0 #E8E8F0 #788898;
 }
 
+/* ============ XP 显示属性设置窗口 ============ */
+.xp-display-body {
+  background: #ECE9D8;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: "Tahoma", "MS Sans Serif", sans-serif;
+  font-size: 11px;
+  color: #000;
+  overflow: hidden;
+}
+
+.xp-tabs {
+  display: flex;
+  padding: 6px 6px 0 6px;
+  gap: 2px;
+  background: #ECE9D8;
+  border-bottom: 1px solid #ACA899;
+}
+
+.xp-tab {
+  padding: 3px 10px;
+  cursor: default;
+  background: #ECE9D8;
+  border: 1px solid #ACA899;
+  border-bottom: none;
+  font-size: 11px;
+  color: #000;
+  position: relative;
+  top: 1px;
+}
+
+.xp-tab.active {
+  border-bottom: 1px solid #ECE9D8;
+  font-weight: bold;
+}
+
+.xp-display-layout {
+  display: flex;
+  padding: 12px;
+  gap: 16px;
+  background: #ECE9D8;
+  flex: 1;
+}
+
+.xp-monitor-graphic {
+  width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.monitor-outer {
+  background: #C0C0C0;
+  border: 2px solid;
+  border-color: #FFFFFF #808080 #808080 #FFFFFF;
+  padding: 6px;
+}
+
+.monitor-screen {
+  width: 120px;
+  height: 90px;
+  background: #000080;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  border: 1px solid #000060;
+}
+
+.monitor-stand {
+  width: 24px;
+  height: 18px;
+  background: #C0C0C0;
+  border: 1px solid;
+  border-color: #FFFFFF #808080 #808080 #FFFFFF;
+  margin: 0 auto;
+}
+
+.monitor-base {
+  width: 60px;
+  height: 6px;
+  background: #C0C0C0;
+  border: 1px solid;
+  border-color: #FFFFFF #808080 #808080 #FFFFFF;
+  margin: 0 auto;
+}
+
+.xp-display-controls {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.xp-slider-section label {
+  font-size: 11px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.xp-slider-wrap {
+  padding: 0 4px;
+}
+
+.xp-slider-wrap input[type="range"] {
+  width: 100%; height: 20px;
+  -webkit-appearance: none; appearance: none;
+  background: transparent; margin: 0;
+}
+
+.xp-slider-wrap input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: #ACA899;
+  border: 1px solid;
+  border-color: #808080 #FFFFFF #FFFFFF #808080;
+}
+
+.xp-slider-wrap input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 20px;
+  background: #D4D0C8;
+  border: 2px solid;
+  border-color: #FFFFFF #808080 #808080 #FFFFFF;
+  margin-top: -8px; cursor: pointer;
+}
+
+.xp-slider-wrap input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: #ACA899;
+  border: 1px solid #808080;
+}
+
+.xp-slider-wrap input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 20px;
+  border: 2px solid;
+  border-color: #FFFFFF #808080 #808080 #FFFFFF;
+  background: #D4D0C8; cursor: pointer;
+}
+
+.xp-slider-labels {
+  display: flex;
+  justify-content: space-between; margin-top: 2px;
+}
+
+.xp-slider-labels span {
+  font-size: 10px; color: #404040;
+}
+
+.xp-dropdown-section label {
+  font-size: 11px; display: block; margin-bottom: 2px;
+}
+
+.xp-dropdown-section select {
+  width: 140px; padding: 2px 4px;
+  border: 2px solid;
+  border-color: #808080 #FFFFFF #FFFFFF #808080;
+  background: #FFFFFF; font-size: 11px;
+}
+
+.xp-hint-text {
+  font-size: 10px; color: #404040; margin-top: 4px; line-height: 1.4;
+}
+
+.xp-button-bar {
+  display: flex; justify-content: flex-end; gap: 6px;
+  padding: 6px 12px;
+  border-top: 1px solid #D4D0C8;
+  background: #ECE9D8;
+}
+
+.xp-button-bar button {
+  padding: 2px 16px; font-size: 11px;
+  background: #ECE9D8;
+  border: 2px solid;
+  border-color: #FFFFFF #808080 #808080 #FFFFFF;
+  cursor: pointer; min-width: 56px;
+  font-family: "Tahoma", "MS Sans Serif", sans-serif;
+}
+
+.xp-button-bar button:active {
+  border-color: #808080 #FFFFFF #FFFFFF #808080;
+}
+
 /* ============ Animations ============ */
 @keyframes scanMove { 0% { background-position: 0 0; } 100% { background-position: 0 100px; } }
 @keyframes noiseAnim {
@@ -676,7 +868,7 @@ body {
 .hidden { display: none !important; }
 
 /* ============ Mobile Layout ============ */
-  @media (max-width: 614px) {
+  @media (max-width: 768px) {
   .desktop, .crt, .noise-overlay, .taskbar, .start-menu, .geo, .rain-layer {
     display: none !important;
   }
@@ -713,7 +905,7 @@ body {
 }
 
 /* Hide CE home on desktop */
-  @media (min-width: 615px) {
+  @media (min-width: 769px) {
   .ce-home { display: none !important; }
   .mobile-back-btn { display: none !important; }
 }
@@ -752,6 +944,10 @@ body {
             <div class="ce-app-icon">A</div>
             <span class="ce-app-label">辩论场</span>
           </button>
+          <button class="ce-app-cell" onclick="mobileOpenApp('display')">
+            <div class="ce-app-icon">&#9638;</div>
+            <span class="ce-app-label">设置</span>
+          </button>
         </div>
       </div>
     </div>
@@ -777,6 +973,10 @@ body {
     <div class="desk-icon" ondblclick="winMgr.open('arena')">
       <div class="icon-img" style="background:#1084D0;">A</div>
       <span>AI 辩论场</span>
+    </div>
+    <div class="desk-icon" ondblclick="winMgr.open('display')">
+      <div class="icon-img" style="background:#808000;">&#9638;</div>
+      <span>显示属性</span>
     </div>
   </div>
 
@@ -852,6 +1052,68 @@ body {
   </div>
 </div>
 
+<!-- ===== XP 显示属性设置窗口 ===== -->
+<div class="window hidden" id="winDisplay" style="top:30px;left:260px;width:480px;">
+  <div class="window-titlebar" data-win="display">
+    <button class="mobile-back-btn" onclick="mobileGoHome()" title="返回">&#9664;</button>
+    <span class="window-icon">&#9638;</span>
+    <span class="window-title-text">显示 属性</span>
+    <div class="window-btns">
+      <button data-action="min" title="最小化">_</button>
+      <button data-action="close" title="关闭">&#10005;</button>
+    </div>
+  </div>
+  <div class="window-body xp-display-body">
+    <div class="xp-tabs">
+      <span class="xp-tab">主题</span>
+      <span class="xp-tab">桌面</span>
+      <span class="xp-tab">屏幕保护程序</span>
+      <span class="xp-tab">外观</span>
+      <span class="xp-tab active">设置</span>
+    </div>
+    <div class="xp-display-layout">
+      <div class="xp-monitor-graphic">
+        <div>
+          <div class="monitor-outer">
+            <div class="monitor-screen">kC0VER</div>
+          </div>
+          <div class="monitor-stand"></div>
+          <div class="monitor-base"></div>
+        </div>
+      </div>
+      <div class="xp-display-controls">
+        <div class="xp-slider-section">
+          <label>界面缩放(S): <strong id="zoomPercent">100%</strong></label>
+          <div class="xp-slider-wrap">
+            <input type="range" id="zoomSlider" min="100" max="200" step="25" value="100">
+            <div class="xp-slider-labels">
+              <span>100%</span>
+              <span>125%</span>
+              <span>150%</span>
+              <span>175%</span>
+              <span>200%</span>
+            </div>
+          </div>
+        </div>
+        <div class="xp-dropdown-section">
+          <label>颜色质量(C):</label>
+          <select id="xpColorQuality">
+            <option>最高 (32 位)</option>
+          </select>
+        </div>
+        <div class="xp-hint-text">
+          拖动滑块以调整界面缩放，应用更改前可预览。
+        </div>
+      </div>
+    </div>
+    <div class="xp-button-bar">
+      <button id="xpApplyBtn">应用(A)</button>
+      <button id="xpOkBtn">确定</button>
+      <button id="xpCancelBtn">取消</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== TASKBAR ===== -->
 <div class="taskbar">
   <button class="start-btn" id="startBtn">
@@ -866,6 +1128,10 @@ body {
     <div class="taskbar-tab hidden" data-win="arena" onclick="winMgr.focus('arena')">
       <span class="tab-dot"></span>
       AI Debate Arena
+    </div>
+    <div class="taskbar-tab hidden" data-win="display" onclick="winMgr.focus('display')">
+      <span class="tab-dot"></span>
+      显示属性
     </div>
   </div>
   <div class="taskbar-tray">
@@ -883,6 +1149,8 @@ body {
   <div class="start-items">
     <div class="si" onclick="winMgr.open('vapor');toggleStart();"><span class="si-icon">&#9678;</span>性格纠正所</div>
     <div class="si" onclick="winMgr.open('arena');toggleStart();"><span class="si-icon" style="font-weight:bold;">A</span>AI 辩论场</div>
+    <div class="si-sep"></div>
+    <div class="si" onclick="winMgr.open('display');toggleStart();"><span class="si-icon">&#9638;</span>显示属性</div>
   </div>
 </div>
 
@@ -895,7 +1163,7 @@ body {
   var activeWinId = 'vapor';
   var maximized = {};
   var prevRects = {};
-  var isMobile = window.matchMedia('(max-width: 614px)').matches;
+  var isMobile = window.matchMedia('(max-width: 768px)').matches;
 
   function initWindow(id) {
     var el = document.getElementById('win' + id.charAt(0).toUpperCase() + id.slice(1));
@@ -1015,9 +1283,57 @@ body {
 
   initWindow('vapor');
   initWindow('arena');
+  initWindow('display');
 
   // Start with vapor focused on desktop
   if (!isMobile) focusWindow('vapor');
+
+  /* ===== Zoom Settings (XP Display) ===== */
+  var savedZoom = parseFloat(localStorage.getItem('kc0ver-zoom')) || 1;
+  var currentZoom = savedZoom;
+
+  function applyZoom(z) {
+    currentZoom = z;
+    document.documentElement.style.zoom = z;
+    var iframe = document.getElementById('arenaIframe');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage({ type:'applyZoom', zoom: z }, '*');
+    }
+  }
+
+  applyZoom(currentZoom);
+
+  (function() {
+    var slider = document.getElementById('zoomSlider');
+    var pct = document.getElementById('zoomPercent');
+    if (!slider) return;
+    slider.value = Math.round(currentZoom * 100);
+    if (pct) pct.textContent = Math.round(currentZoom * 100) + '%';
+
+    slider.addEventListener('input', function() {
+      var v = Number(this.value);
+      applyZoom(v / 100);
+      if (pct) pct.textContent = v + '%';
+    });
+
+    document.getElementById('xpOkBtn').addEventListener('click', function() {
+      savedZoom = currentZoom;
+      localStorage.setItem('kc0ver-zoom', String(savedZoom));
+      closeWindow('display');
+    });
+
+    document.getElementById('xpApplyBtn').addEventListener('click', function() {
+      savedZoom = currentZoom;
+      localStorage.setItem('kc0ver-zoom', String(savedZoom));
+    });
+
+    document.getElementById('xpCancelBtn').addEventListener('click', function() {
+      applyZoom(savedZoom);
+      slider.value = Math.round(savedZoom * 100);
+      if (pct) pct.textContent = Math.round(savedZoom * 100) + '%';
+      closeWindow('display');
+    });
+  })();
 
   // Global mousemove/mouseup for dragging
   document.addEventListener('mousemove', function(e) {
@@ -1049,7 +1365,8 @@ body {
   /* ===== Mobile Navigation ===== */
   window.mobileOpenApp = function(appId) {
     document.getElementById('ceHome').style.display = 'none';
-    var winEl = document.getElementById(appId === 'vapor' ? 'winVapor' : 'winArena');
+    var map = { vapor: 'winVapor', arena: 'winArena', display: 'winDisplay' };
+    var winEl = document.getElementById(map[appId] || 'winVapor');
     winEl.classList.add('mobile-open');
     winEl.style.display = 'flex';
   };

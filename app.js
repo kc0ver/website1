@@ -862,5 +862,12 @@
   $('panelOverlay').addEventListener('click', () => { dom.panel.classList.remove('open'); $('panelOverlay').classList.remove('show'); });
 
   if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => {});
+
+  window.addEventListener('message', function(e) {
+    if (e.data && e.data.type === 'applyZoom' && e.data.zoom) {
+      document.documentElement.style.zoom = e.data.zoom;
+    }
+  });
+
   syncInputs();
 })();
