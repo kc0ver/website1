@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0c11" />
+<title>图案解锁 Demo</title>
+<style>
+  :root {
+    --accent: #ffc46b;
+    --success: #6be39a;
+    --error: #ff6b6b;
+    --text: #f2f3f5;
+    --text-2: #8a8f99;
+    --text-3: #616774;
+    --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: max(30px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom));
+    background: radial-gradient(120% 80% at 50% -10%, #1c2432 0%, #111620 45%, #07080c 100%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+  }
+
+  .stage {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .kicker {
+    margin: 6px 0 0;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--text-3);
+  }
+
+  .status {
+    margin: 20px 0 0;
+    font-size: 14px;
+    color: var(--text-2);
+    transition: color 0.2s ease;
+    text-align: center;
+  }
+  .status.success { color: var(--success); }
+  .status.error { color: var(--error); }
+
+  .pad-wrap {
+    position: relative;
+    width: min(86vw, 360px);
+    aspect-ratio: 1 / 1;
+    margin-top: 6px;
+  }
+
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+    cursor: pointer;
+  }
+
+  .pad-wrap.shake { animation: shake 0.36s ease-in-out; }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-12px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-7px); }
+    80% { transform: translateX(4px); }
+  }
+
+  .trail {
+    min-height: 26px;
+    margin: 2px 0 0;
+    font-family: var(--mono);
+    font-size: 17px;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+
+  .card {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px 16px 17px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  }
+  .card.ok {
+    border-color: rgba(107, 227, 154, 0.5);
+    box-shadow: 0 0 24px rgba(107, 227, 154, 0.12) inset;
+  }
+  .card.error {
+    border-color: rgba(255, 107, 107, 0.45);
+  }
+
+  .card-label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--text-3);
+  }
+
+  .password {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    transition: color 0.25s ease;
+    word-break: break-all;
+    text-align: center;
+    line-height: 1.25;
+  }
+  .card.ok .password { color: var(--success); }
+
+  .reset {
+    width: 100%;
+    height: 48px;
+    margin-top: 18px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--accent);
+    color: #16181e;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.12s ease, filter 0.12s ease;
+  }
+  .reset:active { transform: scale(0.98); filter: brightness(0.92); }
+
+  .footer {
+    margin: 14px 0 0;
+    font-size: 11px;
+    color: var(--text-3);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<main class="stage">
+  <h1>图案解锁</h1>
+  <p class="kicker">PATTERN LOCK DEMO</p>
+
+  <p class="status" id="status">滑动绘制图案，设置你的密码</p>
+
+  <div class="pad-wrap" id="pad-wrap">
+    <canvas id="pad" aria-label="九宫格图案解锁区域，按住圆点滑动绘制图案"></canvas>
+  </div>
+
+  <p class="trail" id="trail">—</p>
+
+  <section class="card" id="card">
+    <span class="card-label">当前密码 · 演示用</span>
+    <span class="password" id="password">未设置</span>
+  </section>
+
+  <button class="reset" id="reset" type="button">重设密码</button>
+
+  <p class="footer">演示页面 · 密码只保存在本机浏览器</p>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var ACCENT = '#ffc46b';
+  var SUCCESS = '#6be39a';
+  var ERROR = '#ff6b6b';
+  var MIN_DOTS = 4;
+  var STORAGE_KEY = 'pattern-lock-demo';
+  var MONO = 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
+
+  var canvas = document.getElementById('pad');
+  var ctx = canvas.getContext('2d');
+  var wrapEl = document.getElementById('pad-wrap');
+  var statusEl = document.getElementById('status');
+  var trailEl = document.getElementById('trail');
+  var passwordEl = document.getElementById('password');
+  var cardEl = document.getElementById('card');
+  var resetBtn = document.getElementById('reset');
+
+  var accent = ACCENT;
+  var size = 0;
+  var cell = 0;
+  var dotRadius = 0;
+  var centers = [];
+  var pattern = [];
+  var drawing = false;
+  var pointer = null;
+  var resetTimer = null;
+
+  var stored = loadStored();
+
+  function loadStored() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      var parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed) || parsed.length < MIN_DOTS) return null;
+      var valid = parsed.every(function (n) {
+        return typeof n === 'number' && n >= 0 && n < 9 && n % 1 === 0;
+      });
+      return valid ? parsed : null;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function saveStored() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
+    } catch (err) {
+      /* 隐私模式下无法写入时，本次会话内仍然可用 */
+    }
+  }
+
+  function toHexRgba(hex, alpha) {
+    var n = parseInt(hex.slice(1), 16);
+    return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + alpha + ')';
+  }
+
+  function layout() {
+    var rect = canvas.getBoundingClientRect();
+    size = Math.max(1, Math.round(rect.width));
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.round(size * dpr);
+    canvas.height = Math.round(size * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    cell = size * 0.30;
+    dotRadius = cell * 0.17;
+    centers = [];
+    for (var r = 0; r < 3; r++) {
+      for (var c = 0; c < 3; c++) {
+        centers.push({ x: size / 2 + (c - 1) * cell, y: size / 2 + (r - 1) * cell });
+      }
+    }
+    draw();
+  }
+
+  function draw() {
+    if (!size) return;
+    ctx.clearRect(0, 0, size, size);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    ctx.strokeStyle = toHexRgba(accent, 0.86);
+    ctx.lineWidth = Math.max(2, size * 0.011);
+    for (var i = 1; i < pattern.length; i++) {
+      var from = centers[pattern[i - 1]];
+      var to = centers[pattern[i]];
+      ctx.beginPath();
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(to.x, to.y);
+      ctx.stroke();
+    }
+
+    if (drawing && pointer && pattern.length) {
+      var last = centers[pattern[pattern.length - 1]];
+      ctx.strokeStyle = toHexRgba(accent, 0.42);
+      ctx.beginPath();
+      ctx.moveTo(last.x, last.y);
+      ctx.lineTo(pointer.x, pointer.y);
+      ctx.stroke();
+    }
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = '600 ' + Math.round(dotRadius * 1.12) + 'px ' + MONO;
+
+    for (var d = 0; d < 9; d++) {
+      var p = centers[d];
+      var active = pattern.indexOf(d) !== -1;
+      if (active) {
+        ctx.fillStyle = accent;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, dotRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#14161b';
+      } else {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.055)';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, dotRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.20)';
+        ctx.lineWidth = Math.max(1, size * 0.004);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, dotRadius, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.34)';
+      }
+      ctx.fillText(String(d + 1), p.x, p.y + dotRadius * 0.02);
+    }
+  }
+
+  function localPoint(event) {
+    var rect = canvas.getBoundingClientRect();
+    return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+  }
+
+  function hitDot(x, y) {
+    var best = -1;
+    var bestDistance = cell * 0.46;
+    for (var i = 0; i < 9; i++) {
+      var distance = Math.hypot(x - centers[i].x, y - centers[i].y);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        best = i;
+      }
+    }
+    return best;
+  }
+
+  function addDot(index) {
+    pattern.push(index);
+    if (navigator.vibrate) navigator.vibrate(10);
+  }
+
+  /* 跨过中间点时自动补上，规则与系统图案锁一致（例如 1 → 3 会补上 2） */
+  function addIntermediate(from, to) {
+    var fromRow = Math.floor(from / 3);
+    var fromCol = from % 3;
+    var toRow = Math.floor(to / 3);
+    var toCol = to % 3;
+    if ((fromRow + toRow) % 2 === 0 && (fromCol + toCol) % 2 === 0) {
+      var middle = ((fromRow + toRow) / 2) * 3 + (fromCol + toCol) / 2;
+      if (middle !== from && middle !== to && pattern.indexOf(middle) === -1) {
+        addDot(middle);
+      }
+    }
+  }
+
+  function sequenceText() {
+    if (!pattern.length) return '—';
+    return pattern.map(function (n) { return n + 1; }).join(' → ');
+  }
+
+  function updateTrail() {
+    trailEl.textContent = sequenceText();
+  }
+
+  function renderPassword() {
+    passwordEl.textContent = stored
+      ? stored.map(function (n) { return n + 1; }).join(' · ')
+      : '未设置';
+  }
+
+  function setStatus(text, kind) {
+    statusEl.textContent = text;
+    statusEl.className = 'status' + (kind ? ' ' + kind : '');
+  }
+
+  function idleStatus() {
+    setStatus(stored ? '滑动图案解锁' : '滑动绘制图案，设置你的密码');
+  }
+
+  function setAccent(color) {
+    accent = color;
+    draw();
+  }
+
+  function clearResetTimer() {
+    if (resetTimer !== null) {
+      clearTimeout(resetTimer);
+      resetTimer = null;
+    }
+  }
+
+  function scheduleReset(delay) {
+    clearResetTimer();
+    resetTimer = setTimeout(function () {
+      resetTimer = null;
+      pattern = [];
+      drawing = false;
+      pointer = null;
+      accent = ACCENT;
+      cardEl.classList.remove('ok', 'error');
+      updateTrail();
+      idleStatus();
+      draw();
+    }, delay);
+  }
+
+  function samePattern(a, b) {
+    if (a.length !== b.length) return false;
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  }
+
+  function shake() {
+    wrapEl.classList.remove('shake');
+    void wrapEl.offsetWidth;
+    wrapEl.classList.add('shake');
+  }
+
+  function complete() {
+    updateTrail();
+    var seq = pattern.slice();
+
+    if (seq.length < MIN_DOTS) {
+      setAccent(ERROR);
+      setStatus('至少连接 4 个点', 'error');
+      scheduleReset(900);
+      return;
+    }
+
+    if (!stored) {
+      stored = seq.slice();
+      saveStored();
+      renderPassword();
+      setAccent(SUCCESS);
+      setStatus('密码已保存', 'success');
+      cardEl.classList.add('ok');
+      scheduleReset(1600);
+    } else if (samePattern(stored, seq)) {
+      setAccent(SUCCESS);
+      setStatus('解锁成功', 'success');
+      cardEl.classList.add('ok');
+      scheduleReset(1600);
+    } else {
+      setAccent(ERROR);
+      setStatus('图案错误，请重试', 'error');
+      cardEl.classList.add('error');
+      shake();
+      scheduleReset(1200);
+    }
+  }
+
+  canvas.addEventListener('pointerdown', function (event) {
+    if (!size) return;
+    event.preventDefault();
+
+    var point = localPoint(event);
+    var hit = hitDot(point.x, point.y);
+    if (hit < 0) return;
+
+    clearResetTimer();
+    if (canvas.setPointerCapture) {
+      try { canvas.setPointerCapture(event.pointerId); } catch (err) { /* 忽略 */ }
+    }
+
+    drawing = true;
+    pointer = point;
+    pattern = [];
+    accent = ACCENT;
+    cardEl.classList.remove('ok', 'error');
+    addDot(hit);
+    setStatus(stored ? '绘制中 · 松手即验证' : '绘制中 · 松手即保存');
+    updateTrail();
+    draw();
+  });
+
+  canvas.addEventListener('pointermove', function (event) {
+    if (!drawing) return;
+    event.preventDefault();
+
+    var point = localPoint(event);
+    pointer = point;
+
+    var hit = hitDot(point.x, point.y);
+    if (hit >= 0 && pattern.indexOf(hit) === -1) {
+      var last = pattern[pattern.length - 1];
+      if (last !== undefined) addIntermediate(last, hit);
+      addDot(hit);
+      updateTrail();
+    }
+    draw();
+  });
+
+  function endStroke(event) {
+    if (!drawing) return;
+    event.preventDefault();
+    drawing = false;
+    pointer = null;
+    if (canvas.releasePointerCapture) {
+      try { canvas.releasePointerCapture(event.pointerId); } catch (err) { /* 忽略 */ }
+    }
+    draw();
+    complete();
+  }
+
+  canvas.addEventListener('pointerup', endStroke);
+  canvas.addEventListener('pointercancel', endStroke);
+  canvas.addEventListener('contextmenu', function (event) {
+    event.preventDefault();
+  });
+
+  resetBtn.addEventListener('click', function () {
+    stored = null;
+    try { localStorage.removeItem(STORAGE_KEY); } catch (err) { /* 忽略 */ }
+    clearResetTimer();
+    pattern = [];
+    drawing = false;
+    pointer = null;
+    accent = ACCENT;
+    cardEl.classList.remove('ok', 'error');
+    renderPassword();
+    updateTrail();
+    idleStatus();
+    draw();
+  });
+
+  if (window.ResizeObserver) {
+    new ResizeObserver(layout).observe(canvas);
+  } else {
+    window.addEventListener('resize', layout);
+  }
+
+  layout();
+  renderPassword();
+  idleStatus();
+  updateTrail();
+})();
+</script>
+</body>
+</html>
