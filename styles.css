@@ -26,16 +26,12 @@
   font-size: 13px;
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: unset;
-  zoom: 1.25;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  outline: none;
 }
 
 html, body {
@@ -298,35 +294,10 @@ button { border: 0; }
 .field textarea,
 .field select {
   width: 100%;
-  border: 2px solid;
-  border-color: var(--btn-dark-shadow) var(--btn-highlight) var(--btn-highlight) var(--btn-dark-shadow);
-  background: #FFFFFF;
-  color: #000000;
-  padding: 2px 4px;
-  font-size: 11px;
-  font-family: inherit;
-}
-
-.field input:focus,
-.field textarea:focus,
-.field select:focus {
-  border-color: var(--btn-dark-shadow) var(--btn-highlight) var(--btn-highlight) var(--btn-dark-shadow);
-  outline: 1px dotted #000;
-  outline-offset: -4px;
-}
-
-.field select {
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
-  background: #FFFFFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23000'/%3E%3C/svg%3E") no-repeat right 4px center;
-  padding-right: 18px;
 }
 
 .field input[type="range"] {
   width: 100%;
-  accent-color: #000080;
-  background: var(--window-bg);
 }
 
 .range-val {
@@ -353,6 +324,10 @@ button { border: 0; }
   flex-wrap: nowrap;
 }
 
+body.w95 {
+  background: var(--w95-face);
+}
+
 /* ── Buttons ──────────────────────────────────────────── */
 .small-btn,
 .ghost-btn,
@@ -360,51 +335,32 @@ button { border: 0; }
 .danger-btn,
 .icon-btn {
   cursor: pointer;
-  padding: 3px 8px;
-  font-size: 11px;
-  color: #000;
-  border: 2px solid;
-  border-color: var(--btn-highlight) var(--btn-dark-shadow) var(--btn-dark-shadow) var(--btn-highlight);
-  background: var(--btn-face);
   font-family: inherit;
-}
-
-.small-btn {
-  padding: 2px 6px;
-}
-
-.icon-btn {
-  padding: 3px 6px;
-}
-
-.small-btn:active,
-.ghost-btn:active,
-.primary-btn:active,
-.danger-btn:active,
-.icon-btn:active,
-.small-btn.pressed,
-.ghost-btn.pressed,
-.primary-btn.pressed {
-  border-color: var(--btn-dark-shadow) var(--btn-highlight) var(--btn-highlight) var(--btn-dark-shadow);
-  padding: 4px 7px 2px 9px;
 }
 
 .primary-btn {
   font-weight: bold;
 }
 
-.danger-btn {
-  color: #000;
+/* ── Win98 controls ───────────────────────────────────── */
+.w95 .small-btn,
+.w95 .icon-btn {
+  min-width: 0;
+  padding: 0 6px;
 }
 
-button:disabled {
-  color: var(--disabled-text);
-  border-color: var(--btn-highlight) var(--btn-dark-shadow) var(--btn-dark-shadow) var(--btn-highlight);
-}
-
-button:disabled:active {
-  border-color: var(--btn-highlight) var(--btn-dark-shadow) var(--btn-dark-shadow) var(--btn-highlight);
+.w95 .mode-tab {
+  min-width: 0;
+  min-height: 0;
   padding: 3px 8px;
+  background: var(--w95-face);
+  color: var(--w95-text);
+  box-shadow: inset 1px 1px var(--w95-hilight), inset -1px -1px var(--w95-shadow);
+}
+
+.w95 .mode-tab.active {
+  font-weight: 700;
+  box-shadow: inset 1px 1px var(--w95-shadow), inset -1px -1px var(--w95-hilight);
 }
 
 .hint {
@@ -953,7 +909,7 @@ button:disabled:active {
   display: none;
 }
 
-@media (max-width: 688px) {
+@media (max-width: 768px) {
   .layout {
     display: block;
     grid-template-columns: none;

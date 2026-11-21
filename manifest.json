@@ -1,12 +1,14 @@
 {
-  "name": "AI Debate Arena Browser",
-  "short_name": "DebateArena",
-  "description": "A local browser-only multi-AI debate and discussion app.",
+  "name": "kC0VER · 性格纠正所",
+  "short_name": "kC0VER",
+  "description": "复古 Windows 2000 风格的个人站点，内置多 AI 辩论场。",
+  "lang": "zh-CN",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#090d16",
+  "background_color": "#008080",
   "theme_color": "#008080",
   "icons": [
-    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ]
 }

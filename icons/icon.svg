@@ -1,9 +1,34 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#38bdf8"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs>
-  <rect width="128" height="128" rx="30" fill="#0b1120"/>
-  <path d="M25 77c0-25 18-43 39-43s39 18 39 43v9H25v-9Z" fill="url(#g)"/>
-  <circle cx="49" cy="65" r="8" fill="#0b1120"/>
-  <circle cx="79" cy="65" r="8" fill="#0b1120"/>
-  <path d="M45 91h38" stroke="#e5edf8" stroke-width="8" stroke-linecap="round"/>
-  <path d="M34 30 64 13l30 17" fill="none" stroke="#e5edf8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect width="128" height="128" fill="#008080"/>
+  <g opacity="0.10" fill="#000000">
+    <rect y="8" width="128" height="1"/>
+    <rect y="16" width="128" height="1"/>
+    <rect y="24" width="128" height="1"/>
+    <rect y="32" width="128" height="1"/>
+    <rect y="40" width="128" height="1"/>
+    <rect y="48" width="128" height="1"/>
+    <rect y="56" width="128" height="1"/>
+    <rect y="64" width="128" height="1"/>
+    <rect y="72" width="128" height="1"/>
+    <rect y="80" width="128" height="1"/>
+    <rect y="88" width="128" height="1"/>
+    <rect y="96" width="128" height="1"/>
+    <rect y="104" width="128" height="1"/>
+    <rect y="112" width="128" height="1"/>
+    <rect y="120" width="128" height="1"/>
+  </g>
+  <rect x="10" y="22" width="108" height="72" fill="#C0C0C0"/>
+  <path d="M10 22h108v4H10zM10 22h4v72h-4z" fill="#FFFFFF"/>
+  <path d="M114 22h4v72h-4zM10 90h108v4H10z" fill="#404040"/>
+  <rect x="20" y="32" width="88" height="46" fill="#000080"/>
+  <rect x="20" y="32" width="88" height="46" fill="none" stroke="#404040" stroke-width="2"/>
+  <text x="64" y="61" text-anchor="middle" font-family="'Courier New', monospace" font-size="14" font-weight="bold" fill="#00FF41" letter-spacing="0.5">kC0VER</text>
+  <rect x="96" y="52" width="5" height="10" fill="#00FF41"/>
+  <circle cx="110" cy="87" r="2" fill="#00FF41"/>
+  <rect x="56" y="94" width="16" height="12" fill="#C0C0C0"/>
+  <path d="M56 94h16v2H56zM56 94h2v12h-2z" fill="#FFFFFF"/>
+  <path d="M70 94h2v12h-2zM56 104h16v2H56z" fill="#404040"/>
+  <rect x="40" y="106" width="48" height="8" fill="#C0C0C0"/>
+  <path d="M40 106h48v2H40zM40 106h2v8h-2z" fill="#FFFFFF"/>
+  <path d="M86 106h2v8h-2zM40 112h48v2H40z" fill="#404040"/>
 </svg>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DAWN PRO2 滤波器切换</title>
+<style>
+  :root {
+    --bg: #0f1216;
+    --panel: #171b21;
+    --line: #2a313a;
+    --text: #e6e9ee;
+    --muted: #8b95a3;
+    --accent: #6ea8fe;
+    --ok: #39c07a;
+    --warn: #e3b341;
+    --err: #f06a6a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(1200px 600px at 20% -10%, #1b2430 0%, var(--bg) 55%);
+    color: var(--text);
+    font: 14px/1.55 "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 32px 16px;
+  }
+  main { width: min(820px, 100%); }
+  h1 { font-size: 20px; margin: 0 0 4px; font-weight: 600; letter-spacing: .2px; }
+  .sub { color: var(--muted); margin: 0 0 20px; font-size: 13px; }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .grow { flex: 1; }
+  button {
+    background: #202733;
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font: inherit;
+    cursor: pointer;
+    transition: border-color .15s, background .15s, transform .05s;
+  }
+  button:hover:not(:disabled) { border-color: #3d4757; background: #243040; }
+  button:active:not(:disabled) { transform: translateY(1px); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  button.primary { background: #1d3a63; border-color: #2c568e; }
+  button.primary:hover:not(:disabled) { background: #224777; }
+  .status {
+    display: inline-flex; align-items: center; gap: 7px;
+    color: var(--muted); font-size: 13px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #555; }
+  .dot.on { background: var(--ok); box-shadow: 0 0 8px rgba(57,192,122,.6); }
+  .dot.err { background: var(--err); }
+  .current {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px;
+    background: #12171d; margin-bottom: 12px;
+  }
+  .current .label { color: var(--muted); font-size: 12px; }
+  .current .value { font-size: 17px; font-weight: 600; color: var(--accent); }
+  .modes { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  @media (min-width: 620px) { .modes { grid-template-columns: 1fr 1fr; } }
+  .mode {
+    text-align: left; padding: 12px 14px; border-radius: 10px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .mode .name { font-weight: 600; }
+  .mode .desc { color: var(--muted); font-size: 12px; }
+  .mode.active { border-color: var(--accent); background: #16243a; }
+  .mode.active .name { color: var(--accent); }
+  .log {
+    margin: 0; padding: 10px 12px; max-height: 280px; overflow: auto;
+    background: #0b0e12; border: 1px solid var(--line); border-radius: 10px;
+    font: 12px/1.6 Consolas, "Cascadia Mono", monospace;
+    color: #b9c2cf; white-space: pre-wrap; word-break: break-word;
+  }
+  .hint { color: var(--muted); font-size: 12px; margin-top: 10px; }
+  .danger { color: var(--warn); }
+  .raw { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+  .raw label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); }
+  .raw input {
+    background: #0b0e12; border: 1px solid var(--line); border-radius: 6px;
+    color: var(--text); padding: 6px 8px; font: 12px Consolas, monospace;
+  }
+  details summary { cursor: pointer; color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>DAWN PRO2 滤波器切换</h1>
+  <p class="sub">HID vendor 0x4B · 协议 [OP, CMD, LEN, payload] · 不写固件、不进入 bootloader。</p>
+
+  <section class="panel">
+    <div class="row">
+      <button id="connect" class="primary">连接 DAC</button>
+      <button id="read" disabled>读取当前模式</button>
+      <button id="probe" disabled>版本探测</button>
+      <span class="grow"></span>
+      <span class="status"><span id="dot" class="dot"></span><span id="state">未连接</span></span>
+    </div>
+    <div class="hint">VID 0x35D8 / PID 0x011D。连接时会自动打印 HID collection / report 信息。</div>
+  </section>
+
+  <section class="panel">
+    <div class="current">
+      <span class="label">当前模式</span>
+      <span id="current" class="value">未知</span>
+      <span id="raw" class="label"></span>
+    </div>
+    <div id="modes" class="modes"></div>
+    <div class="hint">切换后固件可能需要约 2 秒重新配置输出；工具会等 2.2 秒再读回。</div>
+  </section>
+
+  <section class="panel">
+    <div class="row" style="margin-bottom:8px">
+      <strong style="font-size:13px">日志</strong>
+      <span class="grow"></span>
+      <button id="clear" style="padding:4px 10px;font-size:12px">清空</button>
+    </div>
+    <pre id="log" class="log"></pre>
+
+    <details style="margin-top:12px">
+      <summary>原始命令（诊断用）</summary>
+      <div class="raw">
+        <label>OP (hex)<input id="rawOp" value="80"></label>
+        <label>CMD (hex)<input id="rawCmd" value="11"></label>
+        <label>LEN (dec)<input id="rawLen" value="0"></label>
+        <label>payload[0] (hex)<input id="rawP0" value="00"></label>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <button id="rawSend" disabled>发送并等待应答</button>
+      </div>
+      <div class="hint">读滤波器：OP=80 CMD=11 LEN=0；写：OP=01 CMD=11 LEN=1 payload=模式号；版本：OP=80 CMD=0C LEN=0。</div>
+    </details>
+  </section>
+</main>
+
+<script>
+const VID = 0x35D8;
+const PID = 0x011D;
+const REPORT_ID = 0x4B;
+const REPORT_LEN = 63;
+
+const OP_WRITE = 0x01;
+const OP_READ = 0x80;
+const CMD_FIRMWARE_VERSION = 0x0C;  // 12
+const CMD_FILTER = 0x11;            // 17
+
+const MODES = [
+  { id: 1, name: 'Fast roll-off · Low-latency', desc: '快速滚降 + 最小相位（出厂默认）' },
+  { id: 2, name: 'Fast roll-off · Phase-compensated', desc: '快速滚降 + 线性相位' },
+  { id: 3, name: 'Slow roll-off · Low-latency', desc: '慢速滚降 + 最小相位' },
+  { id: 4, name: 'Slow roll-off · Phase-compensated', desc: '慢速滚降 + 线性相位' },
+  { id: 5, name: 'Non-oversampling (NOS)', desc: '非过采样模拟' },
+];
+
+const $ = (id) => document.getElementById(id);
+const logEl = $('log');
+const dotEl = $('dot');
+const stateEl = $('state');
+const connectBtn = $('connect');
+const readBtn = $('read');
+const probeBtn = $('probe');
+const rawSendBtn = $('rawSend');
+const currentEl = $('current');
+const rawEl = $('raw');
+const modesEl = $('modes');
+
+let device = null;
+let currentMode = null;
+let pending = null;
+let busy = false;
+
+function log(msg, cls = '') {
+  const t = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+  const line = document.createElement('span');
+  if (cls) line.className = cls;
+  line.textContent = `[${t}] ${msg}\n`;
+  logEl.appendChild(line);
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+function hex(n, w = 2) {
+  return n.toString(16).toUpperCase().padStart(w, '0');
+}
+
+function bytesHex(u8, n = 16) {
+  return Array.from(u8.slice(0, n)).map((b) => hex(b)).join(' ');
+}
+
+function setStatus(text, kind = '') {
+  stateEl.textContent = text;
+  dotEl.className = 'dot' + (kind ? ' ' + kind : '');
+}
+
+function renderModes() {
+  modesEl.innerHTML = '';
+  for (const m of MODES) {
+    const b = document.createElement('button');
+    b.className = 'mode' + (currentMode === m.id ? ' active' : '');
+    b.disabled = !device || busy;
+    b.innerHTML = `<span class="name">${m.id}. ${m.name}</span><span class="desc">${m.desc}</span>`;
+    b.addEventListener('click', () => setFilter(m.id));
+    modesEl.appendChild(b);
+  }
+}
+
+function updateCurrent(mode, source) {
+  currentMode = mode;
+  if (mode == null) {
+    currentEl.textContent = '未知';
+    rawEl.textContent = '';
+  } else {
+    const m = MODES.find((x) => x.id === mode);
+    currentEl.textContent = m ? `${m.id}. ${m.name}` : `未知 (${mode})`;
+    rawEl.textContent = `raw=${mode}${source ? ' · ' + source : ''}`;
+  }
+  renderModes();
+}
+
+function makeReport(op, cmd, len, payload) {
+  const data = new Uint8Array(REPORT_LEN);
+  data[0] = op;
+  data[1] = cmd;
+  data[2] = len;
+  if (len > 0) data[3] = payload & 0xFF;
+  return data;
+}
+
+function logDeviceInfo(d) {
+  log(`已打开：${d.productName || '未知产品'} (${hex(d.vendorId, 4)}:${hex(d.productId, 4)})`);
+  for (const c of d.collections || []) {
+    log(`collection usagePage=0x${hex(c.usagePage, 4)} usage=0x${hex(c.usage, 4)}`);
+    for (const r of c.inputReports || []) {
+      log(`  IN  reportId=${r.reportId} items=${(r.items || []).map((i) => `${i.reportSize}x${i.reportCount}`).join(',')}`);
+    }
+    for (const r of c.outputReports || []) {
+      log(`  OUT reportId=${r.reportId} items=${(r.items || []).map((i) => `${i.reportSize}x${i.reportCount}`).join(',')}`);
+    }
+  }
+}
+
+function onInputReport(event) {
+  const data = new Uint8Array(event.data.buffer, event.data.byteOffset, event.data.byteLength);
+  log(`IN  id=${event.reportId} [${bytesHex(data)}]`);
+  // data 不含 report ID：data[0]=OP, data[1]=CMD, data[2]=LEN, data[3]=payload
+  if (data[0] === OP_READ && data[1] === CMD_FILTER && pending && pending.cmd === CMD_FILTER) {
+    const mode = data[3];
+    const p = pending;
+    pending = null;
+    clearTimeout(p.timer);
+    p.resolve({ cmd: CMD_FILTER, mode, raw: data });
+  } else if (data[0] === OP_READ && data[1] === CMD_FIRMWARE_VERSION && pending && pending.cmd === CMD_FIRMWARE_VERSION) {
+    const p = pending;
+    pending = null;
+    clearTimeout(p.timer);
+    p.resolve({ cmd: CMD_FIRMWARE_VERSION, raw: data });
+  }
+}
+
+function waitResponse(cmd, timeoutMs) {
+  return new Promise((resolve) => {
+    const timer = setTimeout(() => {
+      if (pending && pending.cmd === cmd) pending = null;
+      resolve(null);
+    }, timeoutMs);
+    pending = { cmd, resolve, timer };
+  });
+}
+
+async function sendOnly(op, cmd, len, payload) {
+  if (!device) throw new Error('未连接设备');
+  log(`OUT [${hex(op)} ${hex(cmd)} ${hex(len)} ${len ? hex(payload) : ''}]`);
+  await device.sendReport(REPORT_ID, makeReport(op, cmd, len, payload));
+}
+
+async function transact(op, cmd, len, payload, timeoutMs = 4000) {
+  if (!device) throw new Error('未连接设备');
+  if (busy) throw new Error('上一条命令还在等待应答');
+  busy = true;
+  renderModes();
+  try {
+    log(`OUT [${hex(op)} ${hex(cmd)} ${hex(len)} ${len ? hex(payload) : ''}]`);
+    const wait = waitResponse(cmd, timeoutMs);
+    await device.sendReport(REPORT_ID, makeReport(op, cmd, len, payload));
+    const r = await wait;
+    if (!r) log(`命令 ${hex(cmd)} 无应答（${timeoutMs} ms）`, 'danger');
+    return r;
+  } finally {
+    busy = false;
+    pending = null;
+    renderModes();
+  }
+}
+
+async function readFilter() {
+  const r = await transact(OP_READ, CMD_FILTER, 0, 0);
+  if (r) {
+    updateCurrent(r.mode, '读回');
+    log(`当前模式 = ${r.mode}`, 'ok');
+    return r.mode;
+  }
+  return null;
+}
+
+async function setFilter(mode) {
+  if (!device || busy) return;
+  busy = true;
+  renderModes();
+  try {
+    // The firmware does not answer a SET command; only reads get a report.
+    await sendOnly(OP_WRITE, CMD_FILTER, 1, mode);
+    log(`模式 ${mode} 已发送；固件对写命令不返回应答，等待约 2 秒后读回`);
+    await new Promise((res) => setTimeout(res, 2200));
+  } finally {
+    busy = false;
+    renderModes();
+  }
+  const rb = await readFilter();
+  if (rb != null && rb !== mode) log(`警告：读回 ${rb}，与写入 ${mode} 不一致`, 'danger');
+}
+
+async function probeVersion() {
+  const r = await transact(OP_READ, CMD_FIRMWARE_VERSION, 0, 0, 3000);
+  if (!r) return;
+  const text = Array.from(r.raw.slice(3)).map((b) => (b >= 32 && b < 127 ? String.fromCharCode(b) : '.')).join('');
+  log(`版本应答 payload: ${bytesHex(r.raw.slice(3), 32)}  ascii="${text}"`, 'ok');
+}
+
+async function connect() {
+  if (!('hid' in navigator)) {
+    log('当前浏览器不支持 WebHID，请使用 Chrome 或 Edge 桌面版。', 'danger');
+    return;
+  }
+  try {
+    const devices = await navigator.hid.requestDevice({
+      filters: [{ vendorId: VID, productId: PID }],
+    });
+    if (!devices.length) return;
+    log(`浏览器返回 ${devices.length} 个 HID 接口`);
+    for (const d of devices) {
+      log(`  ${d.productName || '?'} ${hex(d.vendorId, 4)}:${hex(d.productId, 4)} opened=${d.opened}`);
+    }
+    // 优先选择带有 0x4B output report 的接口
+    device = devices.find((d) =>
+      (d.collections || []).some((c) => (c.outputReports || []).some((r) => r.reportId === REPORT_ID))
+    ) || devices[0];
+    if (!device.opened) await device.open();
+    logDeviceInfo(device);
+    device.addEventListener('inputreport', onInputReport);
+    setStatus('已连接', 'on');
+    connectBtn.textContent = '断开';
+    connectBtn.onclick = disconnect;
+    readBtn.disabled = false;
+    probeBtn.disabled = false;
+    rawSendBtn.disabled = false;
+    renderModes();
+    // 给固件一点时间完成配置
+    await new Promise((r) => setTimeout(r, 1200));
+    await probeVersion();
+    await readFilter();
+    if (currentMode == null) {
+      log('两个命令都没有应答。请先播放任意音频（让 DAC 进入 streaming 状态）再点“读取当前模式”；若仍无应答，把上面的日志发我。', 'danger');
+    }
+  } catch (e) {
+    log(`连接失败：${e.message}`, 'danger');
+    setStatus('连接失败', 'err');
+  }
+}
+
+async function disconnect() {
+  if (!device) return;
+  try {
+    device.removeEventListener('inputreport', onInputReport);
+    await device.close();
+  } catch (_) {}
+  device = null;
+  currentMode = null;
+  updateCurrent(null);
+  setStatus('未连接');
+  connectBtn.textContent = '连接 DAC';
+  connectBtn.onclick = connect;
+  readBtn.disabled = true;
+  probeBtn.disabled = true;
+  rawSendBtn.disabled = true;
+  renderModes();
+  log('已断开');
+}
+
+connectBtn.onclick = connect;
+readBtn.onclick = () => readFilter().catch((e) => log(e.message, 'danger'));
+probeBtn.onclick = () => probeVersion().catch((e) => log(e.message, 'danger'));
+rawSendBtn.onclick = async () => {
+  try {
+    const op = parseInt($('rawOp').value, 16);
+    const cmd = parseInt($('rawCmd').value, 16);
+    const len = parseInt($('rawLen').value, 10) || 0;
+    const p0 = parseInt($('rawP0').value, 16);
+    const r = await transact(op, cmd, len, p0);
+    if (r) log(`应答 raw: ${bytesHex(r.raw, 32)}`, 'ok');
+  } catch (e) {
+    log(e.message, 'danger');
+  }
+};
+$('clear').onclick = () => { logEl.textContent = ''; };
+
+renderModes();
+log('就绪。连接后先做版本探测，再做滤波器读取。');
+</script>
+</body>
+</html>

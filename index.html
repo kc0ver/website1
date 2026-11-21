@@ -4,495 +4,166 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>kC0VER - 性格纠正所·锚点</title>
+<meta name="description" content="kC0VER 的复古 Windows 98 风格个人站点，内置多 AI 辩论场。">
+<meta name="theme-color" content="#008080">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="vendor/win95/win95.css">
 <style>
-/* ============ CSS Variables ============ */
-:root {
-  --btn-face: #C0C0C0;
-  --btn-highlight: #FFFFFF;
-  --btn-shadow: #808080;
-  --btn-dark: #404040;
-  --window-bg: #C0C0C0;
-  --title-active-from: #000080;
-  --title-active-to: #1084D0;
-  --title-text: #FFFFFF;
-  --desktop: #008080;
-  --text: #000000;
-  --selected-bg: #000080;
-  --selected-text: #FFFFFF;
-  --disabled-text: #808080;
-
-  --neon-purple: #ff00ff;
-  --cyber-purple: #9d00ff;
-  --electric-blue: #00eeff;
-  --vapor-pink: #ff6bff;
-  --retro-yellow: #ffff00;
-  --matrix-green: #00ff41;
-
-  font-family: "Courier New", "SimSun", "FangSong", "KaiTi", serif;
-  font-size: 11px;
+/* ============ Windows 98 标题栏渐变 ============ */
+.w95 .w95-window .w95-titlebar {
+  background: linear-gradient(to right, #000080 0%, #1084d0 100%);
+}
+.w95 .w95-window.is-inactive .w95-titlebar {
+  background: linear-gradient(to right, #808080 0%, #b5b5b5 100%);
+  color: #c0c0c0;
 }
 
-/* ============ Reset & Base ============ */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-html, body {
-  height: 100%; overflow: hidden;
-  -webkit-font-smoothing: none;
-  -moz-osx-font-smoothing: unset;
+/* ============ 桌面图标：按下时保持原尺寸 ============ */
+/* win95.css 的按钮 :active 内边距优先级高于图标的 all: unset，
+   且 all: unset 把 box-sizing 重置为 content-box，按下会被撑宽 24px 并右移 */
+.w95 .w95-icons .w95-desk-icon,
+.w95 .w95-icons .w95-desk-icon:not(:disabled):active {
+  box-sizing: border-box;
+  width: 75px;
+  padding: 4px 0 0;
+  box-shadow: none;
 }
 
-body {
-  background: var(--desktop);
-  color: var(--text);
-  font-size: 11px;
-  user-select: none;
-  position: relative;
-}
+/* ============ 开始按钮小旗 / 托盘 ============ */
+.start-flag { display: inline-flex; width: 16px; height: 16px; margin-right: 4px; }
+.start-flag svg { width: 16px; height: 16px; display: block; image-rendering: pixelated; }
+.tray-icon { display: inline-flex; width: 16px; height: 16px; flex: none; }
+.tray-icon svg { width: 16px; height: 16px; display: block; image-rendering: pixelated; }
 
-/* ============ Desktop ============ */
-.desktop {
-  position: fixed; inset: 0; bottom: 28px;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse at 30% 20%, rgba(157,0,255,0.18) 0%, transparent 60%),
-    radial-gradient(ellipse at 70% 70%, rgba(255,0,255,0.12) 0%, transparent 60%),
-    var(--desktop);
-}
-
-/* ============ CRT Scanline Overlay ============ */
-.crt {
-  position: fixed; inset: 0; pointer-events: none; z-index: 900;
-  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.12) 0px, rgba(0,0,0,0.12) 1px, transparent 1px, transparent 3px);
-  animation: scanMove 8s linear infinite;
-}
-
-.noise-overlay {
-  position: fixed; inset: 0; pointer-events: none; z-index: 899;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.05; animation: noiseAnim 0.3s infinite;
-}
-
-/* ============ Desktop Icons ============ */
-.desktop-icons {
-  position: absolute; top: 12px; left: 12px;
-  display: flex; flex-direction: column; gap: 18px;
-  z-index: 10;
-}
-
-.desk-icon {
-  display: flex; flex-direction: column; align-items: center;
-  width: 68px; cursor: pointer; padding: 4px;
-  border: 1px solid transparent;
-}
-
-.desk-icon:active { border: 1px dotted var(--text); }
-
-.desk-icon .icon-img {
-  width: 36px; height: 36px; margin-bottom: 4px;
-  display: grid; place-items: center;
-  font-size: 22px; color: #FFFFFF;
-  border: 1px solid var(--btn-highlight);
-  background: var(--selected-bg);
-  box-shadow: 1px 1px 0 var(--btn-dark);
-}
-
-.desk-icon span {
-  color: #FFFFFF; font-size: 11px; text-align: center;
-  line-height: 1.3; word-break: break-all;
-  text-shadow: 1px 1px 1px #000;
-}
-
-/* ============ Window Frame ============ */
-.window {
-  position: absolute; width: 580px;
-  background: var(--window-bg);
-  border: 2px solid;
-  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
-  display: flex; flex-direction: column;
-  box-shadow: 2px 2px 10px rgba(0,0,0,0.4);
-  z-index: 100; min-height: 200px;
-  animation: windowGlitch 8s linear infinite;
-}
-
-.window.focused { z-index: 110; }
-
-.window.maximized {
-  top: 0 !important; left: 0 !important;
-  width: 100% !important; height: calc(100% - 28px) !important;
-}
-
-.window-titlebar {
-  height: 22px;
-  background: linear-gradient(90deg, var(--title-active-from), var(--title-active-to));
-  color: var(--title-text);
-  display: flex; align-items: center;
-  padding: 0 2px 0 4px;
-  font-size: 11px; font-weight: bold;
-  cursor: default; flex-shrink: 0;
-}
-
-.window-icon {
-  margin-right: 4px; font-size: 12px;
-  color: var(--retro-yellow);
-  text-shadow: 0 0 6px var(--retro-yellow);
-}
-
-.window-title-text {
-  flex: 1; overflow: hidden; white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.window-btns { display: flex; gap: 2px; }
-
-.window-btns button {
-  width: 19px; height: 17px;
-  background: var(--btn-face);
-  border: 1px solid;
-  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
-  font-size: 10px; cursor: pointer; padding: 0;
-  color: #000; font-family: "Fixedsys", "Terminal", "Courier New", "MS Sans Serif", "SimSun", sans-serif;
-  display: flex; align-items: center; justify-content: center;
-  line-height: 1;
-}
-
-.window-btns button:active {
-  border-color: var(--btn-dark) var(--btn-highlight) var(--btn-highlight) var(--btn-dark);
-}
-
-.mobile-back-btn {
-  display: none; width: 19px; height: 17px; margin-right: 2px;
-  background: var(--btn-face);
-  border: 1px solid;
-  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
-  font-size: 10px; cursor: pointer; padding: 0;
-  color: #000; font-family: "Fixedsys", "Terminal", "Courier New", "MS Sans Serif", "SimSun", sans-serif;
+/* ============ 移动端返回按钮 ============ */
+.mobile-back {
+  display: none;
+  width: 16px; height: 14px; margin-right: 2px; padding: 0;
+  min-width: 0; min-height: 0;
+  font-size: 9px; line-height: 1;
   align-items: center; justify-content: center;
-  flex-shrink: 0;
+  flex: none;
 }
 
-.window-menubar {
-  height: 20px; background: var(--btn-face);
-  border-bottom: 1px solid var(--btn-shadow);
-  display: flex; align-items: center;
-  padding: 0 4px; flex-shrink: 0;
-}
-
-.menu-item {
-  padding: 1px 6px; cursor: pointer; color: var(--text);
-  font-size: 11px;
-}
-
-.menu-item:hover {
-  background: var(--selected-bg); color: var(--selected-text);
-}
-
-.window-body {
-  flex: 1; min-height: 0; overflow: auto;
+/* ============ 性格纠正所窗口内容 ============ */
+.vapor-body {
+  padding: 0;
+  overflow: auto;
+  position: relative;
   background:
     radial-gradient(circle at 20% 20%, rgba(157,0,255,0.25) 0%, transparent 50%),
-    radial-gradient(circle at 80% 60%, rgba(255,0,255,0.2) 0%, transparent 50%),
+    radial-gradient(circle at 80% 60%, rgba(255,0,255,0.20) 0%, transparent 50%),
     #0a0011;
-  padding: 8px;
-  position: relative;
 }
-
-.window-body.arena-body {
-  background: #FFFFFF;
-  padding: 0;
-  overflow: hidden;
+.vapor-body::after {
+  content: '';
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px);
+  opacity: 0.35;
 }
-
-.window-body.arena-body iframe {
-  width: 100%; height: 100%; border: none; display: block;
-}
-
-.window-statusbar {
-  height: 20px; background: var(--btn-face);
-  border-top: 1px solid var(--btn-shadow);
-  display: flex; align-items: center;
-  padding: 0 6px; font-size: 11px; flex-shrink: 0;
-  color: var(--text);
-}
-
-.status-grip {
-  margin-left: auto;
-  border: 1px solid;
-  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
-  width: 14px; height: 14px;
-  background: repeating-conic-gradient(var(--btn-face) 0% 25%, var(--btn-shadow) 0% 50%) 50% / 6px 6px;
-}
-
-/* ============ Scrollbar ============ */
-::-webkit-scrollbar { width: 17px; height: 17px; background: var(--btn-face); }
-::-webkit-scrollbar-track { background: var(--btn-face); border: 1px solid var(--btn-dark); }
-::-webkit-scrollbar-thumb {
-  background: var(--btn-face);
-  border: 2px solid;
-  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
-}
-::-webkit-scrollbar-button {
-  display: block; width: 17px; height: 17px;
-  background: var(--btn-face);
-  border: 1px solid;
-  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
-}
-
-/* ============ Vaporwave Content ============ */
 .vapor-wrap {
-  display: flex; flex-direction: column; align-items: center;
-  padding: 30px 20px; text-align: center;
-  position: relative;
+  min-height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 26px 20px; text-align: center; position: relative;
 }
-
 .vhs-tag {
-  color: var(--retro-yellow); font-size: 10px;
-  letter-spacing: 4px; margin-bottom: 20px;
-  font-family: "Fixedsys", "Terminal", "Courier New", "MS Sans Serif", "SimSun", sans-serif;
-  text-shadow: 0 0 8px var(--retro-yellow);
+  color: #ffff00; font-size: 10px;
+  letter-spacing: 4px; margin-bottom: 18px;
+  font-family: "Fixedsys", "Terminal", "W95 Sans", monospace;
+  text-shadow: 0 0 8px #ffff00;
   animation: vhsBlink 2s infinite;
 }
-
 .vapor-name {
   font-size: 3.8rem; font-weight: 900;
-  background: linear-gradient(45deg, var(--neon-purple), var(--vapor-pink), var(--electric-blue), var(--neon-purple));
+  background: linear-gradient(45deg, #ff00ff, #ff6bff, #00eeff, #ff00ff);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
   background-size: 300% 300%;
   animation: gradientShift 3s ease infinite;
-  letter-spacing: 6px; margin-bottom: 12px;
+  letter-spacing: 6px; margin: 0 0 12px;
   text-shadow: 0 0 30px rgba(255,0,255,0.5), 0 0 60px rgba(255,0,255,0.3);
   position: relative;
 }
-
 .vapor-name::before {
   content: '0100101101000011';
   position: absolute; inset: 0;
-  color: var(--matrix-green); opacity: 0.15;
+  color: #00ff41; opacity: 0.15;
   font-size: 0.9rem; letter-spacing: 1px;
   font-family: "Courier New", monospace;
   animation: binaryDrift 12s linear infinite;
   pointer-events: none;
 }
-
 .vapor-title {
-  font-size: 1.5rem; color: var(--electric-blue);
-  margin-bottom: 28px; letter-spacing: 3px;
+  font-size: 1.5rem; color: #00eeff;
+  margin: 0 0 24px; letter-spacing: 3px;
   position: relative; padding: 12px 0;
   font-weight: bold;
 }
-
 .vapor-title::before,
 .vapor-title::after {
   content: '\25A0\25A0\25A0\25A0\25A0\25A0\25A0\25A0';
   position: absolute; left: 0; right: 0; height: 2px;
-  color: var(--neon-purple); letter-spacing: 1px;
+  color: #ff00ff; letter-spacing: 1px;
   font-size: 8px; opacity: 0.5;
 }
 .vapor-title::before { top: 0; }
 .vapor-title::after { bottom: 0; }
-
 .vapor-desc {
-  font-size: 13px; margin: 24px 0; padding: 28px 20px;
+  font-size: 13px; margin: 0 0 20px; padding: 24px 20px;
   background: rgba(0,0,0,0.55);
-  border-left: 4px solid var(--neon-purple);
-  border-right: 4px solid var(--electric-blue);
+  border-left: 4px solid #ff00ff;
+  border-right: 4px solid #00eeff;
   position: relative; overflow: hidden;
   line-height: 2; font-style: italic;
   text-shadow: 0 0 8px rgba(255,255,255,0.25);
   color: #d0d0d0;
   max-width: 420px; width: 100%;
 }
-
 .vapor-desc::after {
   content: '\2588'; position: absolute; right: 14px; bottom: 14px;
-  color: var(--matrix-green); font-size: 13px;
+  color: #00ff41; font-size: 13px;
   animation: blink 1s infinite;
 }
-
-.vapor-desc .system-tag {
+.system-tag {
   display: block; margin-top: 12px;
-  color: var(--matrix-green); font-size: 11px;
+  color: #00ff41; font-size: 11px;
   font-style: normal; letter-spacing: 1px;
 }
+.vapor-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+.vapor-btn { padding: 3px 16px; letter-spacing: 1px; }
 
-.vapor-btns {
-  display: flex; gap: 16px; flex-wrap: wrap;
-  justify-content: center; margin-top: 12px;
+/* ============ 内嵌页面窗口 ============ */
+.arena-body, .app-frame { padding: 0; overflow: hidden; background: #ffffff; }
+.arena-body iframe, .app-frame iframe { width: 100%; height: 100%; border: none; display: block; }
+
+/* ============ 显示属性 ============ */
+.display-body { padding: 0; }
+.display-layout { display: flex; gap: 18px; padding: 14px 12px 8px; }
+.display-monitor {
+  width: 142px; flex: none;
+  display: flex; flex-direction: column; align-items: center;
+  padding-top: 4px;
 }
-
-.vapor-btn {
-  cursor: pointer; padding: 6px 18px;
-  font-size: 12px; color: #000;
-  border: 2px solid;
-  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
-  background: var(--btn-face);
-  font-family: "Fixedsys", "Terminal", "Courier New", "MS Sans Serif", "SimSun", sans-serif;
-  letter-spacing: 1px;
+.monitor-outer { background: var(--w95-face); box-shadow: var(--w95-raised); padding: 6px; }
+.monitor-screen {
+  width: 120px; height: 88px;
+  background: #000080; color: #ffffff;
+  display: grid; place-items: center;
+  font-weight: 700;
+  box-shadow: var(--w95-sunken);
 }
+.monitor-stand { width: 22px; height: 16px; background: var(--w95-face); box-shadow: var(--w95-raised); margin: 0 auto; }
+.monitor-base { width: 56px; height: 6px; background: var(--w95-face); box-shadow: var(--w95-raised); margin: 0 auto; }
+.display-controls { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+.display-controls label { display: block; margin-bottom: 4px; }
+.display-controls input[type="range"] { width: 100%; }
+.slider-labels { display: flex; justify-content: space-between; margin-top: 2px; color: var(--w95-text); }
+.display-hint { color: var(--w95-shadow); line-height: 1.4; }
+.display-actions { padding: 6px 12px 12px; }
 
-.vapor-btn:hover {
-  background: linear-gradient(135deg, rgba(255,0,255,0.15), rgba(0,238,255,0.1)), var(--btn-face);
-  box-shadow: 0 0 14px rgba(255,0,255,0.35);
-}
-
-.vapor-btn:active {
-  border-color: var(--btn-dark) var(--btn-highlight) var(--btn-highlight) var(--btn-dark);
-}
-
-.vapor-btn::before { content: '\25B6 '; color: var(--retro-yellow); }
-
-/* ============ Taskbar ============ */
-.taskbar {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  height: 28px; background: var(--btn-face);
-  border-top: 2px solid var(--btn-highlight);
-  display: flex; align-items: center;
-  padding: 0 2px; z-index: 800;
-  box-shadow: 0 -1px 0 var(--btn-shadow);
-}
-
-.start-btn {
-  display: flex; align-items: center; gap: 3px;
-  height: 22px; padding: 0 6px;
-  background: var(--btn-face);
-  border: 2px solid;
-  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
-  font-size: 11px; font-weight: bold; cursor: pointer;
-  font-family: "Fixedsys", "Terminal", "Courier New", "MS Sans Serif", "SimSun", sans-serif;
-  color: #000;
-}
-
-.start-btn:active, .start-btn.active {
-  border-color: var(--btn-dark) var(--btn-highlight) var(--btn-highlight) var(--btn-dark);
-}
-
-.start-btn .win-flag {
-  display: inline-block; width: 14px; height: 14px;
-  background: linear-gradient(180deg, var(--title-active-from) 0%, var(--title-active-to) 50%, var(--title-active-from) 100%);
-  border: 1px solid var(--btn-dark);
-}
-
-.start-btn:hover .win-flag { box-shadow: 0 0 8px var(--electric-blue); }
-
-.taskbar-sep {
-  width: 3px; height: 22px;
-  border-left: 1px solid var(--btn-shadow);
-  border-right: 1px solid var(--btn-highlight);
-  margin: 0 3px;
-}
-
-.taskbar-tabs {
-  flex: 1; display: flex; align-items: center; gap: 2px;
-  height: 22px; padding: 0 4px; min-width: 0;
-}
-
-.taskbar-tab {
-  height: 22px; padding: 0 8px;
-  background: var(--btn-face);
-  border: 2px solid;
-  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
-  font-size: 11px; cursor: pointer; max-width: 180px;
-  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
-  font-family: "Fixedsys", "Terminal", "Courier New", "MS Sans Serif", "SimSun", sans-serif;
-  display: flex; align-items: center; gap: 4px;
-  color: #000;
-}
-
-.taskbar-tab.active {
-  border-color: var(--btn-dark) var(--btn-highlight) var(--btn-highlight) var(--btn-dark);
-  background: linear-gradient(0deg, rgba(0,0,128,0.08), transparent);
-  font-weight: bold;
-}
-
-.taskbar-tab .tab-dot {
-  width: 6px; height: 6px;
-  background: var(--matrix-green);
-  box-shadow: 0 0 4px var(--matrix-green);
-}
-
-.taskbar-tray {
-  display: flex; align-items: center; gap: 4px;
-  padding: 0 4px; height: 22px;
-  border: 2px solid;
-  border-color: var(--btn-dark) var(--btn-highlight) var(--btn-highlight) var(--btn-dark);
-  font-size: 11px;
-}
-
-.taskbar-tray .tray-icon { font-size: 12px; color: var(--text); }
-#taskbarClock { font-size: 11px; min-width: 50px; text-align: right; }
-
-/* ============ Start Menu ============ */
-.start-menu {
-  position: fixed; bottom: 28px; left: 0;
-  width: 220px; background: var(--btn-face);
-  border: 2px solid;
-  border-color: var(--btn-highlight) var(--btn-dark) var(--btn-dark) var(--btn-highlight);
-  z-index: 999; display: none;
-  box-shadow: 2px -2px 8px rgba(0,0,0,0.3);
-}
-
-.start-menu.open { display: block; }
-
-.start-banner {
-  width: 28px; background: linear-gradient(180deg, var(--title-active-from), var(--title-active-to));
-  position: absolute; left: 0; top: 0; bottom: 0;
-  display: flex; align-items: flex-end; justify-content: center;
-  padding-bottom: 8px;
-}
-
-.start-banner span {
-  transform: rotate(-90deg); white-space: nowrap;
-  color: var(--title-text); font-size: 14px; font-weight: bold;
-  letter-spacing: 2px;
-  text-shadow: 0 0 10px var(--neon-purple);
-}
-
-.start-items { margin-left: 28px; padding: 2px 0; }
-
-.start-items .si {
-  display: flex; align-items: center; gap: 8px;
-  padding: 5px 8px; cursor: pointer; color: var(--text);
-  font-size: 11px;
-}
-
-.start-items .si:hover {
-  background: var(--selected-bg); color: var(--selected-text);
-}
-
-.start-items .si .si-icon {
-  width: 18px; height: 18px; display: grid; place-items: center;
-  font-size: 12px;
-}
-
-.start-sep {
-  height: 2px; margin: 2px 4px;
-  border-top: 1px solid var(--btn-shadow);
-  border-bottom: 1px solid var(--btn-highlight);
-}
-
-.si-sep {
-  height: 2px; margin: 2px 4px;
-  border-top: 1px solid var(--btn-shadow);
-  border-bottom: 1px solid var(--btn-highlight);
-}
-
-/* ============ Desktop Geometric Decorations ============ */
-.geo {
-  position: fixed; pointer-events: none; z-index: 5;
-  opacity: 0.08; font-size: 6rem;
-  animation: drift 35s linear infinite;
-}
-
-.geo-1 { top: 8%; left: 55%; color: var(--neon-purple); animation-duration: 28s; }
-.geo-2 { top: 60%; left: 75%; color: var(--cyber-purple); animation-duration: 42s; animation-delay: 8s; }
-.geo-3 { top: 45%; left: 10%; color: var(--electric-blue); animation-duration: 38s; animation-delay: 15s; }
-
-.rain-layer {
-  position: fixed; inset: 0; pointer-events: none;
-  z-index: 4; opacity: 0.12;
-}
-
-/* ============ Windows Mobile Home Screen ============ */
+/* ============ 移动端：Windows Mobile 今日屏 ============ */
 .ce-home {
   display: none;
   position: fixed; inset: 0;
@@ -500,7 +171,6 @@ body {
   flex-direction: column;
   z-index: 500; overflow: hidden;
 }
-
 .ce-navbar {
   height: 26px; flex-shrink: 0;
   background: linear-gradient(180deg, #000060 0%, #000080 40%, #1048A0 100%);
@@ -511,92 +181,36 @@ body {
   font-family: "Tahoma", "MS Sans Serif", sans-serif;
   box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
-
 .ce-navbar .ce-start {
   width: 24px; height: 22px;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; margin: 0 2px;
   font-size: 14px; line-height: 1;
 }
-
-.ce-navbar .ce-title {
-  flex: 1; text-align: center;
-  font-size: 11px; letter-spacing: 0.5px;
-  text-shadow: 0 1px 1px rgba(0,0,0,0.5);
-}
-
-.ce-navbar .ce-bars {
-  padding: 0 4px; font-size: 10px;
-  display: flex; align-items: center; gap: 3px;
-  opacity: 0.85;
-}
-
-/* Today screen plugins */
-.ce-today {
-  flex: 1; overflow-y: auto; padding: 4px;
-  display: flex; flex-direction: column; gap: 4px;
-}
-
-.ce-plugin {
-  background: #FFFFFF;
-  border: 1px solid;
-  border-color: #A0B0C0 #708090 #708090 #A0B0C0;
-}
-
+.ce-navbar .ce-title { flex: 1; text-align: center; font-size: 11px; letter-spacing: 0.5px; text-shadow: 0 1px 1px rgba(0,0,0,0.5); }
+.ce-navbar .ce-bars { padding: 0 4px; font-size: 10px; display: flex; align-items: center; gap: 3px; opacity: 0.85; }
+.ce-today { flex: 1; overflow-y: auto; padding: 4px; display: flex; flex-direction: column; gap: 4px; }
+.ce-plugin { background: #FFFFFF; border: 1px solid; border-color: #A0B0C0 #708090 #708090 #A0B0C0; }
 .ce-plugin-head {
   background: linear-gradient(180deg, #E8F0F8, #C8D8E8);
   padding: 3px 6px;
-  font-size: 11px; font-weight: bold;
-  color: #000080;
+  font-size: 11px; font-weight: bold; color: #000080;
   border-bottom: 1px solid #98A8B8;
   display: flex; align-items: center; gap: 4px;
   font-family: "Tahoma", "MS Sans Serif", sans-serif;
 }
-
-.ce-plugin-head .ce-plugin-dot {
-  width: 6px; height: 6px;
-  border: 1px solid #000080;
-  background: #000080;
-}
-
-.ce-plugin-body {
-  padding: 5px 6px;
-  font-size: 11px;
-  color: #202020;
-  font-family: "Tahoma", "MS Sans Serif", sans-serif;
-}
-
-.ce-plugin-body p {
-  margin: 0; line-height: 1.6;
-}
-
-.ce-date-big {
-  font-size: 18px; font-weight: bold;
-  color: #000080; margin-bottom: 1px;
-}
-
-.ce-date-sub {
-  font-size: 11px; color: #506080;
-}
-
-.ce-app-grid {
-  display: flex; gap: 10px;
-}
-
+.ce-plugin-head .ce-plugin-dot { width: 6px; height: 6px; border: 1px solid #000080; background: #000080; }
+.ce-plugin-body { padding: 5px 6px; font-size: 11px; color: #202020; font-family: "Tahoma", "MS Sans Serif", sans-serif; }
+.ce-plugin-body p { margin: 0; line-height: 1.6; }
+.ce-date-big { font-size: 18px; font-weight: bold; color: #000080; margin-bottom: 1px; }
+.ce-date-sub { font-size: 11px; color: #506080; }
+.ce-app-grid { display: flex; gap: 10px; }
 .ce-app-grid .ce-app-cell {
-  display: flex; flex-direction: column;
-  align-items: center; cursor: pointer;
-  padding: 6px 8px;
-  border: 1px solid transparent;
-  width: 64px; background: none;
+  display: flex; flex-direction: column; align-items: center; cursor: pointer;
+  padding: 6px 8px; border: 1px solid transparent; width: 64px; background: none;
   font-family: "Tahoma", "MS Sans Serif", sans-serif;
 }
-
-.ce-app-grid .ce-app-cell:active {
-  border-color: #000080;
-  background: #E0E8FF;
-}
-
+.ce-app-grid .ce-app-cell:active { border-color: #000080; background: #E0E8FF; }
 .ce-app-cell .ce-app-icon {
   width: 36px; height: 36px;
   display: grid; place-items: center;
@@ -605,42 +219,19 @@ body {
   border: 1px solid #000060;
   margin-bottom: 3px;
 }
-
-.ce-app-cell .ce-app-label {
-  font-size: 10px; color: #000080;
-  text-align: center; line-height: 1.25;
-  font-weight: bold;
-}
-
-/* Bottom command bar */
+.ce-app-cell .ce-app-label { font-size: 10px; color: #000080; text-align: center; line-height: 1.25; font-weight: bold; }
 .ce-cmdbar {
   height: 26px; flex-shrink: 0;
   background: linear-gradient(180deg, #DCE4F0, #B0C0D8);
   border-top: 1px solid #90A0B8;
-  display: flex; align-items: center;
-  justify-content: space-between;
-  padding: 0;
+  display: flex; align-items: center; justify-content: space-between;
   font-size: 11px; font-weight: bold;
   font-family: "Tahoma", "MS Sans Serif", sans-serif;
   color: #000080;
 }
-
-.ce-softkey {
-  padding: 0 14px; height: 100%;
-  display: flex; align-items: center;
-  cursor: pointer; letter-spacing: 0.3px;
-  position: relative;
-}
-
-.ce-softkey:active {
-  background: rgba(0,0,0,0.08);
-}
-
-.ce-cmdbar .ce-dpad {
-  display: flex; align-items: center; gap: 6px;
-  padding: 0 6px;
-}
-
+.ce-softkey { padding: 0 14px; height: 100%; display: flex; align-items: center; cursor: pointer; letter-spacing: 0.3px; }
+.ce-softkey:active { background: rgba(0,0,0,0.08); }
+.ce-cmdbar .ce-dpad { display: flex; align-items: center; gap: 6px; padding: 0 6px; }
 .ce-cmdbar .ce-dpad-btn {
   width: 18px; height: 14px;
   display: flex; align-items: center; justify-content: center;
@@ -650,270 +241,36 @@ body {
   border-color: #E8E8F0 #788898 #788898 #E8E8F0;
   color: #404040;
 }
+.ce-cmdbar .ce-dpad-btn:active { border-color: #788898 #E8E8F0 #E8E8F0 #788898; }
 
-.ce-cmdbar .ce-dpad-btn:active {
-  border-color: #788898 #E8E8F0 #E8E8F0 #788898;
-}
-
-/* ============ XP 显示属性设置窗口 ============ */
-.xp-display-body {
-  background: #ECE9D8;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  font-family: "Tahoma", "MS Sans Serif", sans-serif;
-  font-size: 11px;
-  color: #000;
-  overflow: hidden;
-}
-
-.xp-tabs {
-  display: flex;
-  padding: 6px 6px 0 6px;
-  gap: 2px;
-  background: #ECE9D8;
-  border-bottom: 1px solid #ACA899;
-}
-
-.xp-tab {
-  padding: 3px 10px;
-  cursor: default;
-  background: #ECE9D8;
-  border: 1px solid #ACA899;
-  border-bottom: none;
-  font-size: 11px;
-  color: #000;
-  position: relative;
-  top: 1px;
-}
-
-.xp-tab.active {
-  border-bottom: 1px solid #ECE9D8;
-  font-weight: bold;
-}
-
-.xp-display-layout {
-  display: flex;
-  padding: 12px;
-  gap: 16px;
-  background: #ECE9D8;
-  flex: 1;
-}
-
-.xp-monitor-graphic {
-  width: 140px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 8px;
-}
-
-.monitor-outer {
-  background: #C0C0C0;
-  border: 2px solid;
-  border-color: #FFFFFF #808080 #808080 #FFFFFF;
-  padding: 6px;
-}
-
-.monitor-screen {
-  width: 120px;
-  height: 90px;
-  background: #000080;
-  color: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: bold;
-  border: 1px solid #000060;
-}
-
-.monitor-stand {
-  width: 24px;
-  height: 18px;
-  background: #C0C0C0;
-  border: 1px solid;
-  border-color: #FFFFFF #808080 #808080 #FFFFFF;
-  margin: 0 auto;
-}
-
-.monitor-base {
-  width: 60px;
-  height: 6px;
-  background: #C0C0C0;
-  border: 1px solid;
-  border-color: #FFFFFF #808080 #808080 #FFFFFF;
-  margin: 0 auto;
-}
-
-.xp-display-controls {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.xp-slider-section label {
-  font-size: 11px;
-  display: block;
-  margin-bottom: 4px;
-}
-
-.xp-slider-wrap {
-  padding: 0 4px;
-}
-
-.xp-slider-wrap input[type="range"] {
-  width: 100%; height: 20px;
-  -webkit-appearance: none; appearance: none;
-  background: transparent; margin: 0;
-}
-
-.xp-slider-wrap input[type="range"]::-webkit-slider-runnable-track {
-  height: 4px;
-  background: #ACA899;
-  border: 1px solid;
-  border-color: #808080 #FFFFFF #FFFFFF #808080;
-}
-
-.xp-slider-wrap input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 12px; height: 20px;
-  background: #D4D0C8;
-  border: 2px solid;
-  border-color: #FFFFFF #808080 #808080 #FFFFFF;
-  margin-top: -8px; cursor: pointer;
-}
-
-.xp-slider-wrap input[type="range"]::-moz-range-track {
-  height: 4px;
-  background: #ACA899;
-  border: 1px solid #808080;
-}
-
-.xp-slider-wrap input[type="range"]::-moz-range-thumb {
-  width: 12px; height: 20px;
-  border: 2px solid;
-  border-color: #FFFFFF #808080 #808080 #FFFFFF;
-  background: #D4D0C8; cursor: pointer;
-}
-
-.xp-slider-labels {
-  display: flex;
-  justify-content: space-between; margin-top: 2px;
-}
-
-.xp-slider-labels span {
-  font-size: 10px; color: #404040;
-}
-
-.xp-dropdown-section label {
-  font-size: 11px; display: block; margin-bottom: 2px;
-}
-
-.xp-dropdown-section select {
-  width: 140px; padding: 2px 4px;
-  border: 2px solid;
-  border-color: #808080 #FFFFFF #FFFFFF #808080;
-  background: #FFFFFF; font-size: 11px;
-}
-
-.xp-hint-text {
-  font-size: 10px; color: #404040; margin-top: 4px; line-height: 1.4;
-}
-
-.xp-button-bar {
-  display: flex; justify-content: flex-end; gap: 6px;
-  padding: 6px 12px;
-  border-top: 1px solid #D4D0C8;
-  background: #ECE9D8;
-}
-
-.xp-button-bar button {
-  padding: 2px 16px; font-size: 11px;
-  background: #ECE9D8;
-  border: 2px solid;
-  border-color: #FFFFFF #808080 #808080 #FFFFFF;
-  cursor: pointer; min-width: 56px;
-  font-family: "Tahoma", "MS Sans Serif", sans-serif;
-}
-
-.xp-button-bar button:active {
-  border-color: #808080 #FFFFFF #FFFFFF #808080;
-}
-
-/* ============ Animations ============ */
-@keyframes scanMove { 0% { background-position: 0 0; } 100% { background-position: 0 100px; } }
-@keyframes noiseAnim {
-  0%, 100% { transform: translate(0,0); }
-  10% { transform: translate(-3%,-2%); } 30% { transform: translate(2%,-4%); }
-  50% { transform: translate(-2%,3%); } 70% { transform: translate(4%,-1%); }
-  90% { transform: translate(-1%,2%); }
-}
+/* ============ 动画 ============ */
 @keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 @keyframes vhsBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
 @keyframes binaryDrift { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
-@keyframes drift { 0% { transform: translate(0,0) rotate(0deg); } 100% { transform: translate(80vw, 70vh) rotate(360deg); } }
-@keyframes windowGlitch {
-  0%, 95% { transform: translate(0,0); }
-  96% { transform: translate(1px, -1px); }
-  98% { transform: translate(-1px, 1px); }
-  100% { transform: translate(0,0); }
+
+/* ============ 移动端布局 ============ */
+@media (max-width: 768px) {
+  .w95-icons, .w95-taskbar, .w95-startmenu { display: none !important; }
+  .w95-desktop { bottom: 0 !important; }
+  .w95-desktop > .w95-window {
+    inset: 0 !important;
+    width: auto !important; height: auto !important;
+    max-width: none; max-height: none;
+  }
+  .w95-controls [data-action="maximize"], .w95-grip { display: none; }
+  .mobile-back { display: inline-flex; }
+  .ce-home { display: flex; }
 }
-@keyframes rainFall { 0% { transform: translateY(-100px); opacity: 0; } 10% { opacity: 0.12; } 90% { opacity: 0.12; } 100% { transform: translateY(105vh); opacity: 0; } }
-@keyframes flashAnim { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
-
-/* ============ Utility ============ */
-.hidden { display: none !important; }
-
-/* ============ Mobile Layout ============ */
-  @media (max-width: 768px) {
-  .desktop, .crt, .noise-overlay, .taskbar, .start-menu, .geo, .rain-layer {
-    display: none !important;
-  }
-
-  body {
-    background: #A8B8D0;
-    overflow: hidden;
-  }
-
-  .ce-home {
-    display: flex;
-  }
-
-  .window {
-    display: none;
-    position: fixed !important; top: 0 !important; left: 0 !important;
-    width: 100% !important; height: 100vh !important;
-    min-height: 100vh !important;
-    border: none; box-shadow: none; animation: none;
-    z-index: 600 !important;
-  }
-
-  .window.mobile-open {
-    display: flex !important;
-  }
-
-  .window-body {
-    flex: 1;
-  }
-
-  .window-menubar { display: none; }
-
-  .mobile-back-btn { display: flex; }
-}
-
-/* Hide CE home on desktop */
-  @media (min-width: 769px) {
+@media (min-width: 769px) {
   .ce-home { display: none !important; }
-  .mobile-back-btn { display: none !important; }
+  .mobile-back { display: none !important; }
 }
 </style>
 </head>
-<body>
+<body class="w95">
 
-<!-- ===== Windows Mobile HOME SCREEN ===== -->
+<!-- ===== Windows Mobile 今日屏（移动端） ===== -->
 <div class="ce-home" id="ceHome">
   <div class="ce-navbar">
     <span class="ce-start">&#9733;</span>
@@ -963,357 +320,304 @@ body {
   </div>
 </div>
 
-<!-- Desktop Background -->
-<div class="desktop" id="desktop">
-  <div class="desktop-icons">
-    <div class="desk-icon" ondblclick="winMgr.open('vapor')">
-      <div class="icon-img">&#9678;</div>
-      <span>性格纠正所</span>
-    </div>
-    <div class="desk-icon" ondblclick="winMgr.open('arena')">
-      <div class="icon-img" style="background:#1084D0;">A</div>
-      <span>AI 辩论场</span>
-    </div>
-    <div class="desk-icon" ondblclick="winMgr.open('display')">
-      <div class="icon-img" style="background:#808000;">&#9638;</div>
-      <span>显示属性</span>
-    </div>
+<!-- ===== Windows 98 桌面 ===== -->
+<main class="w95-desktop" id="desktop" aria-label="桌面" data-contextmenu="desk-menu">
+  <div class="w95-icons" role="listbox" aria-label="桌面图标">
+    <button class="w95-desk-icon" data-open="vapor" role="option" aria-selected="false">
+      <span class="w95-ico-computer"></span><span>性格纠正所</span>
+    </button>
+    <button class="w95-desk-icon" data-open="arena" role="option" aria-selected="false">
+      <span class="w95-ico-globe"></span><span>AI 辩论场</span>
+    </button>
+    <button class="w95-desk-icon" data-open="display" role="option" aria-selected="false">
+      <span class="w95-ico-controls"></span><span>显示属性</span>
+    </button>
+    <button class="w95-desk-icon" data-open="dawn" role="option" aria-selected="false">
+      <span class="w95-ico-paint"></span><span>DAWN 滤波器</span>
+    </button>
+    <button class="w95-desk-icon" data-open="pattern" role="option" aria-selected="false">
+      <span class="w95-ico-floppy"></span><span>图案解锁</span>
+    </button>
   </div>
 
-  <div class="geo geo-1">&#9671;&#9670;&#9671;&#9670;</div>
-  <div class="geo geo-2">&#9633;&#9634;&#9635;&#9636;</div>
-  <div class="geo geo-3">&#9711;&#9712;&#9713;&#9714;</div>
-</div>
-
-<div class="rain-layer" id="rainLayer"></div>
-<div class="crt"></div>
-<div class="noise-overlay"></div>
-
-<!-- ===== VAPORWAVE WINDOW ===== -->
-<div class="window focused" id="winVapor" style="top:50px;left:160px;">
-  <div class="window-titlebar" data-win="vapor">
-    <button class="mobile-back-btn" onclick="mobileGoHome()" title="返回">&#9664;</button>
-    <span class="window-icon">&#9678;</span>
-    <span class="window-title-text">kC0VER - 性格纠正所·锚点</span>
-    <div class="window-btns">
-      <button data-action="min" title="最小化">_</button>
-      <button data-action="max" title="最大化">&#9633;</button>
-      <button data-action="close" title="关闭">&#10005;</button>
-    </div>
-  </div>
-
-  <div class="window-menubar">
-    <span class="menu-item">文件(F)</span>
-    <span class="menu-item">编辑(E)</span>
-    <span class="menu-item">查看(V)</span>
-    <span class="menu-item">收藏(A)</span>
-    <span class="menu-item">工具(T)</span>
-    <span class="menu-item">帮助(H)</span>
-  </div>
-
-  <div class="window-body">
-    <div class="vapor-wrap">
-      <div class="vhs-tag">V H S</div>
-      <h1 class="vapor-name">kC0VER</h1>
-      <h2 class="vapor-title">性格纠正所·锚点</h2>
-      <div class="vapor-desc">
-        &#x1D18;&#x1D1B;&#x1D0A;&#x1D12;...<br>
-        黃 昏 與 金 線<br>
-        ===燈 球+++<br>
-        <span class="system-tag">&#x2588;&#x2593;&#x2591;&#x2592; SYSTEM ACTIVE &#x2592;&#x2591;&#x2593;&#x2588;</span>
-      </div>
-      <div class="vapor-btns">
-        <button class="vapor-btn" data-href="works/index.html">記憶體</button>
-        <button class="vapor-btn" data-href="OKIRELEASE.html">O-K-I</button>
+  <!-- 性格纠正所 -->
+  <section class="w95-window" id="vapor" data-icon="computer" data-w="580" data-h="520" aria-labelledby="vapor-title">
+    <div class="w95-titlebar">
+      <button class="mobile-back" type="button" aria-label="返回" onclick="mobileGoHome()">&#9664;</button>
+      <span class="w95-ico-computer"></span>
+      <span class="w95-title" id="vapor-title">kC0VER - 性格纠正所·锚点</span>
+      <div class="w95-controls">
+        <button data-action="minimize" aria-label="最小化" title="最小化"></button>
+        <button data-action="maximize" aria-label="最大化" title="最大化"></button>
+        <button data-action="close" aria-label="关闭" title="关闭"></button>
       </div>
     </div>
-  </div>
-
-  <div class="window-statusbar">
-    <span id="statusText">就緒</span>
-    <span class="status-grip"></span>
-  </div>
-</div>
-
-<!-- ===== AI DEBATE ARENA WINDOW ===== -->
-<div class="window hidden" id="winArena" style="top:30px;left:240px;width:960px;height:600px;">
-  <div class="window-titlebar" data-win="arena">
-    <button class="mobile-back-btn" onclick="mobileGoHome()" title="返回">&#9664;</button>
-    <span class="window-icon" style="color:#FFFFFF;">A</span>
-    <span class="window-title-text">AI Debate Arena</span>
-    <div class="window-btns">
-      <button data-action="min" title="最小化">_</button>
-      <button data-action="max" title="最大化">&#9633;</button>
-      <button data-action="close" title="关闭">&#10005;</button>
-    </div>
-  </div>
-  <div class="window-body arena-body">
-    <iframe src="ada.html" id="arenaIframe" title="AI Debate Arena"></iframe>
-  </div>
-</div>
-
-<!-- ===== XP 显示属性设置窗口 ===== -->
-<div class="window hidden" id="winDisplay" style="top:30px;left:260px;width:480px;">
-  <div class="window-titlebar" data-win="display">
-    <button class="mobile-back-btn" onclick="mobileGoHome()" title="返回">&#9664;</button>
-    <span class="window-icon">&#9638;</span>
-    <span class="window-title-text">显示 属性</span>
-    <div class="window-btns">
-      <button data-action="min" title="最小化">_</button>
-      <button data-action="close" title="关闭">&#10005;</button>
-    </div>
-  </div>
-  <div class="window-body xp-display-body">
-    <div class="xp-tabs">
-      <span class="xp-tab">主题</span>
-      <span class="xp-tab">桌面</span>
-      <span class="xp-tab">屏幕保护程序</span>
-      <span class="xp-tab">外观</span>
-      <span class="xp-tab active">设置</span>
-    </div>
-    <div class="xp-display-layout">
-      <div class="xp-monitor-graphic">
-        <div>
-          <div class="monitor-outer">
-            <div class="monitor-screen">kC0VER</div>
-          </div>
-          <div class="monitor-stand"></div>
-          <div class="monitor-base"></div>
+    <ul class="w95-menubar" role="menubar" aria-label="菜单">
+      <li>
+        <button type="button" aria-controls="menu-file" aria-expanded="false">文件(<span class="w95-key">F</span>)</button>
+        <ul class="w95-menu" id="menu-file" role="menu" hidden>
+          <li><button type="button" data-action="close">关闭(<span class="w95-key">C</span>)</button></li>
+        </ul>
+      </li>
+      <li>
+        <button type="button" aria-controls="menu-view" aria-expanded="false">查看(<span class="w95-key">V</span>)</button>
+        <ul class="w95-menu" id="menu-view" role="menu" hidden>
+          <li><button type="button" data-open="display">显示属性(<span class="w95-key">P</span>)</button></li>
+        </ul>
+      </li>
+      <li>
+        <button type="button" aria-controls="menu-help" aria-expanded="false">帮助(<span class="w95-key">H</span>)</button>
+        <ul class="w95-menu" id="menu-help" role="menu" hidden>
+          <li><button type="button" data-open="about">关于 kC0VER(<span class="w95-key">A</span>)</button></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="w95-body vapor-body">
+      <div class="vapor-wrap">
+        <div class="vhs-tag">V H S</div>
+        <h1 class="vapor-name">kC0VER</h1>
+        <h2 class="vapor-title">性格纠正所·锚点</h2>
+        <div class="vapor-desc">
+          &#x1D18;&#x1D1B;&#x1D0A;&#x1D12;...<br>
+          黃 昏 與 金 線<br>
+          ===燈 球+++<br>
+          <span class="system-tag">&#x2588;&#x2593;&#x2591;&#x2592; SYSTEM ACTIVE &#x2592;&#x2591;&#x2593;&#x2588;</span>
+        </div>
+        <div class="vapor-btns">
+          <button class="vapor-btn" type="button" data-href="works/index.html">記憶體</button>
+          <button class="vapor-btn" type="button" data-href="OKIRELEASE.html">O-K-I</button>
         </div>
       </div>
-      <div class="xp-display-controls">
-        <div class="xp-slider-section">
-          <label>界面缩放(S): <strong id="zoomPercent">100%</strong></label>
-          <div class="xp-slider-wrap">
-            <input type="range" id="zoomSlider" min="100" max="200" step="25" value="100">
-            <div class="xp-slider-labels">
-              <span>100%</span>
-              <span>125%</span>
-              <span>150%</span>
-              <span>175%</span>
-              <span>200%</span>
+    </div>
+    <div class="w95-statusbar">
+      <span class="w95-statusfield" id="statusText">就绪</span>
+      <span class="w95-statusfield is-fit">kC0VER</span>
+    </div>
+    <span class="w95-grip"></span>
+  </section>
+
+  <!-- AI 辩论场 -->
+  <section class="w95-window" id="arena" data-icon="globe" data-w="960" data-h="620" aria-labelledby="arena-title" hidden>
+    <div class="w95-titlebar">
+      <button class="mobile-back" type="button" aria-label="返回" onclick="mobileGoHome()">&#9664;</button>
+      <span class="w95-ico-globe"></span>
+      <span class="w95-title" id="arena-title">AI Debate Arena</span>
+      <div class="w95-controls">
+        <button data-action="minimize" aria-label="最小化" title="最小化"></button>
+        <button data-action="maximize" aria-label="最大化" title="最大化"></button>
+        <button data-action="close" aria-label="关闭" title="关闭"></button>
+      </div>
+    </div>
+    <div class="w95-body is-flush arena-body">
+      <iframe src="ada.html" id="arenaIframe" title="AI Debate Arena"></iframe>
+    </div>
+    <span class="w95-grip"></span>
+  </section>
+
+  <!-- DAWN PRO2 滤波器 -->
+  <section class="w95-window" id="dawn" data-icon="paint" data-w="900" data-h="640" aria-labelledby="dawn-title" hidden>
+    <div class="w95-titlebar">
+      <button class="mobile-back" type="button" aria-label="返回" onclick="mobileGoHome()">&#9664;</button>
+      <span class="w95-ico-paint"></span>
+      <span class="w95-title" id="dawn-title">DAWN PRO2 滤波器切换</span>
+      <div class="w95-controls">
+        <button data-action="minimize" aria-label="最小化" title="最小化"></button>
+        <button data-action="maximize" aria-label="最大化" title="最大化"></button>
+        <button data-action="close" aria-label="关闭" title="关闭"></button>
+      </div>
+    </div>
+    <div class="w95-body is-flush app-frame">
+      <iframe src="dawn-pro2-filter.html" title="DAWN PRO2 滤波器切换"></iframe>
+    </div>
+    <span class="w95-grip"></span>
+  </section>
+
+  <!-- 图案解锁 Demo -->
+  <section class="w95-window" id="pattern" data-icon="floppy" data-w="500" data-h="740" aria-labelledby="pattern-title" hidden>
+    <div class="w95-titlebar">
+      <button class="mobile-back" type="button" aria-label="返回" onclick="mobileGoHome()">&#9664;</button>
+      <span class="w95-ico-floppy"></span>
+      <span class="w95-title" id="pattern-title">图案解锁 Demo</span>
+      <div class="w95-controls">
+        <button data-action="minimize" aria-label="最小化" title="最小化"></button>
+        <button data-action="maximize" aria-label="最大化" title="最大化"></button>
+        <button data-action="close" aria-label="关闭" title="关闭"></button>
+      </div>
+    </div>
+    <div class="w95-body is-flush app-frame">
+      <iframe src="pattern-lock-demo.html" title="图案解锁 Demo"></iframe>
+    </div>
+    <span class="w95-grip"></span>
+  </section>
+
+  <!-- 显示 属性 -->
+  <section class="w95-window" id="display" data-icon="controls" data-w="450" data-h="auto" data-center aria-labelledby="display-title" hidden>
+    <div class="w95-titlebar">
+      <button class="mobile-back" type="button" aria-label="返回" onclick="mobileGoHome()">&#9664;</button>
+      <span class="w95-ico-controls"></span>
+      <span class="w95-title" id="display-title">显示 属性</span>
+      <div class="w95-controls">
+        <button data-action="minimize" aria-label="最小化" title="最小化"></button>
+        <button data-action="close" aria-label="关闭" title="关闭"></button>
+      </div>
+    </div>
+    <div class="w95-body w95-tabs display-body">
+      <div class="w95-tablist" role="tablist" aria-label="显示设置">
+        <button role="tab" aria-selected="true" aria-controls="tab-settings">设置(<span class="w95-key">S</span>)</button>
+      </div>
+      <div class="w95-tabpanel" id="tab-settings" role="tabpanel">
+        <div class="display-layout">
+          <div class="display-monitor">
+            <div class="monitor-outer"><div class="monitor-screen">kC0VER</div></div>
+            <div class="monitor-stand"></div>
+            <div class="monitor-base"></div>
+          </div>
+          <div class="display-controls">
+            <div>
+              <label for="zoomSlider">界面缩放(S): <b id="zoomPercent">100%</b></label>
+              <input type="range" id="zoomSlider" min="100" max="200" step="25" value="100">
+              <div class="slider-labels" aria-hidden="true">
+                <span>100%</span><span>125%</span><span>150%</span><span>175%</span><span>200%</span>
+              </div>
             </div>
+            <div>
+              <label for="xpColorQuality">颜色质量(C):</label>
+              <select id="xpColorQuality"><option>最高 (32 位)</option></select>
+            </div>
+            <div class="display-hint">拖动滑块以调整界面缩放，应用更改前可预览。</div>
           </div>
         </div>
-        <div class="xp-dropdown-section">
-          <label>颜色质量(C):</label>
-          <select id="xpColorQuality">
-            <option>最高 (32 位)</option>
-          </select>
-        </div>
-        <div class="xp-hint-text">
-          拖动滑块以调整界面缩放，应用更改前可预览。
+        <div class="w95-btn-row is-end display-actions">
+          <button id="xpApplyBtn" type="button">应用(<span class="w95-key">A</span>)</button>
+          <button id="xpOkBtn" type="button" class="is-default">确定</button>
+          <button id="xpCancelBtn" type="button">取消</button>
         </div>
       </div>
     </div>
-    <div class="xp-button-bar">
-      <button id="xpApplyBtn">应用(A)</button>
-      <button id="xpOkBtn">确定</button>
-      <button id="xpCancelBtn">取消</button>
-    </div>
-  </div>
-</div>
+  </section>
 
-<!-- ===== TASKBAR ===== -->
-<div class="taskbar">
-  <button class="start-btn" id="startBtn">
-    <span class="win-flag"></span> 开始
+  <!-- 关于 -->
+  <section class="w95-window" id="about" data-modal data-center data-w="360" data-h="auto" data-icon="info" aria-labelledby="about-title" hidden>
+    <div class="w95-titlebar">
+      <span class="w95-ico-info"></span>
+      <span class="w95-title" id="about-title">关于 kC0VER</span>
+      <div class="w95-controls">
+        <button data-action="close" aria-label="关闭" title="关闭"></button>
+      </div>
+    </div>
+    <div class="w95-body">
+      <div class="w95-msg">
+        <span class="w95-ico-info w95-ico-32"></span>
+        <div>
+          <p><b>kC0VER - 性格纠正所·锚点</b></p>
+          <p>Windows 98 经典桌面外壳<br>内置 AI Debate Arena</p>
+          <p>&#169; 1998 - 2026 kC0VER</p>
+        </div>
+      </div>
+      <div class="w95-btn-row is-end">
+        <button class="is-default" type="button" data-action="close">确定</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ===== 桌面右键菜单 ===== -->
+<ul class="w95-menu" id="desk-menu" role="menu" hidden>
+  <li><button type="button" data-open="display"><span class="w95-key">显</span>示属性...</button></li>
+  <li class="w95-sep" role="separator"></li>
+  <li><button type="button" id="deskRefresh"><span class="w95-key">刷</span>新</button></li>
+</ul>
+
+<!-- ===== 任务栏 ===== -->
+<footer class="w95-taskbar">
+  <button class="w95-start" aria-controls="startmenu" aria-expanded="false">
+    <span class="start-flag" aria-hidden="true">
+      <svg viewBox="0 0 16 16" shape-rendering="crispEdges">
+        <path fill="#ff0000" d="M2 4h5v4H2z"/>
+        <path fill="#00a000" d="M8 3h6v5H8z"/>
+        <path fill="#0000ff" d="M2 9h5v4H2z"/>
+        <path fill="#ffff00" d="M8 9h6v4H8z"/>
+      </svg>
+    </span>开始
   </button>
-  <div class="taskbar-sep"></div>
-  <div class="taskbar-tabs">
-    <div class="taskbar-tab active" data-win="vapor" onclick="winMgr.focus('vapor')">
-      <span class="tab-dot"></span>
-      kC0VER - 性格纠正所
-    </div>
-    <div class="taskbar-tab hidden" data-win="arena" onclick="winMgr.focus('arena')">
-      <span class="tab-dot"></span>
-      AI Debate Arena
-    </div>
-    <div class="taskbar-tab hidden" data-win="display" onclick="winMgr.focus('display')">
-      <span class="tab-dot"></span>
-      显示属性
-    </div>
+  <div class="w95-tasks" aria-label="打开的窗口"></div>
+  <div class="w95-tray">
+    <span class="tray-icon" title="音量" aria-label="音量">
+      <svg viewBox="0 0 16 16" shape-rendering="crispEdges">
+        <path fill="#000000" d="M2 6h3l4-3v10l-4-3H2z"/>
+        <path fill="#000000" d="M11 5h1v1h-1zM12 4h1v3h-1zM13 3h1v5h-1z"/>
+      </svg>
+    </span>
+    <span class="w95-clock" aria-live="off">12:00</span>
   </div>
-  <div class="taskbar-tray">
-    <span class="tray-icon">&#9830;</span>
-    <span class="tray-icon">&#9660;</span>
-    <span id="taskbarClock">00:00</span>
-  </div>
-</div>
+</footer>
 
-<!-- ===== START MENU ===== -->
-<div class="start-menu" id="startMenu">
-  <div class="start-banner">
-    <span>kC0VER</span>
-  </div>
-  <div class="start-items">
-    <div class="si" onclick="winMgr.open('vapor');toggleStart();"><span class="si-icon">&#9678;</span>性格纠正所</div>
-    <div class="si" onclick="winMgr.open('arena');toggleStart();"><span class="si-icon" style="font-weight:bold;">A</span>AI 辩论场</div>
-    <div class="si-sep"></div>
-    <div class="si" onclick="winMgr.open('display');toggleStart();"><span class="si-icon">&#9638;</span>显示属性</div>
-  </div>
-</div>
+<!-- ===== 开始菜单 ===== -->
+<nav class="w95-startmenu" id="startmenu" aria-label="开始菜单" hidden>
+  <div class="w95-startmenu-band" aria-hidden="true"><span>Win<b>98</b></span></div>
+  <ul>
+    <li><button type="button" data-open="vapor"><span class="w95-ico-computer"></span>性格纠正所</button></li>
+    <li><button type="button" data-open="arena"><span class="w95-ico-globe"></span>AI 辩论场</button></li>
+    <li><button type="button" data-open="display"><span class="w95-ico-controls"></span>显示属性</button></li>
+    <li><button type="button" data-open="dawn"><span class="w95-ico-paint"></span>DAWN PRO2 滤波器</button></li>
+    <li><button type="button" data-open="pattern"><span class="w95-ico-floppy"></span>图案解锁 Demo</button></li>
+    <li class="w95-sep" role="separator"></li>
+    <li><button type="button" data-open="about"><span class="w95-ico-info"></span>关于(<span class="w95-key">A</span>)</button></li>
+    <li><button type="button" data-action="shutdown"><span class="w95-ico-star"></span>关闭系统...</button></li>
+  </ul>
+</nav>
 
+<script src="vendor/win95/win95.js"></script>
 <script>
 (function(){
   'use strict';
 
-  /* ===== Window Manager ===== */
-  var wins = {};
-  var activeWinId = 'vapor';
-  var maximized = {};
-  var prevRects = {};
-  var isMobile = window.matchMedia('(max-width: 768px)').matches;
-
-  function initWindow(id) {
-    var el = document.getElementById('win' + id.charAt(0).toUpperCase() + id.slice(1));
-    var titlebar = el.querySelector('.window-titlebar');
-    var tab = document.querySelector('.taskbar-tab[data-win="' + id + '"]');
-
-    var state = {
-      el: el, titlebar: titlebar, tab: tab,
-      dragging: false, offsetX: 0, offsetY: 0
-    };
-
-    prevRects[id] = { top: el.offsetTop, left: el.offsetLeft, width: el.offsetWidth };
-    maximized[id] = false;
-
-    // Drag
-    titlebar.addEventListener('mousedown', function(e) {
-      if (e.target.tagName === 'BUTTON') return;
-      if (isMobile || maximized[id]) return;
-      state.dragging = true;
-      state.offsetX = e.clientX - el.offsetLeft;
-      state.offsetY = e.clientY - el.offsetTop;
-      el.style.cursor = 'move';
-      focusWindow(id);
-    });
-
-    titlebar.addEventListener('dblclick', function(e) {
-      if (e.target.tagName === 'BUTTON') return;
-      if (isMobile) return;
-      toggleMaximize(id);
-    });
-
-    // Minimize / Maximize / Close buttons
-    titlebar.querySelectorAll('[data-action]').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var action = btn.getAttribute('data-action');
-        if (action === 'min') minimizeWindow(id);
-        else if (action === 'max') toggleMaximize(id);
-        else if (action === 'close') closeWindow(id);
-      });
-    });
-
-    // Focus on click
-    el.addEventListener('mousedown', function() { focusWindow(id); });
-
-    wins[id] = state;
-  }
-
-  function focusWindow(id) {
-    if (isMobile) return;
-    activeWinId = id;
-    Object.keys(wins).forEach(function(k) {
-      wins[k].el.classList.toggle('focused', k === id);
-    });
-    document.querySelectorAll('.taskbar-tab').forEach(function(t) {
-      t.classList.toggle('active', t.getAttribute('data-win') === id && !wins[t.getAttribute('data-win')].el.classList.contains('hidden'));
-    });
-  }
-
-  function minimizeWindow(id) {
-    var s = wins[id];
-    s.el.classList.add('hidden');
-    if (s.tab) s.tab.classList.remove('active');
-    if (activeWinId === id) {
-      var other = Object.keys(wins).find(function(k) { return k !== id && !wins[k].el.classList.contains('hidden'); });
-      if (other) focusWindow(other);
-    }
-  }
-
-  function toggleMaximize(id) {
-    var el = wins[id].el;
-    var btnMax = el.querySelector('[data-action="max"]');
-    if (maximized[id]) {
-      el.classList.remove('maximized');
-      el.style.top = prevRects[id].top + 'px';
-      el.style.left = prevRects[id].left + 'px';
-      el.style.width = prevRects[id].width + 'px';
-      maximized[id] = false;
-      btnMax.innerHTML = '&#9633;';
-    } else {
-      prevRects[id].top = el.offsetTop;
-      prevRects[id].left = el.offsetLeft;
-      prevRects[id].width = el.offsetWidth;
-      el.classList.add('maximized');
-      maximized[id] = true;
-      btnMax.innerHTML = '&#9634;';
-    }
-  }
-
   function closeWindow(id) {
-    var s = wins[id];
-    s.el.classList.add('hidden');
-    if (s.tab) { s.tab.classList.remove('active'); s.tab.classList.add('hidden'); }
-    s.el.classList.remove('focused');
-    if (activeWinId === id) {
-      var other = Object.keys(wins).find(function(k) { return k !== id && !wins[k].el.classList.contains('hidden'); });
-      if (other) focusWindow(other);
-    }
+    if (window.W95) window.W95.close(id);
   }
 
-  function openWindow(id) {
-    var s = wins[id];
-    s.el.classList.remove('hidden');
-    s.el.classList.remove('mobile-open');
-    if (s.tab) s.tab.classList.remove('hidden');
-    if (!isMobile) {
-      focusWindow(id);
-    }
-  }
-
-  // Expose public API
-  window.winMgr = {
-    open: function(id) { openWindow(id); },
-    focus: function(id) { focusWindow(id); },
-    close: function(id) { closeWindow(id); }
-  };
-
-  initWindow('vapor');
-  initWindow('arena');
-  initWindow('display');
-
-  // Start with vapor focused on desktop
-  if (!isMobile) focusWindow('vapor');
-
-  /* ===== Zoom Settings (XP Display) ===== */
+  /* ===== 缩放设置 ===== */
   var savedZoom = parseFloat(localStorage.getItem('kc0ver-zoom')) || 1;
   var currentZoom = savedZoom;
 
   function applyZoom(z) {
     currentZoom = z;
     document.documentElement.style.zoom = z;
-    var iframe = document.getElementById('arenaIframe');
-    if (iframe && iframe.contentWindow) {
-      iframe.contentWindow.postMessage({ type:'applyZoom', zoom: z }, '*');
-    }
+    requestAnimationFrame(clampWindows);
+    setTimeout(clampWindows, 350);
   }
 
+  function clampWindows() {
+    var desktop = document.getElementById('desktop');
+    if (!desktop) return;
+    var W = desktop.clientWidth;
+    var H = desktop.clientHeight;
+    document.querySelectorAll('.w95-desktop > .w95-window').forEach(function(w) {
+      if (w.hidden || w.classList.contains('is-maximized')) return;
+      var left = parseFloat(w.style.left) || 0;
+      var top = parseFloat(w.style.top) || 0;
+      if (w.offsetWidth >= W) left = 0;
+      else left = Math.min(left, Math.max(0, W - w.offsetWidth));
+      if (w.offsetHeight >= H) top = 0;
+      else top = Math.min(top, Math.max(0, H - w.offsetHeight));
+      w.style.left = Math.max(0, left) + 'px';
+      w.style.top = Math.max(0, top) + 'px';
+    });
+  }
   applyZoom(currentZoom);
+  setTimeout(clampWindows, 300);
+  window.addEventListener('resize', clampWindows);
 
-  (function() {
-    var slider = document.getElementById('zoomSlider');
-    var pct = document.getElementById('zoomPercent');
-    if (!slider) return;
-    slider.value = Math.round(currentZoom * 100);
-    if (pct) pct.textContent = Math.round(currentZoom * 100) + '%';
+  var zoomSlider = document.getElementById('zoomSlider');
+  var zoomPercent = document.getElementById('zoomPercent');
+  if (zoomSlider) {
+    zoomSlider.value = Math.round(currentZoom * 100);
+    if (zoomPercent) zoomPercent.textContent = Math.round(currentZoom * 100) + '%';
 
-    slider.addEventListener('input', function() {
+    zoomSlider.addEventListener('input', function() {
       var v = Number(this.value);
       applyZoom(v / 100);
-      if (pct) pct.textContent = v + '%';
+      if (zoomPercent) zoomPercent.textContent = v + '%';
     });
 
     document.getElementById('xpOkBtn').addEventListener('click', function() {
@@ -1329,142 +633,49 @@ body {
 
     document.getElementById('xpCancelBtn').addEventListener('click', function() {
       applyZoom(savedZoom);
-      slider.value = Math.round(savedZoom * 100);
-      if (pct) pct.textContent = Math.round(savedZoom * 100) + '%';
+      zoomSlider.value = Math.round(savedZoom * 100);
+      if (zoomPercent) zoomPercent.textContent = Math.round(savedZoom * 100) + '%';
       closeWindow('display');
     });
-  })();
+  }
 
-  // Global mousemove/mouseup for dragging
-  document.addEventListener('mousemove', function(e) {
-    Object.keys(wins).forEach(function(id) {
-      var s = wins[id];
-      if (!s.dragging) return;
-      var x = e.clientX - s.offsetX;
-      var y = e.clientY - s.offsetY;
-      s.el.style.left = Math.max(-200, Math.min(x, window.innerWidth - 100)) + 'px';
-      s.el.style.top = Math.max(0, Math.min(y, window.innerHeight - 80)) + 'px';
-    });
-  });
-
-  document.addEventListener('mouseup', function() {
-    Object.keys(wins).forEach(function(id) {
-      var s = wins[id];
-      if (s.dragging) {
-        s.dragging = false;
-        s.el.style.cursor = '';
-        if (!maximized[id]) {
-          prevRects[id].top = s.el.offsetTop;
-          prevRects[id].left = s.el.offsetLeft;
-          prevRects[id].width = s.el.offsetWidth;
-        }
-      }
-    });
-  });
-
-  /* ===== Mobile Navigation ===== */
+  /* ===== 移动端导航 ===== */
   window.mobileOpenApp = function(appId) {
-    document.getElementById('ceHome').style.display = 'none';
-    var map = { vapor: 'winVapor', arena: 'winArena', display: 'winDisplay' };
-    var winEl = document.getElementById(map[appId] || 'winVapor');
-    winEl.classList.add('mobile-open');
-    winEl.style.display = 'flex';
+    var id = ({ vapor: 'vapor', arena: 'arena', display: 'display' })[appId] || 'vapor';
+    var home = document.getElementById('ceHome');
+    if (home) home.style.display = 'none';
+    if (window.W95) window.W95.open(id);
   };
 
   window.mobileGoHome = function() {
-    document.querySelectorAll('.window').forEach(function(w) {
-      w.classList.remove('mobile-open');
-      w.style.display = '';
+    document.querySelectorAll('.w95-desktop > .w95-window').forEach(function(w) {
+      if (window.W95) window.W95.close(w.id);
     });
-    document.getElementById('ceHome').style.display = 'flex';
+    var home = document.getElementById('ceHome');
+    if (home) home.style.display = 'flex';
   };
 
-  /* ===== Start Menu ===== */
-  var startMenu = document.getElementById('startMenu');
-  var startBtnEl = document.getElementById('startBtn');
-  var startOpen = false;
-
-  window.toggleStart = function() {
-    startOpen = !startOpen;
-    startMenu.classList.toggle('open', startOpen);
-    startBtnEl.classList.toggle('active', startOpen);
-  };
-
-  startBtnEl.addEventListener('click', function(e) {
-    e.stopPropagation();
-    toggleStart();
-  });
-
-  document.addEventListener('click', function(e) {
-    if (startOpen && !startMenu.contains(e.target) && e.target !== startBtnEl) {
-      startOpen = false;
-      startMenu.classList.remove('open');
-      startBtnEl.classList.remove('active');
-    }
-  });
-
-  /* ===== Clock ===== */
+  /* ===== 今日屏时钟 ===== */
   function updateClock() {
     var now = new Date();
-    document.getElementById('taskbarClock').textContent =
-      String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-    document.getElementById('ceTime').textContent =
-      String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    var hh = String(now.getHours()).padStart(2, '0');
+    var mm = String(now.getMinutes()).padStart(2, '0');
+    var ceTime = document.getElementById('ceTime');
+    if (ceTime) ceTime.textContent = hh + ':' + mm;
     var days = ['日', '一', '二', '三', '四', '五', '六'];
-    document.getElementById('ceDateMain').textContent =
-      now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日';
-    document.getElementById('ceDateSub').textContent =
-      '星期' + days[now.getDay()] + ' · 欢迎回来，kC0VER';
+    var ceDateMain = document.getElementById('ceDateMain');
+    if (ceDateMain) ceDateMain.textContent = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日';
+    var ceDateSub = document.getElementById('ceDateSub');
+    if (ceDateSub) ceDateSub.textContent = '星期' + days[now.getDay()] + ' · 欢迎回来，kC0VER';
   }
   updateClock();
   setInterval(updateClock, 10000);
 
-  /* ===== Status Bar ===== */
-  var statusText = document.getElementById('statusText');
-  document.querySelectorAll('.menu-item').forEach(function(el) {
-    el.addEventListener('mouseenter', function() { statusText.textContent = el.textContent; });
-    el.addEventListener('mouseleave', function() { statusText.textContent = '就緒'; });
-  });
+  /* ===== 桌面右键「刷新」 ===== */
+  var deskRefresh = document.getElementById('deskRefresh');
+  if (deskRefresh) deskRefresh.addEventListener('click', function() { location.reload(); });
 
-  /* ===== Digital Rain ===== */
-  (function() {
-    var layer = document.getElementById('rainLayer');
-    var chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ01011010';
-    for (var i = 0; i < 25; i++) {
-      var stream = document.createElement('div');
-      stream.style.cssText = [
-        'position:absolute', 'top:-120px',
-        'left:' + Math.random() * 100 + '%',
-        'color:' + (Math.random() > 0.5 ? '#00ff41' : '#00eeff'),
-        'font-size:' + (13 + Math.random() * 8) + 'px',
-        'font-family:"Courier New",monospace',
-        'animation:rainFall ' + (3 + Math.random() * 6) + 's linear infinite',
-        'animation-delay:' + (Math.random() * 5) + 's',
-      ].join(';');
-      var content = '';
-      for (var j = 0; j < 28; j++) {
-        content += chars[Math.floor(Math.random() * chars.length)];
-      }
-      stream.textContent = content;
-      layer.appendChild(stream);
-    }
-  })();
-
-  /* ===== Keyboard Flash ===== */
-  document.addEventListener('keydown', function(e) {
-    if (e.code !== 'Space') return;
-    var flash = document.createElement('div');
-    flash.style.cssText = [
-      'position:fixed;inset:0',
-      'background:linear-gradient(45deg,rgba(255,0,255,0.4),rgba(0,238,255,0.4))',
-      'pointer-events:none;z-index:960',
-      'animation:flashAnim 0.3s linear forwards',
-    ].join(';');
-    document.body.appendChild(flash);
-    setTimeout(function() { flash.remove(); }, 400);
-  });
-
-  /* ===== Button Navigation ===== */
+  /* ===== 页面按钮 ===== */
   document.querySelectorAll('.vapor-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       var href = this.dataset.href;
@@ -1472,27 +683,28 @@ body {
     });
   });
 
-  /* ===== Audio on load ===== */
-  window.addEventListener('load', function() {
-    try {
-      var ctx = new (window.AudioContext || window.webkitAudioContext)();
-      var osc = ctx.createOscillator();
-      var gain = ctx.createGain();
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.frequency.setValueAtTime(520, ctx.currentTime);
-      gain.gain.setValueAtTime(0.06, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-      osc.start(); osc.stop(ctx.currentTime + 0.15);
-    } catch(_) {}
-  });
-
-  /* ===== Mobile init ===== */
-  if (isMobile) {
-    document.querySelectorAll('.window').forEach(function(w) { w.style.display = 'none'; });
-    document.getElementById('ceHome').style.display = 'flex';
-  }
+  /* ===== 开机音效（需要用户手势） ===== */
+  (function() {
+    var played = false;
+    function bootChime() {
+      if (played) return;
+      played = true;
+      try {
+        var ctx = new (window.AudioContext || window.webkitAudioContext)();
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.frequency.setValueAtTime(520, ctx.currentTime);
+        gain.gain.setValueAtTime(0.06, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+        osc.start(); osc.stop(ctx.currentTime + 0.15);
+        osc.onended = function() { ctx.close(); };
+      } catch(_) {}
+    }
+    document.addEventListener('pointerdown', bootChime, { once: true, passive: true });
+    document.addEventListener('keydown', bootChime, { once: true });
+  })();
 })();
 </script>
-
 </body>
 </html>

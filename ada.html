@@ -8,8 +8,9 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="vendor/win95/win95.css">
 </head>
-<body>
+<body class="w95">
   <div class="shell">
     <header class="topbar">
       <button id="openPanel" class="icon-btn mobile-only" type="button">&#9776;</button>
@@ -113,14 +114,6 @@
       </aside>
 
       <main class="chat">
-        <div class="window-title">
-          <span id="chatTitle">会话</span>
-          <div class="window-title-btns">
-            <button type="button">_</button>
-            <button type="button">&#9633;</button>
-            <button type="button">X</button>
-          </div>
-        </div>
         <div id="messages" class="messages">
           <div class="welcome">
             <div class="logo-mark">A</div>
