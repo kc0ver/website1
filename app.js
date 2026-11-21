@@ -5,7 +5,7 @@
   const COLORS = ['#000080', '#008080', '#800000', '#808000', '#800080', '#000000'];
   const DEFAULTS = {
     openrouter: 'https://openrouter.ai/api/v1',
-    '    openai-compatible': 'https://api.openai.com/v1',
+    'openai-compatible': 'https://api.openai.com/v1',
     google: 'https://generativelanguage.googleapis.com/v1beta',
     anthropic: 'https://api.anthropic.com/v1',
     deepseek: 'https://api.deepseek.com',
@@ -100,7 +100,7 @@
       .replace(/__([^_]+)__/g, '<strong>$1</strong>')
       .replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, '$1<em>$2</em>')
       .replace(/`([^`]+)`/g, '<code>$1</code>')
-      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^"'<> \t\r\n)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
 
     text = renderLists(text);
     text = text.replace(/@@CODEBLOCK(\d+)@@/g, (_, i) => codeBlocks[Number(i)] || '');
@@ -250,10 +250,12 @@
   }
 
   let renderQueue = new Set();
-  let renderScheduled = false;
+  let renderTimer = null;
+  let lastRenderAt = 0;
 
   function flushRenderQueue() {
-    renderScheduled = false;
+    renderTimer = null;
+    lastRenderAt = performance.now();
     for (const bubble of renderQueue) {
       bubble.innerHTML = renderMarkdown(bubble.dataset.raw || '');
     }
@@ -261,13 +263,16 @@
     scrollBottom();
   }
 
+  function scheduleRender() {
+    if (renderTimer) return;
+    const wait = Math.max(0, 100 - (performance.now() - lastRenderAt));
+    renderTimer = setTimeout(flushRenderQueue, wait);
+  }
+
   function appendToBubble(bubble, text) {
     bubble.dataset.raw = (bubble.dataset.raw || '') + text;
     renderQueue.add(bubble);
-    if (!renderScheduled) {
-      renderScheduled = true;
-      requestAnimationFrame(flushRenderQueue);
-    }
+    scheduleRender();
   }
 
   function forceRender(bubble) {
@@ -862,12 +867,6 @@
   $('panelOverlay').addEventListener('click', () => { dom.panel.classList.remove('open'); $('panelOverlay').classList.remove('show'); });
 
   if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => {});
-
-  window.addEventListener('message', function(e) {
-    if (e.data && e.data.type === 'applyZoom' && e.data.zoom) {
-      document.documentElement.style.zoom = e.data.zoom;
-    }
-  });
 
   syncInputs();
 })();
