@@ -278,6 +278,12 @@ function waitResponse(cmd, timeoutMs) {
   });
 }
 
+async function sendOnly(op, cmd, len, payload) {
+  if (!device) throw new Error('未连接设备');
+  log(`OUT [${hex(op)} ${hex(cmd)} ${hex(len)} ${len ? hex(payload) : ''}]`);
+  await device.sendReport(REPORT_ID, makeReport(op, cmd, len, payload));
+}
+
 async function transact(op, cmd, len, payload, timeoutMs = 4000) {
   if (!device) throw new Error('未连接设备');
   if (busy) throw new Error('上一条命令还在等待应答');
@@ -308,11 +314,18 @@ async function readFilter() {
 }
 
 async function setFilter(mode) {
-  const r = await transact(OP_WRITE, CMD_FILTER, 1, mode);
-  if (!r) {
-    log('写入没有应答；命令可能已生效，也可能被固件忽略。', 'danger');
+  if (!device || busy) return;
+  busy = true;
+  renderModes();
+  try {
+    // The firmware does not answer a SET command; only reads get a report.
+    await sendOnly(OP_WRITE, CMD_FILTER, 1, mode);
+    log(`模式 ${mode} 已发送；固件对写命令不返回应答，等待约 2 秒后读回`);
+    await new Promise((res) => setTimeout(res, 2200));
+  } finally {
+    busy = false;
+    renderModes();
   }
-  await new Promise((res) => setTimeout(res, 2200));
   const rb = await readFilter();
   if (rb != null && rb !== mode) log(`警告：读回 ${rb}，与写入 ${mode} 不一致`, 'danger');
 }
@@ -320,8 +333,8 @@ async function setFilter(mode) {
 async function probeVersion() {
   const r = await transact(OP_READ, CMD_FIRMWARE_VERSION, 0, 0, 3000);
   if (!r) return;
-  const text = Array.from(r.raw).map((b) => (b >= 32 && b < 127 ? String.fromCharCode(b) : '.')).join('');
-  log(`版本应答 payload: ${bytesHex(r.raw, 32)}  ascii="${text}"`, 'ok');
+  const text = Array.from(r.raw.slice(3)).map((b) => (b >= 32 && b < 127 ? String.fromCharCode(b) : '.')).join('');
+  log(`版本应答 payload: ${bytesHex(r.raw.slice(3), 32)}  ascii="${text}"`, 'ok');
 }
 
 async function connect() {
